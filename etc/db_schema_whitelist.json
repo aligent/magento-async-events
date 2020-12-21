@@ -1,0 +1,27 @@
+{
+    "webhook_subscriber": {
+        "column": {
+            "subscription_id": true,
+            "event_name": true,
+            "recipient_url": true,
+            "verification_token": true,
+            "status": true,
+            "subscribed_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "webhook_subscriber_log": {
+        "column": {
+            "log_id": true,
+            "subscription_id": true,
+            "event_name": true,
+            "status": true
+        },
+        "constraint": {
+            "FK_DDF25ACE5F1E5EC1BEBA8C81A1DCBC4F": true,
+            "PRIMARY": true
+        }
+    }
+}
