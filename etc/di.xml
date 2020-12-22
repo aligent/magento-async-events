@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Aligent\Webhooks\Api\WebhookRepositoryInterface"
+                type="Aligent\Webhooks\Model\WebhookRepository" />
+
+    <preference for="Aligent\Webhooks\Api\Data\WebhookInterface"
+                type="Aligent\Webhooks\Model\Webhook" />
+
+    <preference for="Aligent\Webhooks\Api\Data\WebhookInputInterface"
+                type="Aligent\Webhooks\Model\WebhookInput" />
+
+    <preference for="Aligent\Webhooks\Api\Data\WebhookUpdateInterface"
+                type="Aligent\Webhooks\Model\WebhookUpdate" />
+</config>
