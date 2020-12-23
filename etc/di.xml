@@ -11,4 +11,8 @@
 
     <preference for="Aligent\Webhooks\Api\Data\WebhookUpdateInterface"
                 type="Aligent\Webhooks\Model\WebhookUpdate" />
+
+    <preference for="Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults" />
+
 </config>
