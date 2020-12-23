@@ -10,6 +10,11 @@ interface WebhookInterface
     public function getEventName(): string;
 
     /**
+     * @return int
+     */
+    public function getSubscriptionId(): int;
+
+    /**
      * @param string $eventName
      * @return $this
      */

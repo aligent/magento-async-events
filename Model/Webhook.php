@@ -75,4 +75,9 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
         $this->setData('subscribed_at', $subscribedAt);
         return $this;
     }
+
+    public function getSubscriptionId(): int
+    {
+        return $this->getData('subscription_id');
+    }
 }
