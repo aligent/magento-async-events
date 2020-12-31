@@ -24,25 +24,31 @@ class EventDispatcher
     private SearchCriteriaBuilder $searchCriteriaBuilder;
 
     /**
-     * @var string
+     * @var NotifierInterfaceFactory
      */
-    private string $eventName;
+    private NotifierInterfaceFactory $notifierFactory;
 
-    public function __construct(WebhookRepositoryInterface $webhookRepository, SearchCriteriaBuilder $searchCriteriaBuilder, $eventName)
-    {
+    public function __construct(
+        WebhookRepositoryInterface $webhookRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        NotifierInterfaceFactory $notifierFactory
+    ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->eventName = $eventName;
+        $this->notifierFactory = $notifierFactory;
+    }
 
+    public function loadSubscribers(string $eventName)
+    {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
-            ->addFilter('event_name', $this->eventName)
+            ->addFilter('event_name', $eventName)
             ->create();
 
         $results = $this->webhookRepository->getList($searchCriteria)->getItems();
 
         foreach ($results as $result) {
-            $this->subscribers[] = new Notifier($result["subscription_id"], rand(0, 10));
+            $this->subscribers[] = $this->notifierFactory->create();
         }
     }
 

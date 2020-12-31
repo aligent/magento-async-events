@@ -2,7 +2,9 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
-class Notifier
+use GuzzleHttp\Client;
+
+class Notifier implements NotifierInterface
 {
     /**
      * @var string
@@ -13,15 +15,20 @@ class Notifier
      * @var string
      */
     private string $objectId;
+    /**
+     * @var Client
+     */
+    private Client $client;
 
-    public function __construct(string $subscriptionId, string $objectId)
+    public function __construct(string $subscriptionId, string $objectId, Client $client)
     {
         $this->subscriptionId = $subscriptionId;
         $this->objectId = $objectId;
+        $this->client = $client;
     }
 
     public function notify()
     {
-        echo "Notifying $this->subscriptionId with $this->objectId \n";
+        /// queue
     }
 }
