@@ -4,7 +4,7 @@ namespace Aligent\Webhooks\Service\Webhook;
 
 use GuzzleHttp\Client;
 
-class NotifierFactory implements NotifierInterfaceFactory
+class NotifierFactory implements NotifierFactoryInterface
 {
     /**
      * @var Client

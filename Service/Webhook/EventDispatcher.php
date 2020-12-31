@@ -24,14 +24,14 @@ class EventDispatcher
     private SearchCriteriaBuilder $searchCriteriaBuilder;
 
     /**
-     * @var NotifierInterfaceFactory
+     * @var NotifierFactoryInterface
      */
-    private NotifierInterfaceFactory $notifierFactory;
+    private NotifierFactoryInterface $notifierFactory;
 
     public function __construct(
         WebhookRepositoryInterface $webhookRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        NotifierInterfaceFactory $notifierFactory
+        NotifierFactoryInterface $notifierFactory
     ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;

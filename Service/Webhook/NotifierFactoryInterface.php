@@ -2,7 +2,7 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
-interface NotifierInterfaceFactory
+interface NotifierFactoryInterface
 {
     /**
      * @return NotifierInterface|null

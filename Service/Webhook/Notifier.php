@@ -29,6 +29,6 @@ class Notifier implements NotifierInterface
 
     public function notify()
     {
-        /// queue
+        $this->client->get('https://webhook.site/5106230a-a8ee-45f8-9887-fc75890d28b9?id=1&sd=1');
     }
 }

@@ -144,4 +144,3 @@ class WebhookRepository implements WebhookRepositoryInterface
         return $searchResults;
     }
 }
-

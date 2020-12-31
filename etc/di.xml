@@ -15,7 +15,7 @@
     <preference for="Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface"
                 type="Magento\Framework\Api\SearchResults" />
 
-    <preference for="Aligent\Webhooks\Service\Webhook\NotifierInterfaceFactory"
+    <preference for="Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface"
                 type="Aligent\Webhooks\Service\Webhook\NotifierFactory" />
 
 </config>

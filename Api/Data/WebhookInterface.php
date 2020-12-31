@@ -52,5 +52,4 @@ interface WebhookInterface
      * @return $this
      */
     public function setStatus(bool $status): self;
-
 }
