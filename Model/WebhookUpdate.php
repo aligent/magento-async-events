@@ -7,6 +7,9 @@ use Magento\Framework\Model\AbstractExtensibleModel;
 
 class WebhookUpdate extends AbstractExtensibleModel implements WebhookUpdateInterface
 {
+    /**
+     * @var string
+     */
     protected $_eventPrefix = 'webhook_update';
 
     protected function _construct()
@@ -15,7 +18,7 @@ class WebhookUpdate extends AbstractExtensibleModel implements WebhookUpdateInte
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getEventName(): ?string
     {
@@ -23,17 +26,16 @@ class WebhookUpdate extends AbstractExtensibleModel implements WebhookUpdateInte
     }
 
     /**
-     * @param string $eventName
-     * @return WebhookUpdateInterface
+     * {@inheritDoc}
      */
-    public function setEventName(string $eventName): WebhookUpdateInterface
+    public function setEventName(?string $eventName): WebhookUpdateInterface
     {
         $this->setData('event_name', $eventName);
         return $this;
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getRecipientUrl(): ?string
     {
@@ -41,17 +43,16 @@ class WebhookUpdate extends AbstractExtensibleModel implements WebhookUpdateInte
     }
 
     /**
-     * @param string $recipientURL
-     * @return WebhookUpdateInterface
+     * {@inheritDoc}
      */
-    public function setRecipientUrl(string $recipientURL): WebhookUpdateInterface
+    public function setRecipientUrl(?string $recipientURL): WebhookUpdateInterface
     {
         $this->setData('recipient_url', $recipientURL);
         return $this;
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getVerificationToken(): ?string
     {
@@ -59,10 +60,9 @@ class WebhookUpdate extends AbstractExtensibleModel implements WebhookUpdateInte
     }
 
     /**
-     * @param string $verificationToken
-     * @return WebhookUpdateInterface
+     * {@inheritDoc}
      */
-    public function setVerificationToken(string $verificationToken): WebhookUpdateInterface
+    public function setVerificationToken(?string $verificationToken): WebhookUpdateInterface
     {
         $this->setData('verification_token', $verificationToken);
         return $this;

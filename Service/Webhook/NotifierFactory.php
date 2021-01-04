@@ -16,6 +16,10 @@ class NotifierFactory implements NotifierFactoryInterface
         $this->client = $client;
     }
 
+    /**
+     * {@inheritDoc}
+     * @return NotifierInterface|null
+     */
     public function create(): ?NotifierInterface
     {
         if (true) {

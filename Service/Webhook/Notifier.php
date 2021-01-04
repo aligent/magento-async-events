@@ -27,8 +27,12 @@ class Notifier implements NotifierInterface
         $this->client = $client;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function notify()
     {
-        $this->client->get('https://webhook.site/5106230a-a8ee-45f8-9887-fc75890d28b9?id=1&sd=1');
+        echo "Notifying subscriber $this->subscriptionId with $this->objectId" . PHP_EOL;
+        // $this->client->get('https://webhook.site/5106230a-a8ee-45f8-9887-fc75890d28b9?id=1&sd=1');
     }
 }

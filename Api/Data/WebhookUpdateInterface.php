@@ -10,10 +10,10 @@ interface WebhookUpdateInterface
     public function getEventName(): ?string;
 
     /**
-     * @param string $eventName
+     * @param string|null $eventName
      * @return $this
      */
-    public function setEventName(string $eventName): self;
+    public function setEventName(?string $eventName): self;
 
     /**
      * @return string|null
@@ -21,10 +21,10 @@ interface WebhookUpdateInterface
     public function getRecipientUrl(): ?string;
 
     /**
-     * @param string $recipientUrl
+     * @param string|null $recipientUrl
      * @return $this
      */
-    public function setRecipientUrl(string $recipientUrl): self;
+    public function setRecipientUrl(?string $recipientUrl): self;
 
     /**
      * @return string|null
@@ -32,8 +32,8 @@ interface WebhookUpdateInterface
     public function getVerificationToken(): ?string;
 
     /**
-     * @param string $verificationToken
+     * @param string|null $verificationToken
      * @return $this
      */
-    public function setVerificationToken(string $verificationToken): self;
+    public function setVerificationToken(?string $verificationToken): self;
 }

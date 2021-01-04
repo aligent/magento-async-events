@@ -5,14 +5,14 @@ namespace Aligent\Webhooks\Api\Data;
 interface WebhookInterface
 {
     /**
-     * @return string
-     */
-    public function getEventName(): string;
-
-    /**
      * @return int
      */
     public function getSubscriptionId(): int;
+
+    /**
+     * @return string
+     */
+    public function getEventName(): string;
 
     /**
      * @param string $eventName
@@ -38,7 +38,7 @@ interface WebhookInterface
 
     /**
      * @param string $verificationToken
-     * @return string
+     * @return WebhookInterface
      */
     public function setVerificationToken(string $verificationToken): self;
 
@@ -52,4 +52,15 @@ interface WebhookInterface
      * @return $this
      */
     public function setStatus(bool $status): self;
+
+    /**
+     * @return \DateTime
+     */
+    public function getSubscribedAt(): \DateTime;
+
+    /**
+     * @param \DateTime $subscribedAt
+     * @return WebhookInterface
+     */
+    public function setSubscribedAt(\DateTime $subscribedAt): WebhookInterface;
 }

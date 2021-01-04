@@ -2,6 +2,7 @@
 
 namespace Aligent\Webhooks\Api;
 
+use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResultsInterface;
 
@@ -15,20 +16,20 @@ interface WebhookRepositoryInterface
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return \Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface
+     * @return WebhookSearchResultsInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface;
 
     /**
-     * @param Data\WebhookInputInterface $webhook
+     * @param Data\WebhookInterface $webhookInput
      * @return Data\WebhookInterface
      */
-    public function save(Data\WebhookInputInterface $webhook): Data\WebhookInterface;
+    public function save(Data\WebhookInterface $webhookInput): Data\WebhookInterface;
 
     /**
      * @param string $subscriptionId
-     * @param Data\WebhookUpdateInterface $webhook
+     * @param Data\WebhookUpdateInterface $webhookUpdate
      * @return Data\WebhookInterface
      */
-    public function update(string $subscriptionId, Data\WebhookUpdateInterface $webhook): Data\WebhookInterface;
+    public function update(string $subscriptionId, Data\WebhookUpdateInterface $webhookUpdate): Data\WebhookInterface;
 }

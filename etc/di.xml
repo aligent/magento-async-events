@@ -6,9 +6,6 @@
     <preference for="Aligent\Webhooks\Api\Data\WebhookInterface"
                 type="Aligent\Webhooks\Model\Webhook" />
 
-    <preference for="Aligent\Webhooks\Api\Data\WebhookInputInterface"
-                type="Aligent\Webhooks\Model\WebhookInput" />
-
     <preference for="Aligent\Webhooks\Api\Data\WebhookUpdateInterface"
                 type="Aligent\Webhooks\Model\WebhookUpdate" />
 
