@@ -9,6 +9,9 @@
         <column name="status" xsi:type="boolean" nullable="false" default="0"
                 comment="Whether the webhook is active or not"/>
         <column name="subscribed_at" xsi:type="datetime" default="NULL"/>
+        <column name="secret" xsi:type="varchar" nullable="true"
+                comment="a secret key that can be used to calculate a HMAC based SHA256 signature"/>
+        <column name="modified" xsi:type="datetime" on_update="true"/>
 
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="subscription_id"/>
@@ -21,7 +24,8 @@
         <column name="event_name" xsi:type="varchar" nullable="false"/>
         <column name="status" xsi:type="text"/>
 
-        <constraint xsi:type="foreign" referenceId="FK_DDF25ACE5F1E5EC1BEBA8C81A1DCBC4F" table="webhook_subscriber_log" column="subscription_id"
+        <constraint xsi:type="foreign" referenceId="FK_DDF25ACE5F1E5EC1BEBA8C81A1DCBC4F" table="webhook_subscriber_log"
+                    column="subscription_id"
                     referenceTable="webhook_subscriber"
                     referenceColumn="subscription_id"/>
 

@@ -6,7 +6,9 @@
             "recipient_url": true,
             "verification_token": true,
             "status": true,
-            "subscribed_at": true
+            "subscribed_at": true,
+            "secret": true,
+            "modified": true
         },
         "constraint": {
             "PRIMARY": true
