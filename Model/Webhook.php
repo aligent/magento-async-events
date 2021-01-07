@@ -96,7 +96,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getSubscribedAt(): \DateTime
+    public function getSubscribedAt(): string
     {
         return $this->getData('subscribed_at');
     }
@@ -104,7 +104,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function setSubscribedAt(\DateTime $subscribedAt): WebhookInterface
+    public function setSubscribedAt(string $subscribedAt): WebhookInterface
     {
         $this->setData('subscribed_at', $subscribedAt);
         return $this;

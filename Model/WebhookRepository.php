@@ -102,7 +102,7 @@ class WebhookRepository implements WebhookRepositoryInterface
     {
         $webhook = $this->webhookFactory->create();
         $webhook->setStatus(true);
-        $webhook->setSubscribedAt(new \DateTime());
+        $webhook->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
 
         $webhook->setEventName($webhookInput->getEventName());
         $webhook->setRecipientUrl($webhookInput->getRecipientUrl());

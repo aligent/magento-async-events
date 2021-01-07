@@ -54,13 +54,13 @@ interface WebhookInterface
     public function setStatus(bool $status): self;
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getSubscribedAt(): \DateTime;
+    public function getSubscribedAt(): string;
 
     /**
-     * @param \DateTime $subscribedAt
+     * @param string $subscribedAt
      * @return WebhookInterface
      */
-    public function setSubscribedAt(\DateTime $subscribedAt): WebhookInterface;
+    public function setSubscribedAt(string $subscribedAt): WebhookInterface;
 }
