@@ -13,7 +13,7 @@
             <resource ref="anonymous" />
         </resources>
     </route>
-    <route url="/V1/webhook/" method="POST">
+    <route url="/V1/webhook" method="POST">
         <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="save"/>
         <resources>
             <resource ref="anonymous" />
