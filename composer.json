@@ -4,7 +4,8 @@
   "description": "N/A",
   "type": "magento2-module",
   "require": {
-    "../../../../vendor/magento/framework": "*"
+    "php":  "~7.4.0",
+    "magento/framework": "*"
   },
   "license": [
     "Proprietary"
