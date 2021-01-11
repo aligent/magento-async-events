@@ -14,12 +14,16 @@ class ModelEventHandler implements ObserverInterface
      */
     private EventDispatcher $eventDispatcher;
 
+    private array $events;
+
     public function __construct(
         ModelToEventName $modelTranslator,
-        EventDispatcher $eventDispatcher
+        EventDispatcher $eventDispatcher,
+        array $events
     ) {
         $this->modelTranslator = $modelTranslator;
         $this->eventDispatcher = $eventDispatcher;
+        $this->events = $events;
     }
 
     /**
@@ -31,8 +35,10 @@ class ModelEventHandler implements ObserverInterface
             $observer->getData('object')
         );
 
-        $this->eventDispatcher->loadSubscribers($eventName);
+        if (in_array($eventName, $this->events)) {
+            $this->eventDispatcher->loadSubscribers($eventName);
 
-        $this->eventDispatcher->dispatch();
+            $this->eventDispatcher->dispatch();
+        }
     }
 }

@@ -15,4 +15,11 @@
     <preference for="Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface"
                 type="Aligent\Webhooks\Service\Webhook\NotifierFactory" />
 
+    <type name="Aligent\Webhooks\Service\Webhook\ModelEventHandler">
+        <arguments>
+            <argument name="events" xsi:type="array">
+                <item name="0" xsi:type="string">webhook_subscriber_updated</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
