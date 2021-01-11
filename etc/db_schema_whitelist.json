@@ -19,7 +19,8 @@
             "log_id": true,
             "subscription_id": true,
             "event_name": true,
-            "status": true
+            "success": true,
+            "created": true
         },
         "constraint": {
             "FK_DDF25ACE5F1E5EC1BEBA8C81A1DCBC4F": true,

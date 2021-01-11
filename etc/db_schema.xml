@@ -22,7 +22,8 @@
         <column name="log_id" xsi:type="int" unsigned="true" identity="true" nullable="false"/>
         <column name="subscription_id" xsi:type="int" unsigned="true" nullable="false"/>
         <column name="event_name" xsi:type="varchar" nullable="false"/>
-        <column name="status" xsi:type="text"/>
+        <column name="success" xsi:type="boolean" nullable="false" />
+        <column name="created" xsi:type="datetime" default="CURRENT_TIMESTAMP" nullable="false"/>
 
         <constraint xsi:type="foreign" referenceId="FK_DDF25ACE5F1E5EC1BEBA8C81A1DCBC4F" table="webhook_subscriber_log"
                     column="subscription_id"
