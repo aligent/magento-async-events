@@ -4,25 +4,25 @@
     <route url="/V1/webhook/:subscriptionId" method="GET">
         <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="get"/>
         <resources>
-            <resource ref="anonymous" />
+            <resource ref="Aligent_Webhooks::manage" />
         </resources>
     </route>
     <route url="/V1/webhooks" method="GET">
         <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="getList"/>
         <resources>
-            <resource ref="anonymous" />
+            <resource ref="Aligent_Webhooks::manage" />
         </resources>
     </route>
     <route url="/V1/webhook" method="POST">
         <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="save"/>
         <resources>
-            <resource ref="anonymous" />
+            <resource ref="Aligent_Webhooks::manage" />
         </resources>
     </route>
     <route url="/V1/webhook/:subscriptionId" method="POST">
         <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="update"/>
         <resources>
-            <resource ref="anonymous" />
+            <resource ref="Aligent_Webhooks::manage" />
         </resources>
     </route>
 </routes>
