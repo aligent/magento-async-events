@@ -10,6 +10,6 @@ pipelines:
           caches:
             - composer
           script:
-            # - jq '."http-basic"."repo.magento.com".username = env.MAGENTO_USER | ."http-basic"."repo.magento.com".password = env.MAGENTO_PASS' auth.json.sample > auth.json
+            - jq '."http-basic"."repo.magento.com".username = env.MAGENTO_USER | ."http-basic"."repo.magento.com".password = env.MAGENTO_PASS' auth.json.sample > auth.json
             - composer install --dev
             - ./phpcs.sh
