@@ -1,4 +1,4 @@
-image: aligent/m2-base-image:7.2
+image: aligent/m2-base-image:7.4
 clone:
   depth: full
 
