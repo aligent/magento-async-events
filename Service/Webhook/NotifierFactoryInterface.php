@@ -7,7 +7,8 @@ interface NotifierFactoryInterface
     /**
      * Creates a custom notifier implementation instructed by what's stored in the db
      *
-     * @return NotifierInterface|null
+     * @param array $data
+     * @return NotifierInterface
      */
-    public function create(): ?NotifierInterface;
+    public function create(array $data): NotifierInterface;
 }

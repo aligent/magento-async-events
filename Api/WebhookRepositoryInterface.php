@@ -21,15 +21,15 @@ interface WebhookRepositoryInterface
     public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface;
 
     /**
-     * @param Data\WebhookInterface $webhookInput
+     * @param Data\WebhookInterface $webhook
      * @return Data\WebhookInterface
      */
-    public function save(Data\WebhookInterface $webhookInput): Data\WebhookInterface;
+    public function save(Data\WebhookInterface $webhook): Data\WebhookInterface;
 
     /**
      * @param string $subscriptionId
-     * @param Data\WebhookUpdateInterface $webhookUpdate
+     * @param Data\WebhookUpdateInterface $webhook
      * @return Data\WebhookInterface
      */
-    public function update(string $subscriptionId, Data\WebhookUpdateInterface $webhookUpdate): Data\WebhookInterface;
+    public function update(string $subscriptionId, Data\WebhookUpdateInterface $webhook): Data\WebhookInterface;
 }

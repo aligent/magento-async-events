@@ -5,9 +5,7 @@ namespace Aligent\Webhooks\Service\Webhook;
 interface NotifierInterface
 {
     /**
-     * A custom notifier implementation
-     *
-     * @return void
+     * The notifier method
      */
     public function notify();
 }

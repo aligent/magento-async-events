@@ -4,7 +4,7 @@ namespace Aligent\Webhooks\Service\Webhook;
 
 use GuzzleHttp\Client;
 
-class Notifier implements NotifierInterface
+class HttpNotifier implements NotifierInterface
 {
     /**
      * @var string
@@ -32,7 +32,7 @@ class Notifier implements NotifierInterface
      */
     public function notify()
     {
-        echo "Notifying subscriber $this->subscriptionId with $this->objectId" . PHP_EOL;
-        // $this->client->get('https://webhook.site/5106230a-a8ee-45f8-9887-fc75890d28b9?id=1&sd=1');
+        /// queue
+        $this->subscriptionId;
     }
 }

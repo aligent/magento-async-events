@@ -9,7 +9,7 @@ class EventDispatcher
 {
     /**
      * A collection of listeners listening to this event
-     * @var Notifier[]
+     * @var HttpNotifier[]
      */
     private array $subscribers = [];
 
@@ -48,7 +48,7 @@ class EventDispatcher
         $results = $this->webhookRepository->getList($searchCriteria)->getItems();
 
         foreach ($results as $result) {
-            $this->subscribers[] = $this->notifierFactory->create();
+            $this->subscribers[] = $this->notifierFactory->create((array) $result);
         }
     }
 
