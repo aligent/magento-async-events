@@ -14,7 +14,8 @@
     }
   ],
   "require-dev": {
-    "squizlabs/php_codesniffer": "~3.5"
+    "squizlabs/php_codesniffer": "~3.5",
+    "magento/magento-coding-standard": "^6.0"
   },
     "license": [
     "Proprietary"
@@ -26,5 +27,13 @@
     "psr-4": {
       "Aligent\\Webhooks\\": ""
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "([ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/)"
+    ],
+    "post-update-cmd": [
+      "([ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/)"
+    ]
   }
 }
