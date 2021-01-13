@@ -3,7 +3,6 @@
 
 namespace Aligent\Webhooks\Model;
 
-
 use Aligent\Webhooks\Service\Webhook\EventDispatcher;
 use Psr\Log\LoggerInterface;
 
