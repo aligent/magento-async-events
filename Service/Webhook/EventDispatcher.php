@@ -38,7 +38,7 @@ class EventDispatcher
         $this->notifierFactory = $notifierFactory;
     }
 
-    public function loadSubscribers(string $eventName)
+    public function loadSubscribers(string $eventName, string $objectId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
@@ -47,14 +47,17 @@ class EventDispatcher
 
         $results = $this->webhookRepository->getList($searchCriteria)->getItems();
 
+        $subscribers = [];
         foreach ($results as $result) {
-            $this->subscribers[] = $this->notifierFactory->create((array) $result);
+            $subscribers[] = $this->notifierFactory->create((array) $result, $objectId);
         }
+
+        return $subscribers;
     }
 
-    public function dispatch()
+    public function dispatch(array $subscribers)
     {
-        foreach ($this->subscribers as $subscriber) {
+        foreach ($subscribers as $subscriber) {
             $subscriber->notify();
         }
     }

@@ -51,12 +51,12 @@ class ModelEventHandler implements ObserverInterface
              $this->publisher->publish('webhook.trigger', [
                  $eventName,
                  $this->json->serialize(
-                     $observer->getData('object')->getStoredData()
+                     $observer->getData('object')->getId()
                  )
              ]);
-            // TODO: sync/async mode
-            // $this->eventDispatcher->loadSubscribers($eventName);
 
+            // TODO: sync
+            // $this->eventDispatcher->loadSubscribers($eventName);
             // $this->eventDispatcher->dispatch();
         }
     }

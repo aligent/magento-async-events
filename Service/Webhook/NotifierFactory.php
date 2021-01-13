@@ -19,16 +19,16 @@ class NotifierFactory implements NotifierFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create(array $webhook): NotifierInterface
+    public function create(array $webhook, string $objectData): NotifierInterface
     {
         // TODO: subscription_id as switch case is just a placeholder for now, actual implementation must use a relevant
         // field
         switch ($webhook['subscription_id']) {
             case 'HTTP':
-                return new HttpNotifier($webhook['subscription_id'], 1, $this->client);
+                return new HttpNotifier($webhook['subscription_id'], $objectData, $this->client);
             default:
                 // TODO: use a default fallback notifier or throw an exception
-                return new ExampleNotifier($webhook['subscription_id']);
+                return new ExampleNotifier($objectData);
         }
     }
 }
