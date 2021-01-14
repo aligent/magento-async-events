@@ -45,11 +45,13 @@ class EventDispatcher
             ->addFilter('event_name', $eventName)
             ->create();
 
-        $results = $this->webhookRepository->getList($searchCriteria)->getItems();
+        $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
 
         $subscribers = [];
-        foreach ($results as $result) {
-            $subscribers[] = $this->notifierFactory->create((array) $result, $objectId);
+
+        /** @var \Aligent\Webhooks\Model\Webhook $webhook */
+        foreach ($webhooks as $webhook) {
+            $subscribers[] = $this->notifierFactory->create($webhook, $objectId);
         }
 
         return $subscribers;

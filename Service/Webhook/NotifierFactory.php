@@ -2,6 +2,7 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use Aligent\Webhooks\Model\Webhook;
 use GuzzleHttp\Client;
 use Magento\Framework\Serialize\Serializer\Json;
 
@@ -26,17 +27,17 @@ class NotifierFactory implements NotifierFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create(array $webhook, string $objectData): NotifierInterface
+    public function create(Webhook $webhook, string $objectData): NotifierInterface
     {
         // TODO: subscription_id as switch case is just a placeholder for now, actual implementation must use a relevant
         // field
-        switch ($webhook['subscription_id']) {
+        switch ($webhook->getSubscriptionId()) {
             default:
                 return new HttpNotifier(
-                    $webhook['subscription_id'],
+                    $webhook->getSubscriptionId(),
                     $objectData,
-                    $webhook['recipient_url'],
-                    $webhook['verification_token'],
+                    $webhook->getRecipientUrl(),
+                    $webhook->getVerificationToken(),
                     $this->client,
                     $this->json
                 );
