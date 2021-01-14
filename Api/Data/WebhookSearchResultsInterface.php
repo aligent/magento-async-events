@@ -8,12 +8,12 @@ use Magento\Framework\Api\SearchResultsInterface;
 interface WebhookSearchResultsInterface extends SearchResultsInterface
 {
     /**
-     * @return WebhookInterface[]
+     * @return \Aligent\Webhooks\Api\Data\WebhookInterface[]
      */
     public function getItems(): array;
 
     /**
-     * @param WebhookInterface[] $items
+     * @param \Aligent\Webhooks\Api\Data\WebhookInterface[] $items
      * @return $this
      */
     public function setItems(array $items): self;

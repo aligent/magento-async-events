@@ -86,12 +86,18 @@ class WebhookRepository implements WebhookRepositoryInterface
         $collection = $this->webhookCollectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);
 
-        $searchResults = $this->searchResultsFactory->create();
-        $searchResults->setSearchCriteria($searchCriteria);
-        $searchResults->setItems($collection->getData());
-        $searchResults->setTotalCount($collection->getSize());
+        $webhooks = [];
 
-        return $searchResults;
+        /** @var \Aligent\Webhooks\Model\Webhook $webhookModel */
+        foreach ($collection as $webhookModel) {
+            $webhooks[] = $webhookModel;
+        }
+
+        return $this->searchResultsFactory->create()
+            ->setItems($webhooks)
+            ->setTotalCount($collection->getSize())
+            ->setSearchCriteria($searchCriteria)
+            ;
     }
 
     /**
