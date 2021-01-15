@@ -7,7 +7,6 @@
             "verification_token": true,
             "status": true,
             "subscribed_at": true,
-            "secret": true,
             "modified": true
         },
         "constraint": {
@@ -18,7 +17,6 @@
         "column": {
             "log_id": true,
             "subscription_id": true,
-            "event_name": true,
             "success": true,
             "created": true
         },
