@@ -20,7 +20,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getSubscriptionId(): int
+    public function getSubscriptionId(): ?int
     {
         return $this->getData('subscription_id');
     }
