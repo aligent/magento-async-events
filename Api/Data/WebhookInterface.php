@@ -5,9 +5,9 @@ namespace Aligent\Webhooks\Api\Data;
 interface WebhookInterface
 {
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSubscriptionId(): int;
+    public function getSubscriptionId(): ?int;
 
     /**
      * @return string

@@ -106,16 +106,14 @@ class WebhookRepository implements WebhookRepositoryInterface
      */
     public function save(Data\WebhookInterface $webhookInput): Data\WebhookInterface
     {
-        $webhook = $this->webhookFactory->create();
-        $webhook->setStatus(true);
-        $webhook->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
+        if (!$webhookInput->getSubscriptionId()) {
+            $webhookInput->setStatus(true);
+            $webhookInput->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
+        }
 
-        $webhook->setEventName($webhookInput->getEventName());
-        $webhook->setRecipientUrl($webhookInput->getRecipientUrl());
-        $webhook->setVerificationToken($webhookInput->getVerificationToken());
-        $this->webhookResource->save($webhook);
+        $this->webhookResource->save($webhookInput);
 
-        return $webhook;
+        return $webhookInput;
     }
 
     /**
