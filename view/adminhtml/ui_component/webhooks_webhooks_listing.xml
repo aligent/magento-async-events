@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">webhooks_webhooks_listing.webhooks_webhooks_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+<!--        <buttons>-->
+<!--            <button name="add">-->
+<!--                <url path="*/*/new"/>-->
+<!--                <class>primary</class>-->
+<!--                <label translate="true">Add New Block</label>-->
+<!--            </button>-->
+<!--        </buttons>-->
+        <spinner>webhooks_webhooks_columns</spinner>
+        <deps>
+            <dep>webhooks_webhooks_listing.webhooks_webhooks_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="webhooks_webhooks_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">subscription_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Aligent_Webhooks::manage</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="webhooks_webhooks_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>subscription_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <exportButton name="export_button"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters">
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Store Views</caption>
+                    <label translate="true">Purchased From</label>
+                    <dataScope>store_id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="disable">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to disable the selected webhooks?</message>
+                        <title translate="true">Disable webhooks</title>
+                    </confirm>
+                    <url path="webhooks/webhooks/massDisable"/>
+                    <type>disable</type>
+                    <label translate="true">Disable</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="webhooks_webhooks_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">webhooks_webhooks_listing.webhooks_webhooks_listing_data_source</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">view</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>subscription_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="subscription_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="event_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Event Name</label>
+            </settings>
+        </column>
+        <column name="recipient_url">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient URL</label>
+            </settings>
+        </column>
+<!--        <column name="verification_token">-->
+<!--            <settings>-->
+<!--                <label translate="true">Verification Token</label>-->
+<!--            </settings>-->
+<!--        </column>-->
+        <column name="subscribed_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <dateFormat>D-MM-YYYY hh:mm:ss a</dateFormat>
+                <label translate="true">Subscribed At</label>
+            </settings>
+        </column>
+        <column name="modified" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <dateFormat>d-MM-YYYY hh:mm:ss a</dateFormat>
+                <label translate="true">Modified</label>
+            </settings>
+        </column>
+<!--        <actionsColumn name="actions" class="Magento\Sales\Ui\Component\Listing\Column\ViewAction">-->
+<!--            <argument name="data" xsi:type="array">-->
+<!--                <item name="config" xsi:type="array">-->
+<!--                    <item name="viewUrlPath" xsi:type="string">sales/invoice/view</item>-->
+<!--                    <item name="urlEntityParamName" xsi:type="string">invoice_id</item>-->
+<!--                </item>-->
+<!--            </argument>-->
+<!--            <settings>-->
+<!--                <indexField>increment_id</indexField>-->
+<!--            </settings>-->
+<!--        </actionsColumn>-->
+    </columns>
+</listing>

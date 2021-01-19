@@ -15,6 +15,21 @@
     <preference for="Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface"
                 type="Aligent\Webhooks\Service\Webhook\NotifierFactory" />
 
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="webhooks_webhooks_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">webhook_subscriber</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook</argument>
+        </arguments>
+    </virtualType>
+
     <type name="Aligent\Webhooks\Service\Webhook\ModelEventHandler">
         <arguments>
             <argument name="events" xsi:type="array">
