@@ -7,66 +7,66 @@ interface WebhookInterface
     /**
      * @return int|null
      */
-    public function getSubscriptionId(): ?int;
+    public function getSubscriptionId();
 
     /**
      * @param int|null $id
      * @return $this
      */
-    public function setSubscriptionId(?int $id);
+    public function setSubscriptionId($id);
 
     /**
      * @return string
      */
-    public function getEventName(): string;
+    public function getEventName();
 
     /**
      * @param string $eventName
      * @return $this
      */
-    public function setEventName(string $eventName): self;
+    public function setEventName($eventName);
 
     /**
      * @return string
      */
-    public function getRecipientUrl(): string;
+    public function getRecipientUrl();
 
     /**
      * @param string $recipientURL
      * @return $this
      */
-    public function setRecipientUrl(string $recipientURL): self;
+    public function setRecipientUrl($recipientURL);
 
     /**
      * @return string
      */
-    public function getVerificationToken(): string;
+    public function getVerificationToken();
 
     /**
      * @param string $verificationToken
      * @return WebhookInterface
      */
-    public function setVerificationToken(string $verificationToken): self;
+    public function setVerificationToken($verificationToken);
 
     /**
      * @return bool
      */
-    public function getStatus(): bool;
+    public function getStatus();
 
     /**
      * @param bool $status
      * @return $this
      */
-    public function setStatus(bool $status): self;
+    public function setStatus($status);
 
     /**
      * @return string
      */
-    public function getSubscribedAt(): string;
+    public function getSubscribedAt();
 
     /**
      * @param string $subscribedAt
-     * @return WebhookInterface
+     * @return \Aligent\Webhooks\Api\Data\WebhookInterface
      */
-    public function setSubscribedAt(string $subscribedAt): WebhookInterface;
+    public function setSubscribedAt($subscribedAt);
 }

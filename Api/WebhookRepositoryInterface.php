@@ -2,31 +2,27 @@
 
 namespace Aligent\Webhooks\Api;
 
-use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface;
-use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterface;
-use Magento\Framework\Exception\AlreadyExistsException;
-use Magento\Framework\Exception\NoSuchEntityException;
-
 interface WebhookRepositoryInterface
 {
     /**
      * @param string $subscriptionId
-     * @return Data\WebhookInterface
-     * @throws NoSuchEntityException
+     * @return \Aligent\Webhooks\Api\Data\WebhookInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function get(string $subscriptionId): Data\WebhookInterface;
+    public function get($subscriptionId);
 
     /**
-     * @param SearchCriteriaInterface $searchCriteria
-     * @return WebhookSearchResultsInterface
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @return \Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface
      */
-    public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface;
+    public function getList($searchCriteria);
 
     /**
-     * @param Data\WebhookInterface $webhook
-     * @throws AlreadyExistsException|NoSuchEntityException
-     * @return Data\WebhookInterface
+     * @param \Aligent\Webhooks\Api\Data\WebhookInterface $webhook
+     * @return \Aligent\Webhooks\Api\Data\WebhookInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
-    public function save(Data\WebhookInterface $webhook): Data\WebhookInterface;
+    public function save($webhook);
 }

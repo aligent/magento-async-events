@@ -20,7 +20,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getSubscriptionId(): ?int
+    public function getSubscriptionId()
     {
         return $this->getData('subscription_id');
     }
@@ -28,7 +28,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getEventName(): string
+    public function getEventName()
     {
         return $this->getData('event_name');
     }
@@ -36,7 +36,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function setEventName(string $eventName): WebhookInterface
+    public function setEventName($eventName)
     {
         $this->setData('event_name', $eventName);
         return $this;
@@ -45,7 +45,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getRecipientUrl(): string
+    public function getRecipientUrl()
     {
         return $this->getData('recipient_url');
     }
@@ -53,7 +53,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function setRecipientUrl(string $recipientURL): WebhookInterface
+    public function setRecipientUrl($recipientURL)
     {
         $this->setData('recipient_url', $recipientURL);
         return $this;
@@ -62,7 +62,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getVerificationToken(): string
+    public function getVerificationToken()
     {
         return $this->getData('verification_token');
     }
@@ -70,7 +70,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function setVerificationToken(string $verificationToken): WebhookInterface
+    public function setVerificationToken($verificationToken)
     {
         $this->setData('verification_token', $verificationToken);
         return $this;
@@ -79,7 +79,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getStatus(): bool
+    public function getStatus()
     {
         return $this->getData('status');
     }
@@ -87,7 +87,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function setStatus(bool $status): WebhookInterface
+    public function setStatus($status)
     {
         $this->setData('status', $status);
         return $this;
@@ -96,7 +96,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getSubscribedAt(): string
+    public function getSubscribedAt()
     {
         return $this->getData('subscribed_at');
     }
@@ -104,7 +104,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function setSubscribedAt(string $subscribedAt): WebhookInterface
+    public function setSubscribedAt($subscribedAt)
     {
         $this->setData('subscribed_at', $subscribedAt);
         return $this;

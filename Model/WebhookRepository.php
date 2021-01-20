@@ -2,15 +2,13 @@
 
 namespace Aligent\Webhooks\Model;
 
-use Aligent\Webhooks\Api\Data;
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
 use Aligent\Webhooks\Model\ResourceModel\Webhook as WebhookResource;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCollectionFactory;
 use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 class WebhookRepository implements WebhookRepositoryInterface
@@ -64,7 +62,7 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $subscriptionId): Data\WebhookInterface
+    public function get($subscriptionId)
     {
         $webhook = $this->webhookFactory->create();
         $this->webhookResource->load($webhook, $subscriptionId);
@@ -79,7 +77,7 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface
+    public function getList($searchCriteria)
     {
         $collection = $this->webhookCollectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);
@@ -101,12 +99,16 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function save(Data\WebhookInterface $webhook): Data\WebhookInterface
+    public function save($webhook)
     {
         if (!$webhook->getSubscriptionId()) {
             $webhook->setStatus(true);
             $webhook->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
         } else {
+            if ($webhook->getStatus() === null) {
+                throw new LocalizedException(__("Status is required"));
+            }
+
             $newStatus = $webhook->getStatus();
 
             $webhook = $this->get($webhook->getSubscriptionId());
