@@ -10,6 +10,12 @@ interface WebhookInterface
     public function getSubscriptionId(): ?int;
 
     /**
+     * @param int|null $id
+     * @return $this
+     */
+    public function setSubscriptionId(?int $id);
+
+    /**
      * @return string
      */
     public function getEventName(): string;

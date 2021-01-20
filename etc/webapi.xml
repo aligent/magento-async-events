@@ -19,8 +19,8 @@
             <resource ref="Aligent_Webhooks::manage" />
         </resources>
     </route>
-    <route url="/V1/webhook/:subscriptionId" method="POST">
-        <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="update"/>
+    <route url="/V1/webhook/:subscriptionId" method="PUT">
+        <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="save"/>
         <resources>
             <resource ref="Aligent_Webhooks::manage" />
         </resources>

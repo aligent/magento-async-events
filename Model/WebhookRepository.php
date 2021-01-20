@@ -11,7 +11,6 @@ use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResu
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResultsInterface;
-use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 class WebhookRepository implements WebhookRepositoryInterface
@@ -64,7 +63,6 @@ class WebhookRepository implements WebhookRepositoryInterface
 
     /**
      * {@inheritDoc}
-     * @throws NoSuchEntityException
      */
     public function get(string $subscriptionId): Data\WebhookInterface
     {
@@ -102,43 +100,18 @@ class WebhookRepository implements WebhookRepositoryInterface
 
     /**
      * {@inheritDoc}
-     * @throws AlreadyExistsException
      */
     public function save(Data\WebhookInterface $webhookInput): Data\WebhookInterface
     {
         if (!$webhookInput->getSubscriptionId()) {
             $webhookInput->setStatus(true);
             $webhookInput->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
+        } else {
+            $webhookInput = $this->get($webhookInput->getSubscriptionId())->addData($webhookInput->getData());
         }
 
         $this->webhookResource->save($webhookInput);
 
         return $webhookInput;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws AlreadyExistsException
-     * @throws NoSuchEntityException
-     */
-    public function update(string $subscriptionId, Data\WebhookUpdateInterface $webhookUpdate): Data\WebhookInterface
-    {
-        $webhook = $this->get($subscriptionId);
-
-        if ($eventName = $webhookUpdate->getEventName()) {
-            $webhook->setEventName($eventName);
-        }
-
-        if ($recipientUrl = $webhookUpdate->getRecipientUrl()) {
-            $webhook->setRecipientUrl($recipientUrl);
-        }
-
-        if ($verificationToken = $webhookUpdate->getVerificationToken()) {
-            $webhook->setVerificationToken($verificationToken);
-        }
-
-        $this->webhookResource->save($webhook);
-
-        return $webhook;
     }
 }

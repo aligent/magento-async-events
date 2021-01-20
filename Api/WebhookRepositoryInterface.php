@@ -5,12 +5,15 @@ namespace Aligent\Webhooks\Api;
 use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResultsInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 interface WebhookRepositoryInterface
 {
     /**
      * @param string $subscriptionId
      * @return Data\WebhookInterface
+     * @throws NoSuchEntityException
      */
     public function get(string $subscriptionId): Data\WebhookInterface;
 
@@ -22,14 +25,8 @@ interface WebhookRepositoryInterface
 
     /**
      * @param Data\WebhookInterface $webhook
+     * @throws AlreadyExistsException|NoSuchEntityException
      * @return Data\WebhookInterface
      */
     public function save(Data\WebhookInterface $webhook): Data\WebhookInterface;
-
-    /**
-     * @param string $subscriptionId
-     * @param Data\WebhookUpdateInterface $webhook
-     * @return Data\WebhookInterface
-     */
-    public function update(string $subscriptionId, Data\WebhookUpdateInterface $webhook): Data\WebhookInterface;
 }
