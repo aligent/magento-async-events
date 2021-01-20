@@ -1,17 +1,20 @@
 <?php
 
+
 namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
 
+
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
-use Aligent\Webhooks\Model\ResourceModel\Webhook;
-use Magento\Ui\Component\MassAction\Filter;
+use Aligent\Webhooks\Model\ResourceModel\Webhook\Collection;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Ui\Component\MassAction\Filter;
 
-class MassDisable extends Action implements HttpPostActionInterface
+class MassEnable extends Action implements HttpPostActionInterface
 {
+
     /**
      * @var CollectionFactory
      */
@@ -27,6 +30,7 @@ class MassDisable extends Action implements HttpPostActionInterface
      */
     private WebhookRepositoryInterface $webhookRepository;
 
+
     public function __construct(
         Context $context,
         Filter $filter,
@@ -34,14 +38,11 @@ class MassDisable extends Action implements HttpPostActionInterface
         WebhookRepositoryInterface $webhookRepository
     ) {
         parent::__construct($context);
-        $this->collectionFactory = $collectionFactory;
         $this->filter = $filter;
+        $this->collectionFactory = $collectionFactory;
         $this->webhookRepository = $webhookRepository;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
@@ -49,40 +50,40 @@ class MassDisable extends Action implements HttpPostActionInterface
 
         $webhookCollection = $this->collectionFactory->create();
         $this->filter->getCollection($webhookCollection);
-        $this->disableWebhooks($webhookCollection);
+        $this->enableWebhooks($webhookCollection);
 
         return $resultRedirect;
     }
 
-    private function disableWebhooks(Webhook\Collection $webhookCollection)
+    private function enableWebhooks(Collection $webhookCollection)
     {
-        $disabled = 0;
-        $alreadyDisabled = 0;
+        $enabled = 0;
+        $alreadyEnabled = 0;
 
         /** @var \Aligent\Webhooks\Model\Webhook $webhook */
         foreach ($webhookCollection as $webhook) {
-            $alreadyDisabled++;
-            if ($webhook->getStatus()) {
+            $alreadyEnabled++;
+            if (!$webhook->getStatus()) {
                 try {
-                    $webhook->setStatus(false);
-                     $this->webhookRepository->save($webhook);
-                    $alreadyDisabled--;
-                    $disabled++;
+                    $webhook->setStatus(true);
+                    $this->webhookRepository->save($webhook);
+                    $alreadyEnabled--;
+                    $enabled++;
                 } catch (\Exception $e) {
                     $this->messageManager->addErrorMessage($e->getMessage());
                 }
             }
         }
 
-        if ($disabled) {
+        if ($enabled) {
             $this->messageManager->addSuccessMessage(
-                __('A total of %1 webhook(s) have been disabled.', $disabled)
+                __('A total of %1 webhook(s) have been enabled.', $enabled)
             );
         }
 
-        if ($alreadyDisabled) {
+        if ($alreadyEnabled) {
             $this->messageManager->addNoticeMessage(
-                __('A total of %1 webhook(s) are already disabled.', $alreadyDisabled)
+                __('A total of %1 webhook(s) are already enabled.', $alreadyEnabled)
             );
         }
     }

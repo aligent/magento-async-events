@@ -64,6 +64,17 @@
                     <label translate="true">Disable</label>
                 </settings>
             </action>
+            <action name="enable">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to enable the selected webhooks?</message>
+                        <title translate="true">Enable webhooks</title>
+                    </confirm>
+                    <url path="webhooks/webhooks/massEnable"/>
+                    <type>enable</type>
+                    <label translate="true">Enable</label>
+                </settings>
+            </action>
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
