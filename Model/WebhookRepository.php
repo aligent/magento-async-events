@@ -8,6 +8,7 @@ use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCol
 use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -39,24 +40,32 @@ class WebhookRepository implements WebhookRepositoryInterface
     private CollectionProcessorInterface $collectionProcessor;
 
     /**
+     * @var EncryptorInterface
+     */
+    private EncryptorInterface $encryptor;
+
+    /**
      * @param WebhookFactory $webhookFactory
      * @param WebhookResource $webhookResource
      * @param SearchResultsFactory $searchResultsFactory
      * @param WebhookCollectionFactory $webhookCollectionFactory
      * @param CollectionProcessorInterface $collectionProcessor
+     * @param EncryptorInterface $encryptor
      */
     public function __construct(
         WebhookFactory $webhookFactory,
         WebhookResource $webhookResource,
         SearchResultsFactory $searchResultsFactory,
         WebhookCollectionFactory $webhookCollectionFactory,
-        CollectionProcessorInterface $collectionProcessor
+        CollectionProcessorInterface $collectionProcessor,
+        EncryptorInterface $encryptor
     ) {
         $this->webhookFactory = $webhookFactory;
         $this->webhookResource = $webhookResource;
         $this->searchResultsFactory = $searchResultsFactory;
         $this->webhookCollectionFactory = $webhookCollectionFactory;
         $this->collectionProcessor = $collectionProcessor;
+        $this->encryptor = $encryptor;
     }
 
     /**
@@ -104,6 +113,9 @@ class WebhookRepository implements WebhookRepositoryInterface
         if (!$webhook->getSubscriptionId()) {
             $webhook->setStatus(true);
             $webhook->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
+            $hashed_secret = $this->encryptor->hash($webhook->getVerificationToken());
+            $webhook->setVerificationToken($hashed_secret);
+
         } else {
             if ($webhook->getStatus() === null) {
                 throw new LocalizedException(__("Status is required"));
