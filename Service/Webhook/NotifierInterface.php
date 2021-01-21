@@ -6,6 +6,8 @@ interface NotifierInterface
 {
     /**
      * The notifier method
+     *
+     * @return bool
      */
-    public function notify();
+    public function notify(): bool;
 }

@@ -3,6 +3,8 @@
 namespace Aligent\Webhooks\Service\Webhook;
 
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
+use Aligent\Webhooks\Model\WebhookLogFactory;
+use Aligent\Webhooks\Model\WebhookLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 
 class EventDispatcher
@@ -28,14 +30,28 @@ class EventDispatcher
      */
     private NotifierFactoryInterface $notifierFactory;
 
+    /**
+     * @var WebhookLogRepository
+     */
+    private WebhookLogRepository $webhookLogRepository;
+
+    /**
+     * @var WebhookLogFactory
+     */
+    private WebhookLogFactory $webhookLogFactory;
+
     public function __construct(
         WebhookRepositoryInterface $webhookRepository,
+        WebhookLogRepository $webhookLogRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        NotifierFactoryInterface $notifierFactory
+        NotifierFactoryInterface $notifierFactory,
+        WebhookLogFactory $webhookLogFactory
     ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->notifierFactory = $notifierFactory;
+        $this->webhookLogRepository = $webhookLogRepository;
+        $this->webhookLogFactory = $webhookLogFactory;
     }
 
     public function loadSubscribers(string $eventName, string $objectId)
@@ -60,7 +76,13 @@ class EventDispatcher
     public function dispatch(array $subscribers)
     {
         foreach ($subscribers as $subscriber) {
-            $subscriber->notify();
+            $result = $subscriber->notify();
+
+            $webhookLog = $this->webhookLogFactory->create();
+            $webhookLog->setSuccess($result);
+            $webhookLog->setSubscriptionId(1);
+
+            $this->webhookLogRepository->save($webhookLog);
         }
     }
 }

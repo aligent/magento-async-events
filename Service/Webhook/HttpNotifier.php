@@ -61,7 +61,7 @@ class HttpNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify()
+    public function notify(): bool
     {
 
         $body = [
@@ -78,12 +78,14 @@ class HttpNotifier implements NotifierInterface
             )
         ];
 
-        $this->client->post(
+        $response = $this->client->post(
             $this->url,
             [
                 'headers' => $headers,
                 'json' => $body
             ]
         );
+
+        return $response->getstatusCode() >= 200 && $response->getstatusCode() < 300;
     }
 }
