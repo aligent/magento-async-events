@@ -113,8 +113,8 @@ class WebhookRepository implements WebhookRepositoryInterface
         if (!$webhook->getSubscriptionId()) {
             $webhook->setStatus(true);
             $webhook->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
-            $hashed_secret = $this->encryptor->hash($webhook->getVerificationToken());
-            $webhook->setVerificationToken($hashed_secret);
+            $secretVerificationToken = $this->encryptor->encrypt($webhook->getVerificationToken());
+            $webhook->setVerificationToken($secretVerificationToken);
 
         } else {
             if ($webhook->getStatus() === null) {

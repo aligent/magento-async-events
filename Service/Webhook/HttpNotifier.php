@@ -3,6 +3,7 @@
 namespace Aligent\Webhooks\Service\Webhook;
 
 use GuzzleHttp\Client;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
 class HttpNotifier implements NotifierInterface
@@ -42,13 +43,19 @@ class HttpNotifier implements NotifierInterface
      */
     private Json $json;
 
+    /**
+     * @var EncryptorInterface
+     */
+    private EncryptorInterface $encryptor;
+
     public function __construct(
         string $subscriptionId,
         string $objectId,
         string $url,
         string $secret,
         Client $client,
-        Json $json
+        Json $json,
+        EncryptorInterface $encryptor
     ) {
         $this->subscriptionId = $subscriptionId;
         $this->objectId = $objectId;
@@ -56,6 +63,7 @@ class HttpNotifier implements NotifierInterface
         $this->url = $url;
         $this->secret = $secret;
         $this->json = $json;
+        $this->encryptor = $encryptor;
     }
 
     /**
@@ -74,7 +82,7 @@ class HttpNotifier implements NotifierInterface
             self::HASHING_ALGORITHM => hash_hmac(
                 self::HASHING_ALGORITHM,
                 $this->json->serialize($body),
-                $this->secret
+                $this->encryptor->decrypt($this->secret)
             )
         ];
 

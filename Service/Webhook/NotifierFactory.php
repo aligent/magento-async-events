@@ -4,6 +4,7 @@ namespace Aligent\Webhooks\Service\Webhook;
 
 use Aligent\Webhooks\Model\Webhook;
 use GuzzleHttp\Client;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
 class NotifierFactory implements NotifierFactoryInterface
@@ -18,10 +19,16 @@ class NotifierFactory implements NotifierFactoryInterface
      */
     private Json $json;
 
-    public function __construct(Client $client, Json $json)
+    /**
+     * @var EncryptorInterface
+     */
+    private EncryptorInterface $encryptor;
+
+    public function __construct(Client $client, Json $json, EncryptorInterface $encryptor)
     {
         $this->client = $client;
         $this->json = $json;
+        $this->encryptor = $encryptor;
     }
 
     /**
@@ -39,7 +46,8 @@ class NotifierFactory implements NotifierFactoryInterface
                     $webhook->getRecipientUrl(),
                     $webhook->getVerificationToken(),
                     $this->client,
-                    $this->json
+                    $this->json,
+                    $this->encryptor
                 );
 //            default:
 //                use a default fallback notifier or throw an exception
