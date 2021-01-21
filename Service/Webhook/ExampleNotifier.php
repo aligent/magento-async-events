@@ -17,7 +17,8 @@ class ExampleNotifier implements NotifierInterface
      */
     public function notify(): bool
     {
-        return "Example notifier with some data: $this->exampleData  \n";
+        // Do something here with any data
+        $data = "Example notifier with some data: $this->exampleData  \n";
 
         return true;
     }

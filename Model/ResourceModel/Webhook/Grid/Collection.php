@@ -9,28 +9,6 @@ use Psr\Log\LoggerInterface as Logger;
 
 class Collection extends \Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult
 {
-    public function __construct(
-        EntityFactory $entityFactory,
-        Logger $logger,
-        FetchStrategy $fetchStrategy,
-        EventManager $eventManager,
-        $mainTable,
-        $resourceModel = null,
-        $identifierName = null,
-        $connectionName = null
-    ) {
-        parent::__construct(
-            $entityFactory,
-            $logger,
-            $fetchStrategy,
-            $eventManager,
-            $mainTable,
-            $resourceModel,
-            $identifierName,
-            $connectionName
-        );
-    }
-
     /**
      * Override parent method to select specific fields
      *

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
-
 
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\Collection;
@@ -29,7 +27,6 @@ class MassEnable extends Action implements HttpPostActionInterface
      * @var WebhookRepositoryInterface
      */
     private WebhookRepositoryInterface $webhookRepository;
-
 
     public function __construct(
         Context $context,

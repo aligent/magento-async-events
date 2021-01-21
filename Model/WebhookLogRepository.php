@@ -35,4 +35,3 @@ class WebhookLogRepository
         $this->webhookLogResource->save($webhookLog);
     }
 }
-
