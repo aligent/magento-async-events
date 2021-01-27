@@ -10,12 +10,6 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 class EventDispatcher
 {
     /**
-     * A collection of listeners listening to this event
-     * @var HttpNotifier[]
-     */
-    private array $subscribers = [];
-
-    /**
      * @var WebhookRepositoryInterface
      */
     private WebhookRepositoryInterface $webhookRepository;

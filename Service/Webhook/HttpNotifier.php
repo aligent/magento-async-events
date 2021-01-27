@@ -97,7 +97,7 @@ class HttpNotifier implements NotifierInterface
 
         return new NotifierResult([
             'result' => $response->getstatusCode() >= 200 && $response->getstatusCode() < 300,
-            'metadata' => $this->objectId
+            'metadata' => $this->subscriptionId
         ]);
     }
 }
