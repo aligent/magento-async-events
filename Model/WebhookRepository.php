@@ -121,8 +121,7 @@ class WebhookRepository implements WebhookRepositoryInterface
                 throw new LocalizedException(__("Status is required"));
             }
 
-            $newStatus = $webhook->getStatus();
-
+            $newStatus = $webhook->getStatus() ? '1' : '0';
             $webhook = $this->get($webhook->getSubscriptionId());
             $webhook->setStatus($newStatus);
         }

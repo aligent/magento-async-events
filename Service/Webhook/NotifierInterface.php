@@ -2,6 +2,8 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use Aligent\Webhooks\Helper\NotifierResult;
+
 interface NotifierInterface
 {
     /**
@@ -9,5 +11,5 @@ interface NotifierInterface
      *
      * @return bool
      */
-    public function notify(): bool;
+    public function notify(): NotifierResult;
 }

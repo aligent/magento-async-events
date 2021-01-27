@@ -73,14 +73,17 @@ class EventDispatcher
         return $subscribers;
     }
 
+    /**
+     * @param \Aligent\Webhooks\Service\Webhook\NotifierInterface[] $subscribers
+     */
     public function dispatch(array $subscribers)
     {
         foreach ($subscribers as $subscriber) {
-            $result = $subscriber->notify();
+            $response = $subscriber->notify();
 
             $webhookLog = $this->webhookLogFactory->create();
-            $webhookLog->setSuccess($result);
-            $webhookLog->setSubscriptionId(1);
+            $webhookLog->setSuccess($response->getResult());
+            $webhookLog->setSubscriptionId($response->getMetadata());
 
             $this->webhookLogRepository->save($webhookLog);
         }

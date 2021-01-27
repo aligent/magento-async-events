@@ -2,6 +2,7 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use Aligent\Webhooks\Helper\NotifierResult;
 use GuzzleHttp\Client;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -69,7 +70,7 @@ class HttpNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify(): bool
+    public function notify(): NotifierResult
     {
 
         $body = [
@@ -94,6 +95,9 @@ class HttpNotifier implements NotifierInterface
             ]
         );
 
-        return $response->getstatusCode() >= 200 && $response->getstatusCode() < 300;
+        return new NotifierResult([
+            'result' => $response->getstatusCode() >= 200 && $response->getstatusCode() < 300,
+            'metadata' => $this->objectId
+        ]);
     }
 }

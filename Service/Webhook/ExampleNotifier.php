@@ -3,6 +3,8 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use Aligent\Webhooks\Helper\NotifierResult;
+
 class ExampleNotifier implements NotifierInterface
 {
     private ?string $exampleData;
@@ -15,11 +17,14 @@ class ExampleNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify(): bool
+    public function notify(): NotifierResult
     {
         // Do something here with any data
         $data = "Example notifier with some data: $this->exampleData  \n";
 
-        return true;
+        return new NotifierResult([
+            'result' => true,
+            'metadata' => $this->exampleData
+        ]);
     }
 }
