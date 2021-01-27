@@ -6,7 +6,7 @@ interface WebhookRepositoryInterface
 {
     /**
      * @param string $subscriptionId
-     * @return \Aligent\Webhooks\Api\Data\WebhookInterface
+     * @return \Aligent\Webhooks\Api\Data\WebhookDisplayInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function get($subscriptionId);
@@ -19,7 +19,7 @@ interface WebhookRepositoryInterface
 
     /**
      * @param \Aligent\Webhooks\Api\Data\WebhookInterface $webhook
-     * @return \Aligent\Webhooks\Api\Data\WebhookInterface
+     * @return \Aligent\Webhooks\Api\Data\WebhookDisplayInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\AlreadyExistsException

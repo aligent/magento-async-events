@@ -54,6 +54,11 @@ class EventDispatcher
         $this->webhookLogFactory = $webhookLogFactory;
     }
 
+    /**
+     * @param string $eventName
+     * @param string $objectId
+     * @return \Aligent\Webhooks\Service\Webhook\NotifierInterface[]
+     */
     public function loadSubscribers(string $eventName, string $objectId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
@@ -63,6 +68,7 @@ class EventDispatcher
 
         $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
 
+        /** @var \Aligent\Webhooks\Service\Webhook\NotifierInterface[] $subscribers */
         $subscribers = [];
 
         /** @var \Aligent\Webhooks\Model\Webhook $webhook */
