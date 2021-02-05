@@ -101,8 +101,7 @@ class WebhookRepository implements WebhookRepositoryInterface
         return $this->searchResultsFactory->create()
             ->setItems($webhooks)
             ->setTotalCount($collection->getSize())
-            ->setSearchCriteria($searchCriteria)
-            ;
+            ->setSearchCriteria($searchCriteria);
     }
 
     /**

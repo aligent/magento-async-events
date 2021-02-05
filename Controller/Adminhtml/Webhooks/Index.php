@@ -32,7 +32,7 @@ class Index extends Action implements HttpGetActionInterface
     }
 
     /**
-     * Load the page defined in view/adminhtml/layout/exampleadminnewpage_helloworld_index.xml
+     * Load the page defined in view/adminhtml/layout/webhooks_webhooks_index.xml
      *
      * @return Page
      */

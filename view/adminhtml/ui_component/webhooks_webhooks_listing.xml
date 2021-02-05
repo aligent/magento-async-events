@@ -6,13 +6,6 @@
         </item>
     </argument>
     <settings>
-<!--        <buttons>-->
-<!--            <button name="add">-->
-<!--                <url path="*/*/new"/>-->
-<!--                <class>primary</class>-->
-<!--                <label translate="true">Add New Block</label>-->
-<!--            </button>-->
-<!--        </buttons>-->
         <spinner>webhooks_webhooks_columns</spinner>
         <deps>
             <dep>webhooks_webhooks_listing.webhooks_webhooks_listing_data_source</dep>
@@ -136,16 +129,5 @@
                 <label translate="true">Modified</label>
             </settings>
         </column>
-<!--        <actionsColumn name="actions" class="Magento\Sales\Ui\Component\Listing\Column\ViewAction">-->
-<!--            <argument name="data" xsi:type="array">-->
-<!--                <item name="config" xsi:type="array">-->
-<!--                    <item name="viewUrlPath" xsi:type="string">sales/invoice/view</item>-->
-<!--                    <item name="urlEntityParamName" xsi:type="string">invoice_id</item>-->
-<!--                </item>-->
-<!--            </argument>-->
-<!--            <settings>-->
-<!--                <indexField>increment_id</indexField>-->
-<!--            </settings>-->
-<!--        </actionsColumn>-->
     </columns>
 </listing>

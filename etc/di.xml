@@ -33,7 +33,8 @@
     <type name="Aligent\Webhooks\Service\Webhook\ModelEventHandler">
         <arguments>
             <argument name="events" xsi:type="array">
-                <item name="0" xsi:type="string">webhook_subscriber_updated</item>
+                <item name="customer_created" xsi:type="string">customer_created</item>
+                <item name="sales_order_created" xsi:type="string">sales_order_created</item>
             </argument>
         </arguments>
     </type>
