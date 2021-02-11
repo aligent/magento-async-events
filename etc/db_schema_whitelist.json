@@ -18,6 +18,7 @@
             "log_id": true,
             "subscription_id": true,
             "success": true,
+            "response_data": true,
             "created": true
         },
         "constraint": {

@@ -60,4 +60,15 @@ class WebhookLog extends AbstractModel
         $this->setData('created', $created);
         return $this;
     }
+
+    public function getResponseData()
+    {
+        $this->getData('response_data');
+    }
+
+    public function setResponseData($responseData)
+    {
+        $this->setData('response_data', $responseData);
+        return $this;
+    }
 }

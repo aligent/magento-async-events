@@ -82,8 +82,9 @@ class EventDispatcher
             $response = $subscriber->notify();
 
             $webhookLog = $this->webhookLogFactory->create();
-            $webhookLog->setSuccess($response->getResult());
-            $webhookLog->setSubscriptionId($response->getMetadata());
+            $webhookLog->setSuccess($response->getSuccess());
+            $webhookLog->setSubscriptionId($response->getSubscriptionId());
+            $webhookLog->setResponseData($response->getResponseData());
 
             $this->webhookLogRepository->save($webhookLog);
         }

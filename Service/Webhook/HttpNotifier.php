@@ -4,9 +4,18 @@ namespace Aligent\Webhooks\Service\Webhook;
 
 use Aligent\Webhooks\Helper\NotifierResult;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
+/**
+ * Class HttpNotifier
+ *
+ * This notifier just serves as a bare minimum and example implementation reference. You would want to create your own
+ * factory and then derive your own implementations. However, if this just serves your purpose well, then you might as
+ * well as use this instead.
+ *
+ */
 class HttpNotifier implements NotifierInterface
 {
     /**
@@ -87,17 +96,40 @@ class HttpNotifier implements NotifierInterface
             )
         ];
 
-        $response = $this->client->post(
-            $this->url,
-            [
-                'headers' => $headers,
-                'json' => $body
-            ]
-        );
+        // TODO: should we just get rid of the NotifierResult, and return a WebhookLog model instead? that way we don't
+        // need to unwrap this object into a WebhookLog model later, and then save that to the db.
+        $notifierResult = new NotifierResult();
+        $notifierResult->setSubscriptionId($this->subscriptionId);
 
-        return new NotifierResult([
-            'result' => $response->getstatusCode() >= 200 && $response->getstatusCode() < 300,
-            'metadata' => $this->subscriptionId
-        ]);
+        try {
+            $response = $this->client->post(
+                $this->url,
+                [
+                    'headers' => $headers,
+                    'json' => $body
+                ]
+            );
+
+            $notifierResult->setSuccess(
+                $response->getStatusCode() >= 200
+                && $response->getStatusCode() < 300
+            );
+
+            $notifierResult->setResponseData(
+                $this->json->serialize(
+                    $response->getBody()->getContents()
+                )
+            );
+        } catch (GuzzleException $exception) {
+            $notifierResult->setSuccess(false);
+
+            $notifierResult->setResponseData(
+                $this->json->serialize(
+                    $exception->getMessage()
+                )
+            );
+        }
+
+        return $notifierResult;
     }
 }
