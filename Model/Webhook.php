@@ -117,4 +117,22 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     {
         return $this->setData('subscription_id', $id);
     }
+
+    /**
+     * @return string
+     */
+    public function getMetadata()
+    {
+        return $this->getData('metadata');
+    }
+
+    /**
+     * @param string $metadata
+     * @return $this
+     */
+    public function setMetadata($metadata)
+    {
+        $this->setData('metadata', $metadata);
+        return $this;
+    }
 }
