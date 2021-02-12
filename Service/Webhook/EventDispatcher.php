@@ -6,6 +6,7 @@ use Aligent\Webhooks\Api\WebhookRepositoryInterface;
 use Aligent\Webhooks\Model\WebhookLogFactory;
 use Aligent\Webhooks\Model\WebhookLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\AlreadyExistsException;
 
 class EventDispatcher
 {
@@ -50,10 +51,9 @@ class EventDispatcher
 
     /**
      * @param string $eventName
-     * @param string $objectId
-     * @return \Aligent\Webhooks\Service\Webhook\NotifierInterface[]
+     * @throws AlreadyExistsException
      */
-    public function loadSubscribers(string $eventName, string $objectId)
+    public function dispatch(string $eventName, string $objectId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
@@ -62,24 +62,14 @@ class EventDispatcher
 
         $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
 
-        /** @var \Aligent\Webhooks\Service\Webhook\NotifierInterface[] $subscribers */
-        $subscribers = [];
-
         /** @var \Aligent\Webhooks\Model\Webhook $webhook */
         foreach ($webhooks as $webhook) {
-            $subscribers[] = $this->notifierFactory->create($webhook, $objectId);
-        }
 
-        return $subscribers;
-    }
+            $notifier = $this->notifierFactory->create($webhook->getMetadata());
 
-    /**
-     * @param \Aligent\Webhooks\Service\Webhook\NotifierInterface[] $subscribers
-     */
-    public function dispatch(array $subscribers)
-    {
-        foreach ($subscribers as $subscriber) {
-            $response = $subscriber->notify();
+            $response = $notifier->notify($webhook, [
+                'objectId' => $objectId
+            ]);
 
             $webhookLog = $this->webhookLogFactory->create();
             $webhookLog->setSuccess($response->getSuccess());

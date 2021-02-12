@@ -22,8 +22,6 @@ class WebhookTriggerHandler
      */
     public function process(array $messages)
     {
-        $this->dispatcher->dispatch(
-            $this->dispatcher->loadSubscribers($messages[0], $messages[1])
-        );
+        $this->dispatcher->dispatch($messages[0], $messages[1]);
     }
 }

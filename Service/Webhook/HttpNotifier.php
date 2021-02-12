@@ -2,6 +2,7 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use Aligent\Webhooks\Api\Data\WebhookInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -24,29 +25,9 @@ class HttpNotifier implements NotifierInterface
     private const HASHING_ALGORITHM = 'sha256';
 
     /**
-     * @var string
-     */
-    private string $subscriptionId;
-
-    /**
-     * @var string
-     */
-    private string $objectId;
-
-    /**
      * @var Client
      */
     private Client $client;
-
-    /**
-     * @var string
-     */
-    private string $url;
-
-    /**
-     * @var string
-     */
-    private string $secret;
 
     /**
      * @var Json
@@ -59,19 +40,11 @@ class HttpNotifier implements NotifierInterface
     private EncryptorInterface $encryptor;
 
     public function __construct(
-        string $subscriptionId,
-        string $objectId,
-        string $url,
-        string $secret,
         Client $client,
         Json $json,
         EncryptorInterface $encryptor
     ) {
-        $this->subscriptionId = $subscriptionId;
-        $this->objectId = $objectId;
         $this->client = $client;
-        $this->url = $url;
-        $this->secret = $secret;
         $this->json = $json;
         $this->encryptor = $encryptor;
     }
@@ -79,11 +52,10 @@ class HttpNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify(): NotifierResult
+    public function notify(WebhookInterface $webhook, array $data): NotifierResult
     {
-
         $body = [
-            'objectId' => $this->objectId
+            'objectId' => $data['objectId']
         ];
 
         // Sign the payload that the client can verify. Which means a secret has to be provided when subscribing to a
@@ -92,18 +64,18 @@ class HttpNotifier implements NotifierInterface
             self::HASHING_ALGORITHM => hash_hmac(
                 self::HASHING_ALGORITHM,
                 $this->json->serialize($body),
-                $this->encryptor->decrypt($this->secret)
+                $this->encryptor->decrypt($webhook->getVerificationToken())
             )
         ];
 
         // TODO: should we just get rid of the NotifierResult, and return a WebhookLog model instead? that way we don't
         // need to unwrap this object into a WebhookLog model later, and then save that to the db.
         $notifierResult = new NotifierResult();
-        $notifierResult->setSubscriptionId($this->subscriptionId);
+        $notifierResult->setSubscriptionId($webhook->getSubscriptionId());
 
         try {
             $response = $this->client->post(
-                $this->url,
+                $webhook->getRecipientUrl(),
                 [
                     'headers' => $headers,
                     'json' => $body

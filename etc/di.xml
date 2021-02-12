@@ -15,6 +15,15 @@
     <preference for="Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface"
                 type="Aligent\Webhooks\Service\Webhook\NotifierFactory" />
 
+    <type name="Aligent\Webhooks\Service\Webhook\NotifierFactory">
+        <arguments>
+            <argument name="notifierClasses" xsi:type="array">
+                <item name="default" xsi:type="object">Aligent\Webhooks\Service\Webhook\HttpNotifier</item>
+                <item name="example" xsi:type="object">Aligent\Webhooks\Service\Webhook\ExampleNotifier</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">webhook_subscriber</argument>

@@ -2,56 +2,47 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
-use Aligent\Webhooks\Model\Webhook;
-use GuzzleHttp\Client;
-use Magento\Framework\Encryption\EncryptorInterface;
-use Magento\Framework\Serialize\Serializer\Json;
-
+/**
+ * Class NotifierFactory
+ *
+ * Not really a "factory", because this is a factory that returns an interface (and we don't know what implementations
+ * are available yet), we need explicit mapping of a type - implementation from outside (DB, di.xml) etc.
+ *
+ * And once we have that data, instead of using the object manager to instantiate it directly, we'll inject them as
+ * parameters.
+ */
 class NotifierFactory implements NotifierFactoryInterface
 {
     /**
-     * @var Client
+     * @var array
      */
-    private Client $client;
+    private array $notifierClasses;
 
     /**
-     * @var Json
+     * NotifierFactory constructor.
+     *
+     * @param array $notifierClasses
      */
-    private Json $json;
-
-    /**
-     * @var EncryptorInterface
-     */
-    private EncryptorInterface $encryptor;
-
-    public function __construct(Client $client, Json $json, EncryptorInterface $encryptor)
-    {
-        $this->client = $client;
-        $this->json = $json;
-        $this->encryptor = $encryptor;
+    public function __construct(array $notifierClasses) {
+        $this->notifierClasses = $notifierClasses;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create(Webhook $webhook, string $objectData): NotifierInterface
+    public function create(string $type): NotifierInterface
     {
-        // TODO: subscription_id as switch case is just a placeholder for now, actual implementation must use a relevant
-        // field
-        switch ($webhook->getSubscriptionId()) {
-            default:
-                return new HttpNotifier(
-                    $webhook->getSubscriptionId(),
-                    $objectData,
-                    $webhook->getRecipientUrl(),
-                    $webhook->getVerificationToken(),
-                    $this->client,
-                    $this->json,
-                    $this->encryptor
-                );
-//            default:
-//                use a default fallback notifier or throw an exception
-//                return new ExampleNotifier($objectData);
+        $notifier = $this->notifierClasses[$type] ?? null;
+
+        if (!$notifier) {
+            // Fallback to default notifier
+            $notifier = $this->notifierClasses["default"] ?? null;
+
+            if (!$notifier) {
+                throw new \InvalidArgumentException(__("Could not find a notifier to handle type: {$type}"));
+            }
         }
+
+        return $notifier;
     }
 }

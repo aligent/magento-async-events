@@ -2,6 +2,7 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use Aligent\Webhooks\Api\Data\WebhookInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
 
 interface NotifierInterface
@@ -9,7 +10,9 @@ interface NotifierInterface
     /**
      * The notifier method
      *
-     * @return bool
+     * @param WebhookInterface $webhook
+     * @param array $data
+     * @return NotifierResult
      */
-    public function notify(): NotifierResult;
+    public function notify(WebhookInterface $webhook, array $data): NotifierResult;
 }
