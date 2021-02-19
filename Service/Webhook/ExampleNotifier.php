@@ -13,12 +13,12 @@ class ExampleNotifier implements NotifierInterface
     public function notify(WebhookInterface $webhook, array $data): NotifierResult
     {
         // Do something here with any data
-        echo "Example notifier with some data: " . $data["objectId"] . "\n";
+        $data = "Example notifier with some data: " . $data["objectId"];
 
         $result = new NotifierResult();
         $result->setSuccess(true);
         $result->setSubscriptionId($webhook->getSubscriptionId());
-        $result->setResponseData("Example notifier with some data: " . $data["objectId"]);
+        $result->setResponseData($data);
 
         return $result;
     }

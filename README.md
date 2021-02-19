@@ -10,6 +10,7 @@ This is an event-driven implementation of webhooks for Magento 2
 4. [Geting started](#getting-started)
 5. [Advanced](#advanced-usage)
     1. [Custom notifier implementations](#custom-notifier-implementations)
+6. [Appendix](#appendix)
 
 ## What are webhooks?
 Webhooks refers to a combination of elements that collectively create a
@@ -160,6 +161,9 @@ in a `di.xml`
 
 **The factory decides which notifier to use for that webhook based on some metadata.**
 
+There is an extra metadata field on a webhook and it defaults to null, there is currently no way to set it programatically so you'll have to go into the DB to set it (for now). [[a]](#appendix)
+
+
 ```xml
     <preference for="Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface"
                 type="Some\Module\Service\MyFactory" />
@@ -168,27 +172,25 @@ in a `di.xml`
 An example custom implementation could look like
 
 ```php
+use Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface;
+use Aligent\Webhooks\Service\Webhook\NotifierInterface;
+
 class MyFactory implements NotifierFactoryInterface
 {
 
     /**
      * {@inheritDoc}
      */
-    public function create(Webhook $webhook, string $objectData): NotifierInterface
+    public function create(string $type): NotifierInterface
     {
-        switch ($webhook->getNotifierType()) { // TODO: This method is not yet implemented
+        switch ($type) {
+            case 'default':
             case 'http':
-                return new Some\Module\Service\HttpNotifier(
-                    $this->client,
-                    $webhook->getRecipientUrl()
-                );
 
-            case 'socket',
-                return new Some\Module\Service\SocketNotifier();
-
+                return new Some\Module\Service\HttpNotifier;
 
             default:
-                throw new Exception(__("Cannot resolve %1, did you forget to add an implementation?"));
+                throw new \InvalidArgumentException(__("Could not resolve notifier %1. Did you forget to add an implementation", $type));
         }
     }
 }
@@ -199,47 +201,49 @@ Note that we now have specified two custom notifiers, `HttpNotifier` and
 
 #### HttpNotifier
 ```php
-class HttpNotifier implements NotifierInterface()
+class HttpNotifier implements NotifierInterface
 {
-    public function __construct(Client $client, string $url)
+    /**
+     * {@inheritDoc}
+     */
+    public function notify(WebhookInterface $webhook, array $data): NotifierResult
     {
-        // initialize arguments
-    }
-
-    public function notify(): NotiferResult
-    {
-        // Adding data to the request body
         $body = [
-            'custom_data' => 'The spectacle before us was indeed sublime',
-            'customer_data'
+            'custom_data' => 'the spectacle before us was indeed sublime'
         ];
 
-        // Throw in some custom headers
         $headers = [
-            'X-Custom-Header' => 'Custom Header',
+            'X-Header': 'Some custom header'
         ];
 
-        $response = $this->client->post(
-            $this->url,
-            [
-                'headers' => $headers,
-                'json' => $body
-            ]
-        );
+        $notifierResult = new NotifierResult();
+        $notifierResult->setSubscriptionId($webhook->getSubscriptionId());
 
-        return new NotifierResult([
-            'result' => $response->getstatusCode() >= 200 && $response->getstatusCode() < 300,
-            'metadata' => 'Some Metadata'
-        ]);
+        try {
+            $response = $this->client->post(
+                // url,
+                // []
+            )
+
+        // these will be logged in the table webhook_subscriber_log
+        $notifierResult->setSuccess(true);
+        $notifierResult->setResponseData('fake response data');
+
+        } catch (GuzzleException $exception) {
+            $notifierResult->setSuccess(false);
+            $notifierResult->setResponseData('something happened ' . $exception->getMessage());
+        }
+
+        return $notifierResult;
     }
 }
 ```
 
 #### SocketNotifier
 ```php
-class SocketNotifier implements NotifierInterface()
+class SocketNotifier implements NotifierInterface
 {
-    public function notify(): NotifierResult
+    public function notify(WebhookInterface $webhook, array $data): NotifierResult
     {
         // Inter-process communciation, writing to disk, etc
     }
@@ -248,3 +252,25 @@ class SocketNotifier implements NotifierInterface()
 
 ## References
 1. https://stripe.com/docs/webhooks
+
+
+## Appendix
+a. The reason for this is, we are debating on when to do this.
+
+We could specify what notifier to use during the creation of a webhook this way.
+
+```json
+{
+    "webhook": {
+        "event_name": "customer_updated",
+        "recipient_url": "https://localhost/endpoint",
+        "verification_token": "supersecret",
+        "metadata": "default" // notifer_x, notifier_a, etc
+    }
+}
+```
+But then we are leaking an implementation detail. Perhaps `metadata` could be an optional field and when not specified it just defaults to `default` or `null`.
+
+Or we could update metadata using a `PUT` endpoint when we decide that a specific webhook needs a specific notifier.
+
+Or we could build some functionality in the admin UI and allow to edit and choose from a dropdown for available notifiers.

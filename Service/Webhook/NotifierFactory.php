@@ -23,7 +23,8 @@ class NotifierFactory implements NotifierFactoryInterface
      *
      * @param array $notifierClasses
      */
-    public function __construct(array $notifierClasses) {
+    public function __construct(array $notifierClasses)
+    {
         $this->notifierClasses = $notifierClasses;
     }
 
