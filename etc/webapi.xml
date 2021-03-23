@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/webhook/:subscriptionId" method="GET">
+        <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="get"/>
+        <resources>
+            <resource ref="Aligent_Webhooks::manage" />
+        </resources>
+    </route>
+    <route url="/V1/webhooks" method="GET">
+        <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Aligent_Webhooks::manage" />
+        </resources>
+    </route>
+    <route url="/V1/webhook" method="POST">
+        <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Aligent_Webhooks::manage" />
+        </resources>
+    </route>
+    <route url="/V1/webhook/:subscriptionId" method="PUT">
+        <service class="Aligent\Webhooks\Api\WebhookRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Aligent_Webhooks::manage" />
+        </resources>
+    </route>
+</routes>

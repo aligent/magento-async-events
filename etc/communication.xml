@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="webhook.trigger" request="string[]" is_synchronous="false">
+        <handler name="webhook.trigger.handler" type="Aligent\Webhooks\Model\WebhookTriggerHandler" method="process" />
+    </topic>
+</config>

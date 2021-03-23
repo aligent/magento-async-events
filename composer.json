@@ -1,0 +1,39 @@
+{
+  "name": "aligent/webhooks",
+  "version": "1.1.0",
+  "description": "An event-driven flexible webhooks module that allows you to dispatch anything to any application at the time it occurs.\n",
+  "type": "magento2-module",
+  "require": {
+    "php":  "~7.4.0",
+    "magento/framework": "*"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repo.magento.com/"
+    }
+  ],
+  "require-dev": {
+    "squizlabs/php_codesniffer": "~3.5",
+    "magento/magento-coding-standard": "^6.0"
+  },
+    "license": [
+    "Proprietary"
+  ],
+  "autoload": {
+    "files": [
+        "registration.php"
+    ],
+    "psr-4": {
+      "Aligent\\Webhooks\\": ""
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "([ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/)"
+    ],
+    "post-update-cmd": [
+      "([ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/)"
+    ]
+  }
+}

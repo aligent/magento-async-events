@@ -7,6 +7,9 @@
 node_modules/
 dist/
 
+# Composer artifact files
+vendor/
+
 # Compiled Java class files
 *.class
 
