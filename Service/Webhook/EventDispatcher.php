@@ -51,9 +51,10 @@ class EventDispatcher
 
     /**
      * @param string $eventName
+     * @param mixed $output
      * @throws AlreadyExistsException
      */
-    public function dispatch(string $eventName, string $objectId)
+    public function dispatch(string $eventName, $output)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
@@ -64,11 +65,12 @@ class EventDispatcher
 
         /** @var \Aligent\Webhooks\Model\Webhook $webhook */
         foreach ($webhooks as $webhook) {
+            $handler = $webhook->getMetadata() ?? 'default';
 
-            $notifier = $this->notifierFactory->create($webhook->getMetadata());
+            $notifier = $this->notifierFactory->create($handler);
 
             $response = $notifier->notify($webhook, [
-                'objectId' => $objectId
+                'data' => $output
             ]);
 
             $webhookLog = $this->webhookLogFactory->create();

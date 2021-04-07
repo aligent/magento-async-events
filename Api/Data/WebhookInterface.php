@@ -69,4 +69,15 @@ interface WebhookInterface
      * @return \Aligent\Webhooks\Api\Data\WebhookInterface
      */
     public function setSubscribedAt($subscribedAt);
+
+    /**
+     * @return string|null
+     */
+    public function getMetadata();
+
+    /**
+     * @param string|null $metadata
+     * @return $this
+     */
+    public function setMetadata($metadata);
 }

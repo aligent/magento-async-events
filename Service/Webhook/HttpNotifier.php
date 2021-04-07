@@ -54,9 +54,7 @@ class HttpNotifier implements NotifierInterface
      */
     public function notify(WebhookInterface $webhook, array $data): NotifierResult
     {
-        $body = [
-            'objectId' => $data['objectId']
-        ];
+        $body = $data;
 
         // Sign the payload that the client can verify. Which means a secret has to be provided when subscribing to a
         // webhook
