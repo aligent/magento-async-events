@@ -2,6 +2,7 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use Aligent\Webhooks\Model\Config\Data as WebhookConfig;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\MessageQueue\PublisherInterface;
@@ -48,7 +49,7 @@ class ModelEventHandler implements ObserverInterface
             );
 
             $this->publisher->publish('webhook.trigger', [
-                 $eventName,
+                 'webhook_subscriber_save_commit_after', // temp
                  $payload
              ]);
         }
