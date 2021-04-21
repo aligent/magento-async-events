@@ -65,7 +65,7 @@ class EventDispatcher
 
         /** @var \Aligent\Webhooks\Model\Webhook $webhook */
         foreach ($webhooks as $webhook) {
-            $handler = $webhook->getMetadata() ?? 'default';
+            $handler = $webhook->getMetadata();
 
             $notifier = $this->notifierFactory->create($handler);
 

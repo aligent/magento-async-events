@@ -71,12 +71,12 @@ interface WebhookInterface
     public function setSubscribedAt($subscribedAt);
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getMetadata();
 
     /**
-     * @param string|null $metadata
+     * @param string $metadata
      * @return $this
      */
     public function setMetadata($metadata);
