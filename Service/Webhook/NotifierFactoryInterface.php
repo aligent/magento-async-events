@@ -2,6 +2,9 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+/**
+ * Abstract Factory for Notifiers
+ */
 interface NotifierFactoryInterface
 {
     /**

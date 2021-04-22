@@ -10,7 +10,7 @@
                 comment="Whether the webhook is active or not"/>
         <column name="subscribed_at" xsi:type="datetime" default="NULL"/>
         <column name="modified" xsi:type="datetime" on_update="true"/>
-        <column name="metadata" xsi:type="text" nullable="true" comment="Extra information for instantiating notifiers" />
+        <column name="metadata" xsi:type="text" nullable="false" comment="Extra information for instantiating notifiers" />
 
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="subscription_id"/>

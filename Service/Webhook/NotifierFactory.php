@@ -2,14 +2,10 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
+use InvalidArgumentException;
+
 /**
  * Class NotifierFactory
- *
- * Not really a "factory", because this is a factory that returns an interface (and we don't know what implementations
- * are available yet), we need explicit mapping of a type - implementation from outside (DB, di.xml) etc.
- *
- * And once we have that data, instead of using the object manager to instantiate it directly, we'll inject them as
- * parameters.
  */
 class NotifierFactory implements NotifierFactoryInterface
 {
@@ -23,7 +19,7 @@ class NotifierFactory implements NotifierFactoryInterface
      *
      * @param array $notifierClasses
      */
-    public function __construct(array $notifierClasses)
+    public function __construct(array $notifierClasses = [])
     {
         $this->notifierClasses = $notifierClasses;
     }
@@ -35,13 +31,8 @@ class NotifierFactory implements NotifierFactoryInterface
     {
         $notifier = $this->notifierClasses[$type] ?? null;
 
-        if (!$notifier) {
-            // Fallback to default notifier
-            $notifier = $this->notifierClasses["default"] ?? null;
-
-            if (!$notifier) {
-                throw new \InvalidArgumentException(__("Could not find a notifier to handle type: {$type}"));
-            }
+        if (!$notifier instanceof NotifierInterface) {
+            throw new InvalidArgumentException(__("{$notifier} must implement NotifierInterface."));
         }
 
         return $notifier;

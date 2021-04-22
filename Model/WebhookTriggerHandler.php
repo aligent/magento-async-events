@@ -4,24 +4,30 @@
 namespace Aligent\Webhooks\Model;
 
 use Aligent\Webhooks\Service\Webhook\EventDispatcher;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class WebhookTriggerHandler
 {
-    /**
-     * @var EventDispatcher
-     */
     private EventDispatcher $dispatcher;
 
-    public function __construct(EventDispatcher $dispatcher)
-    {
+    private Json $json;
+
+    public function __construct(
+        EventDispatcher $dispatcher,
+        Json $json
+    ) {
         $this->dispatcher = $dispatcher;
+        $this->json = $json;
     }
 
     /**
-     * @param array $messages
+     * @param array $queueMessage
      */
-    public function process(array $messages)
+    public function process(array $queueMessage)
     {
-        $this->dispatcher->dispatch($messages[0], $messages[1]);
+        $eventName = $queueMessage[0];
+        $output = $this->json->unserialize($queueMessage[1]);
+
+        $this->dispatcher->dispatch($eventName, $output);
     }
 }
