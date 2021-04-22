@@ -12,18 +12,6 @@
     <preference for="Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface"
                 type="Magento\Framework\Api\SearchResults" />
 
-    <preference for="Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface"
-                type="Aligent\Webhooks\Service\Webhook\NotifierFactory" />
-
-    <type name="Aligent\Webhooks\Service\Webhook\NotifierFactory">
-        <arguments>
-            <argument name="notifierClasses" xsi:type="array">
-                <item name="default" xsi:type="object">Aligent\Webhooks\Service\Webhook\HttpNotifier</item>
-                <item name="example" xsi:type="object">Aligent\Webhooks\Service\Webhook\ExampleNotifier</item>
-            </argument>
-        </arguments>
-    </type>
-
     <type name="Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">webhook_subscriber</argument>
@@ -35,15 +23,6 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="webhooks_webhooks_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection</item>
-            </argument>
-        </arguments>
-    </type>
-
-    <type name="Aligent\Webhooks\Service\Webhook\ModelEventHandler">
-        <arguments>
-            <argument name="events" xsi:type="array">
-                <item name="customer_created" xsi:type="string">customer_created</item>
-                <item name="sales_order_created" xsi:type="string">sales_order_created</item>
             </argument>
         </arguments>
     </type>

@@ -121,8 +121,14 @@ class WebhookRepository implements WebhookRepositoryInterface
             }
 
             $newStatus = $webhook->getStatus() ? '1' : '0';
+            $newMetadata = $webhook->getMetadata();
+
             $webhook = $this->get($webhook->getSubscriptionId());
             $webhook->setStatus($newStatus);
+
+            if ($newMetadata) {
+                $webhook->setMetadata($newMetadata);
+            }
         }
 
         $this->webhookResource->save($webhook);
