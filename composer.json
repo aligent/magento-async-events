@@ -1,6 +1,5 @@
 {
   "name": "aligent/webhooks",
-  "version": "1.1.0",
   "description": "An event-driven flexible webhooks module that allows you to dispatch anything to any application at the time it occurs.\n",
   "type": "magento2-module",
   "require": {
