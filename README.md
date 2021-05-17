@@ -110,17 +110,58 @@ In this model there are no fans; the message delivery is from one source to one 
 
 ![Event Fan Out](docs/event_fan_out.png "event fan out model")
 
+```php
+// Foo.php
+
+$queue->publish(WEBHOOK_QUEUE, ['hook_1']);
+
+$queue->publish(WEBHOOK_QUEUE, ['hook_2']);
+```
 
 #### Webhook Fan In
 
 ![Webhook Fan In](docs/webhook_fan_in.png "webhook fan in model")
 
+```php
+// Foo.php
+
+$queue->publish(WEBHOOK_QUEUE, ['hook_1']);
+```
+
+```php
+// Bar.php
+
+$queue->publish(WEBHOOK_QUEUE, ['hook_1']);
+```
+
+
 #### Webhook Fan Out
+
+In this model, multiple recipients are subscribed to a single webhook.
+
+```
+                     => ERP
+                    / 
+customer-order-hook  => Slack Channel
+                    \
+                     => Legacy ERP
+```
 
 #### Recipient Fan In
 
+In this model, a single recipient subscribes to several different webhooks.
+
+```
+customer-order-hook \
+                     \
+payment-failed-hook - ==> Slack Channel
+                     /
+something-wong-hook /
+```
+
 #### Advanced example
 
+Note that you are not limited to a fan in/out on one single abstraction. You can mix and match it anyhow you'd want.
 
 License
 -------
