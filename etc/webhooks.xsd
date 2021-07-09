@@ -37,11 +37,11 @@
     <xs:simpleType name="hookName">
         <xs:annotation>
             <xs:documentation>
-                Event name can contain only [a-zA-Z0-9_].
+                Event name can contain only [a-zA-Z0-9._-].
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:pattern value="[a-zA-Z0-9_-]+" />
+            <xs:pattern value="[a-zA-Z0-9._-]+" />
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>
