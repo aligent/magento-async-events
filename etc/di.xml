@@ -27,19 +27,26 @@
         </arguments>
     </type>
 
-    <virtualType name="WebhookReader" type="Magento\Framework\Config\Reader\Filesystem">
+    <type name="Aligent\Webhooks\Model\Config\Reader">
         <arguments>
+            <argument name="fileName" xsi:type="string">webhooks.xml</argument>
             <argument name="converter" xsi:type="object">Aligent\Webhooks\Model\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Aligent\Webhooks\Model\Config\SchemaLocator</argument>
-            <argument name="fileName" xsi:type="string">webhooks.xml</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="webhookDataStorage" type="Magento\Framework\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Aligent\Webhooks\Model\Config\Reader</argument>
+            <argument name="cacheId" xsi:type="string">webhook_config_cache</argument>
         </arguments>
     </virtualType>
 
-    <type name="Aligent\Webhooks\Model\Config\Data">
+    <type name="Aligent\Webhooks\Model\Config">
         <arguments>
-            <argument name="reader" xsi:type="object">WebhookReader</argument>
-            <argument name="cacheId" xsi:type="string">webhooks_cache_config</argument>
+            <argument name="dataStorage" xsi:type="object">webhookDataStorage</argument>
         </arguments>
     </type>
+
 
 </config>

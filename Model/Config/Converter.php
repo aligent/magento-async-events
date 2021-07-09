@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * Aligent Consulting
+ * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
+ */
+
+declare(strict_types=1);
+
 namespace Aligent\Webhooks\Model\Config;
 
-class Converter implements \Magento\Framework\Config\ConverterInterface
+use Magento\Framework\Config\ConverterInterface;
+
+class Converter implements ConverterInterface
 {
 
-    public function convert($source)
+    public function convert($source): array
     {
         $output = [];
         /** @var \DOMNodeList $webhooks */
@@ -36,7 +45,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
         return $output;
     }
 
-    public function __convertServiceConfig($observerConfig)
+    public function __convertServiceConfig($observerConfig): array
     {
         $output = [];
         /** Parse class configuration */

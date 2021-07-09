@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Aligent\Webhooks\Model;
 
-use Aligent\Webhooks\Model\Config\Data as WebhookConfig;
+use Aligent\Webhooks\Model\Config as WebhookConfig;
 use Aligent\Webhooks\Service\Webhook\EventDispatcher;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
