@@ -66,8 +66,6 @@ class HttpNotifier implements NotifierInterface
             )
         ];
 
-        // TODO: should we just get rid of the NotifierResult, and return a WebhookLog model instead? that way we don't
-        // need to unwrap this object into a WebhookLog model later, and then save that to the db.
         $notifierResult = new NotifierResult();
         $notifierResult->setSubscriptionId($webhook->getSubscriptionId());
 

@@ -3,6 +3,8 @@
 namespace Aligent\Webhooks\Service\Webhook;
 
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
+use Aligent\Webhooks\Helper\NotifierResult;
+use Aligent\Webhooks\Model\Webhook;
 use Aligent\Webhooks\Model\WebhookLogFactory;
 use Aligent\Webhooks\Model\WebhookLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -52,7 +54,6 @@ class EventDispatcher
     /**
      * @param string $eventName
      * @param mixed $output
-     * @throws AlreadyExistsException
      */
     public function dispatch(string $eventName, $output)
     {
@@ -63,7 +64,7 @@ class EventDispatcher
 
         $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
 
-        /** @var \Aligent\Webhooks\Model\Webhook $webhook */
+        /** @var Webhook $webhook */
         foreach ($webhooks as $webhook) {
             $handler = $webhook->getMetadata();
 
@@ -73,12 +74,25 @@ class EventDispatcher
                 'data' => $output
             ]);
 
-            $webhookLog = $this->webhookLogFactory->create();
-            $webhookLog->setSuccess($response->getSuccess());
-            $webhookLog->setSubscriptionId($response->getSubscriptionId());
-            $webhookLog->setResponseData($response->getResponseData());
-
-            $this->webhookLogRepository->save($webhookLog);
+            $this->log($response);
         }
     }
+
+    /**
+     * @param NotifierResult $response
+     */
+    private function log(NotifierResult $response): void
+    {
+        $webhookLog = $this->webhookLogFactory->create();
+        $webhookLog->setSuccess($response->getSuccess());
+        $webhookLog->setSubscriptionId($response->getSubscriptionId());
+        $webhookLog->setResponseData($response->getResponseData());
+
+        try {
+            $this->webhookLogRepository->save($webhookLog);
+        } catch (AlreadyExistsException $exception) {
+            // Do nothing because a log entry can never already exist
+        }
+    }
+
 }
