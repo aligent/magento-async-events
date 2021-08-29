@@ -7,6 +7,8 @@ use Aligent\Webhooks\Model\ResourceModel\Webhook as WebhookResource;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCollectionFactory;
 use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResultsFactory;
 
+use DateTime;
+use DateTimeInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -93,7 +95,7 @@ class WebhookRepository implements WebhookRepositoryInterface
 
         $webhooks = [];
 
-        /** @var \Aligent\Webhooks\Model\Webhook $webhookModel */
+        /** @var Webhook $webhookModel */
         foreach ($collection as $webhookModel) {
             $webhooks[] = $webhookModel;
         }
@@ -111,7 +113,7 @@ class WebhookRepository implements WebhookRepositoryInterface
     {
         if (!$webhook->getSubscriptionId()) {
             $webhook->setStatus(true);
-            $webhook->setSubscribedAt((new \DateTime())->format(\DateTime::ISO8601));
+            $webhook->setSubscribedAt((new DateTime())->format(DateTimeInterface::ATOM));
             $secretVerificationToken = $this->encryptor->encrypt($webhook->getVerificationToken());
             $webhook->setVerificationToken($secretVerificationToken);
 
@@ -120,7 +122,7 @@ class WebhookRepository implements WebhookRepositoryInterface
                 throw new LocalizedException(__("Status is required"));
             }
 
-            $newStatus = $webhook->getStatus() ? '1' : '0';
+            $newStatus = $webhook->getStatus();
             $newMetadata = $webhook->getMetadata();
 
             $webhook = $this->get($webhook->getSubscriptionId());
@@ -135,4 +137,5 @@ class WebhookRepository implements WebhookRepositoryInterface
 
         return $webhook;
     }
+
 }
