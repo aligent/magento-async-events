@@ -72,7 +72,7 @@ class RetryManager
         $this->bindingFactory = $bindingFactory;
     }
 
-    public function place(): void
+    public function init($data): void
     {
         $config = $this->configPool->get('amqp');
         $queueConfigItem = $this->queueConfigItemFactory->create();
@@ -102,6 +102,59 @@ class RetryManager
         ]);
 
         $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
-        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, ['lorem ipsum dolor', 'some_data']);
+        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, ['lorem ipsum dolor', $data]);
+    }
+
+    public function place(int $deathCount, int $subscriptionId, $data)
+    {
+        $config = $this->configPool->get('amqp');
+
+        $backoff = $this->calculateBackoff($deathCount);
+        $queueName = 'webhook.delay.' . $backoff;
+        $retryRoutingKey = 'webhook.retry.' . $backoff;
+
+        $queueConfigItem = $this->queueConfigItemFactory->create();
+        $queueConfigItem->setData([
+            'name' => $queueName,
+            'connection' => 'amqp',
+            'durable' => true,
+            'autoDelete' => true,
+            'arguments' => [
+                'x-dead-letter-exchange' => QueueMetadataInterface::FAILOVER_EXCHANGE,
+                'x-dead-letter-routing-key' => QueueMetadataInterface::DEAD_LETTER_ROUTING_KEY,
+                'x-message-ttl' => $backoff * 1000,
+                'x-expires' => $backoff * 1000 * 2
+            ]
+        ]);
+
+        $this->queueInstaller->install($config->getChannel(), $queueConfigItem);
+
+        $bindingConfig = $this->bindingFactory->create();
+        $bindingConfig->setData([
+            'id' => 'WebhookRetry' . $backoff . 'Binding',
+            'destinationType' => 'queue',
+            'destination' => $queueName,
+            'arguments' => [],
+            'topic' => $retryRoutingKey,
+            'disabled' => false
+        ]);
+
+        $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
+        $this->publisher->publish($retryRoutingKey, [$subscriptionId, $data]);
+    }
+
+    public function kill(int $subscriptionId, $data)
+    {
+        // TODO
+    }
+
+    /**
+     * Exponential back off. Change the exponent to determine cubical back off or quadratic back off
+     * @param int $deathCount
+     * @return int
+     */
+    private function calculateBackoff(int $deathCount): int
+    {
+        return min(60, pow($deathCount + 1, 2));
     }
 }

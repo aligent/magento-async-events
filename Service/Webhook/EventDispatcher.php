@@ -4,18 +4,11 @@ namespace Aligent\Webhooks\Service\Webhook;
 
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
-use Aligent\Webhooks\Helper\QueueMetadataInterface;
 use Aligent\Webhooks\Model\Webhook;
 use Aligent\Webhooks\Model\WebhookLogFactory;
 use Aligent\Webhooks\Model\WebhookLogRepository;
-use Magento\Framework\Amqp\ConfigPool;
-use Magento\Framework\Amqp\Topology\BindingInstallerInterface;
-use Magento\Framework\Amqp\Topology\QueueInstaller;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
-use Magento\Framework\MessageQueue\Publisher;
-use Magento\Framework\MessageQueue\Topology\Config\ExchangeConfigItem\BindingFactory;
-use Magento\Framework\MessageQueue\Topology\Config\QueueConfigItemFactory;
 
 class EventDispatcher
 {
@@ -99,7 +92,7 @@ class EventDispatcher
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                $this->retryManager->place();
+                $this->retryManager->init($output);
             }
         }
     }
