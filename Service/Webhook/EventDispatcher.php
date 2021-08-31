@@ -96,11 +96,11 @@ class EventDispatcher
                 'data' => $output
             ]);
 
+            $this->log($response);
+
             if (!$response->getSuccess()) {
                 $this->retryManager->place();
             }
-
-            $this->log($response);
         }
     }
 

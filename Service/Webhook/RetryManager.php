@@ -13,7 +13,6 @@ use Aligent\Webhooks\Helper\QueueMetadataInterface;
 use Magento\Framework\Amqp\ConfigPool;
 use Magento\Framework\Amqp\Topology\BindingInstallerInterface;
 use Magento\Framework\Amqp\Topology\QueueInstaller;
-use Magento\Framework\MessageQueue\Publisher as AmqpPublisher;
 use Magento\Framework\MessageQueue\Topology\Config\ExchangeConfigItem\BindingFactory;
 use Magento\Framework\MessageQueue\Topology\Config\QueueConfigItemFactory;
 
@@ -103,7 +102,6 @@ class RetryManager
         ]);
 
         $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
-
-        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, ['lorem ipsum dolor']);
+        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, ['lorem ipsum dolor', 'some_data']);
     }
 }
