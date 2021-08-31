@@ -4,11 +4,18 @@ namespace Aligent\Webhooks\Service\Webhook;
 
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
+use Aligent\Webhooks\Helper\QueueMetadataInterface;
 use Aligent\Webhooks\Model\Webhook;
 use Aligent\Webhooks\Model\WebhookLogFactory;
 use Aligent\Webhooks\Model\WebhookLogRepository;
+use Magento\Framework\Amqp\ConfigPool;
+use Magento\Framework\Amqp\Topology\BindingInstallerInterface;
+use Magento\Framework\Amqp\Topology\QueueInstaller;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\MessageQueue\Publisher;
+use Magento\Framework\MessageQueue\Topology\Config\ExchangeConfigItem\BindingFactory;
+use Magento\Framework\MessageQueue\Topology\Config\QueueConfigItemFactory;
 
 class EventDispatcher
 {
@@ -37,18 +44,33 @@ class EventDispatcher
      */
     private WebhookLogFactory $webhookLogFactory;
 
+    /**
+     * @var RetryManager
+     */
+    private RetryManager $retryManager;
+
+    /**
+     * @param WebhookRepositoryInterface $webhookRepository
+     * @param WebhookLogRepository $webhookLogRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param NotifierFactoryInterface $notifierFactory
+     * @param WebhookLogFactory $webhookLogFactory
+     * @param RetryManager $retryManager
+     */
     public function __construct(
         WebhookRepositoryInterface $webhookRepository,
         WebhookLogRepository $webhookLogRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         NotifierFactoryInterface $notifierFactory,
-        WebhookLogFactory $webhookLogFactory
+        WebhookLogFactory $webhookLogFactory,
+        RetryManager $retryManager
     ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->notifierFactory = $notifierFactory;
         $this->webhookLogRepository = $webhookLogRepository;
         $this->webhookLogFactory = $webhookLogFactory;
+        $this->retryManager = $retryManager;
     }
 
     /**
@@ -73,6 +95,10 @@ class EventDispatcher
             $response = $notifier->notify($webhook, [
                 'data' => $output
             ]);
+
+            if (!$response->getSuccess()) {
+                $this->retryManager->place();
+            }
 
             $this->log($response);
         }
