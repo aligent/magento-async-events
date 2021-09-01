@@ -16,4 +16,6 @@ interface QueueMetadataInterface
     const RETRY_INIT_ROUTING_KEY = 'webhook.retry.init';
 
     const DEAD_LETTER_ROUTING_KEY = 'webhook.retry';
+
+    const DEAD_LETTER_KILL_KEY = 'webhook.retry.kill';
 }

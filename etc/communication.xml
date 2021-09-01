@@ -7,4 +7,6 @@
     <topic name="webhook.retry" request="string[]" is_synchronous="false">
         <handler name="webhook.retry.handler" type="Aligent\Webhooks\Model\RetryHandler" method="process" />
     </topic>
+
+    <topic name="webhook.retry.kill" request="string[]" is_synchronous="false" />
 </config>

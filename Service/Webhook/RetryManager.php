@@ -114,7 +114,7 @@ class RetryManager
         $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [$subscriptionId, 1, $this->serializer->serialize($data)]);
     }
 
-    public function place(int $deathCount, int $subscriptionId, $data)
+    public function place(int $deathCount, int $subscriptionId, $data): void
     {
         $config = $this->configPool->get('amqp');
 
@@ -152,9 +152,9 @@ class RetryManager
         $this->publisher->publish($retryRoutingKey, [$subscriptionId, $deathCount, $this->serializer->serialize($data)]);
     }
 
-    public function kill(int $subscriptionId, $data)
+    public function kill(int $subscriptionId, $data): void
     {
-        var_dump('killing');
+        $this->publisher->publish(QueueMetadataInterface::DEAD_LETTER_KILL_KEY, [$subscriptionId, $this->serializer->serialize($data)]);
     }
 
     /**
