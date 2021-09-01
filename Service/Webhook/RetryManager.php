@@ -15,6 +15,7 @@ use Magento\Framework\Amqp\Topology\BindingInstallerInterface;
 use Magento\Framework\Amqp\Topology\QueueInstaller;
 use Magento\Framework\MessageQueue\Topology\Config\ExchangeConfigItem\BindingFactory;
 use Magento\Framework\MessageQueue\Topology\Config\QueueConfigItemFactory;
+use Magento\Framework\Serialize\SerializerInterface;
 
 class RetryManager
 {
@@ -49,12 +50,18 @@ class RetryManager
     private BindingFactory $bindingFactory;
 
     /**
+     * @var SerializerInterface
+     */
+    private SerializerInterface $serializer;
+
+    /**
      * @param ConfigPool $configPool
      * @param QueueInstaller $queueInstaller
      * @param BindingInstallerInterface $bindingInstaller
      * @param AmqpPublisher $publisher
      * @param QueueConfigItemFactory $queueConfigItemFactory
      * @param BindingFactory $bindingFactory
+     * @param SerializerInterface $serializer
      */
     public function __construct(
         ConfigPool $configPool,
@@ -62,7 +69,8 @@ class RetryManager
         BindingInstallerInterface $bindingInstaller,
         AmqpPublisher $publisher,
         QueueConfigItemFactory $queueConfigItemFactory,
-        BindingFactory $bindingFactory
+        BindingFactory $bindingFactory,
+        SerializerInterface $serializer
     ) {
         $this->queueInstaller = $queueInstaller;
         $this->bindingInstaller = $bindingInstaller;
@@ -70,9 +78,10 @@ class RetryManager
         $this->publisher = $publisher;
         $this->queueConfigItemFactory = $queueConfigItemFactory;
         $this->bindingFactory = $bindingFactory;
+        $this->serializer = $serializer;
     }
 
-    public function init($data): void
+    public function init(int $subscriptionId, $data): void
     {
         $config = $this->configPool->get('amqp');
         $queueConfigItem = $this->queueConfigItemFactory->create();
@@ -102,7 +111,7 @@ class RetryManager
         ]);
 
         $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
-        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, ['lorem ipsum dolor', $data]);
+        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [$subscriptionId, 1, $this->serializer->serialize($data)]);
     }
 
     public function place(int $deathCount, int $subscriptionId, $data)
@@ -140,12 +149,12 @@ class RetryManager
         ]);
 
         $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
-        $this->publisher->publish($retryRoutingKey, [$subscriptionId, $data]);
+        $this->publisher->publish($retryRoutingKey, [$subscriptionId, $deathCount, $this->serializer->serialize($data)]);
     }
 
     public function kill(int $subscriptionId, $data)
     {
-        // TODO
+        var_dump('killing');
     }
 
     /**
@@ -155,6 +164,6 @@ class RetryManager
      */
     private function calculateBackoff(int $deathCount): int
     {
-        return min(60, pow($deathCount + 1, 2));
+        return min(60, pow($deathCount, 2));
     }
 }

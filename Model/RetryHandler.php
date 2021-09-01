@@ -15,6 +15,7 @@ use Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface;
 use Aligent\Webhooks\Service\Webhook\RetryManager;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Serialize\SerializerInterface;
 
 class RetryHandler
 {
@@ -47,6 +48,7 @@ class RetryHandler
      * @var RetryManager
      */
     private RetryManager $retryManager;
+    private SerializerInterface $serializer;
 
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -54,7 +56,8 @@ class RetryHandler
         NotifierFactoryInterface $notifierFactory,
         WebhookLogFactory $webhookLogFactory,
         WebhookLogRepository $webhookLogRepository,
-        RetryManager $retryManager
+        RetryManager $retryManager,
+        SerializerInterface $serializer
     ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -62,6 +65,7 @@ class RetryHandler
         $this->webhookLogFactory = $webhookLogFactory;
         $this->webhookLogRepository = $webhookLogRepository;
         $this->retryManager = $retryManager;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -69,7 +73,12 @@ class RetryHandler
      */
     public function process(array $message)
     {
-        [$subscriptionId, $data] = $message;
+        [$subscriptionId, $deathCount, $data] = $message;
+
+        $subscriptionId = (int) $subscriptionId;
+        $deathCount = (int) $deathCount;
+
+        $data = $this->serializer->unserialize($data);
 
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
@@ -81,7 +90,6 @@ class RetryHandler
 
         $handler = $webhook->getMetadata();
         $notifier = $this->notifierFactory->create($handler);
-
         $response = $notifier->notify($webhook, [
             'data' => $data
         ]);
@@ -89,8 +97,8 @@ class RetryHandler
         $this->log($response);
 
         if (!$response->getSuccess()) {
-            if (rand(0, 10) < 5) {
-                $this->retryManager->place(2, $subscriptionId, $data);
+            if ($deathCount < 5) {
+                $this->retryManager->place($deathCount + 1, $subscriptionId, $data);
             } else {
                 $this->retryManager->kill($subscriptionId, $data);
             }

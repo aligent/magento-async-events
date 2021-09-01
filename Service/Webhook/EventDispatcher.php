@@ -92,7 +92,7 @@ class EventDispatcher
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                $this->retryManager->init($output);
+                $this->retryManager->init($webhook->getSubscriptionId(), $output);
             }
         }
     }
