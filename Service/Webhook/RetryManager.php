@@ -81,46 +81,48 @@ class RetryManager
         $this->serializer = $serializer;
     }
 
+    /**
+     * @param int $subscriptionId
+     * @param $data
+     */
     public function init(int $subscriptionId, $data): void
     {
-        $config = $this->configPool->get('amqp');
-        $queueConfigItem = $this->queueConfigItemFactory->create();
-        $queueConfigItem->setData([
-            'name' => QueueMetadataInterface::RETRY_INIT_QUEUE,
-            'connection' => 'amqp',
-            'durable' => true,
-            'autoDelete' => true,
-            'arguments' => [
-                'x-dead-letter-exchange' => QueueMetadataInterface::FAILOVER_EXCHANGE,
-                'x-dead-letter-routing-key' => QueueMetadataInterface::DEAD_LETTER_ROUTING_KEY,
-                'x-message-ttl' => 1 * 1000,
-                'x-expires' => 1 * 1000 * 2
-            ]
-        ]);
-
-        $this->queueInstaller->install($config->getChannel(), $queueConfigItem);
-
-        $bindingConfig = $this->bindingFactory->create();
-        $bindingConfig->setData([
-            'id' => 'WebhookRetryInitializerBinding',
-            'destinationType' => 'queue',
-            'destination' => QueueMetadataInterface::RETRY_INIT_QUEUE,
-            'arguments' => [],
-            'topic' => QueueMetadataInterface::RETRY_INIT_ROUTING_KEY,
-            'disabled' => false
-        ]);
-
-        $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
+        $this->assertDelayQueue(1, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY);
         $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [$subscriptionId, 1, $this->serializer->serialize($data)]);
     }
 
+    /**
+     * @param int $deathCount
+     * @param int $subscriptionId
+     * @param $data
+     */
     public function place(int $deathCount, int $subscriptionId, $data): void
     {
-        $config = $this->configPool->get('amqp');
-
         $backoff = $this->calculateBackoff($deathCount);
         $queueName = 'webhook.delay.' . $backoff;
         $retryRoutingKey = 'webhook.retry.' . $backoff;
+
+        $this->assertDelayQueue($backoff, $queueName, $retryRoutingKey);
+        $this->publisher->publish($retryRoutingKey, [$subscriptionId, $deathCount, $this->serializer->serialize($data)]);
+    }
+
+    /**
+     * @param int $subscriptionId
+     * @param $data
+     */
+    public function kill(int $subscriptionId, $data): void
+    {
+        $this->publisher->publish(QueueMetadataInterface::DEAD_LETTER_KILL_KEY, [$subscriptionId, $this->serializer->serialize($data)]);
+    }
+
+    /**
+     * @param int $backoff
+     * @param string $queueName
+     * @param string $retryRoutingKey
+     */
+    private function assertDelayQueue(int $backoff, string $queueName, string $retryRoutingKey): void
+    {
+        $config = $this->configPool->get('amqp');
 
         $queueConfigItem = $this->queueConfigItemFactory->create();
         $queueConfigItem->setData([
@@ -149,16 +151,11 @@ class RetryManager
         ]);
 
         $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
-        $this->publisher->publish($retryRoutingKey, [$subscriptionId, $deathCount, $this->serializer->serialize($data)]);
-    }
-
-    public function kill(int $subscriptionId, $data): void
-    {
-        $this->publisher->publish(QueueMetadataInterface::DEAD_LETTER_KILL_KEY, [$subscriptionId, $this->serializer->serialize($data)]);
     }
 
     /**
      * Exponential back off. Change the exponent to determine cubical back off or quadratic back off
+     *
      * @param int $deathCount
      * @return int
      */

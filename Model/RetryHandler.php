@@ -48,8 +48,21 @@ class RetryHandler
      * @var RetryManager
      */
     private RetryManager $retryManager;
+
+    /**
+     * @var SerializerInterface
+     */
     private SerializerInterface $serializer;
 
+    /**
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param WebhookRepositoryInterface $webhookRepository
+     * @param NotifierFactoryInterface $notifierFactory
+     * @param WebhookLogFactory $webhookLogFactory
+     * @param WebhookLogRepository $webhookLogRepository
+     * @param RetryManager $retryManager
+     * @param SerializerInterface $serializer
+     */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
         WebhookRepositoryInterface $webhookRepository,
