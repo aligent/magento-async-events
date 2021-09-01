@@ -5,11 +5,11 @@ namespace Aligent\Webhooks\Model;
 use Aligent\Webhooks\Model\Config as WebhookConfig;
 use Aligent\Webhooks\Service\Webhook\EventDispatcher;
 use Exception;
-use Magento\Framework\Api\AbstractExtensibleObject;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Webapi\ServiceInputProcessor;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
+use Psr\Log\LoggerInterface;
 
 class WebhookTriggerHandler
 {
@@ -44,12 +44,18 @@ class WebhookTriggerHandler
     private ServiceInputProcessor $inputProcessor;
 
     /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
      * @param EventDispatcher $dispatcher
      * @param ServiceOutputProcessor $outputProcessor
      * @param ObjectManagerInterface $objectManager
      * @param Config $webhookConfig
      * @param ServiceInputProcessor $inputProcessor
      * @param Json $json
+     * @param LoggerInterface $logger
      */
     public function __construct(
         EventDispatcher $dispatcher,
@@ -57,7 +63,8 @@ class WebhookTriggerHandler
         ObjectManagerInterface $objectManager,
         WebhookConfig $webhookConfig,
         ServiceInputProcessor $inputProcessor,
-        Json $json
+        Json $json,
+        LoggerInterface $logger
     ) {
         $this->dispatcher = $dispatcher;
         $this->json = $json;
@@ -65,6 +72,7 @@ class WebhookTriggerHandler
         $this->webhookConfig = $webhookConfig;
         $this->objectManager = $objectManager;
         $this->inputProcessor = $inputProcessor;
+        $this->logger = $logger;
     }
 
     /**
@@ -74,7 +82,7 @@ class WebhookTriggerHandler
     {
         try {
             $eventName = $queueMessage[0];
-            $output = $this->json->unserialize($queueMessage[1]);
+            $output = $this->json->unserialize($queueMessage[1] ?? []);
 
             $configData = $this->webhookConfig->get($eventName);
             $serviceClassName = $configData['class'];
@@ -82,9 +90,6 @@ class WebhookTriggerHandler
             $service = $this->objectManager->create($serviceClassName);
             $inputParams = $this->inputProcessor->process($serviceClassName, $serviceMethodName, $output);
 
-            /**
-             * @var AbstractExtensibleObject $outputData
-             */
             $outputData = call_user_func_array([$service, $serviceMethodName], $inputParams);
 
             $outputData = $this->outputProcessor->process(
@@ -95,7 +100,15 @@ class WebhookTriggerHandler
 
             $this->dispatcher->dispatch($eventName, $outputData);
         } catch (Exception $exception) {
-            // TODO
+            $this->logger->critical(
+                __('Error when processing %hook webhook', [
+                    'hook' => $eventName
+                ]),
+                [
+                    'message' => $exception->getMessage(),
+                    'trace' => $exception->getTraceAsString()
+                ]
+            );
         }
     }
 }

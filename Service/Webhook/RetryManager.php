@@ -154,7 +154,7 @@ class RetryManager
     }
 
     /**
-     * Exponential back off. Change the exponent to determine cubical back off or quadratic back off
+     * Exponential back off. Change the exponent to determine cubical back off or quartic back off
      *
      * @param int $deathCount
      * @return int
