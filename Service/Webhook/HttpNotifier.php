@@ -5,7 +5,7 @@ namespace Aligent\Webhooks\Service\Webhook;
 use Aligent\Webhooks\Api\Data\WebhookInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
@@ -90,14 +90,29 @@ class HttpNotifier implements NotifierInterface
                     $response->getBody()->getContents()
                 )
             );
-        } catch (GuzzleException $exception) {
+        } catch (RequestException $exception) {
+
+            /**
+             * Catch a RequestException so we cover even the network layer exceptions which might sometimes
+             * not have a response.
+             */
             $notifierResult->setSuccess(false);
 
-            $notifierResult->setResponseData(
-                $this->json->serialize(
+            if ($exception->hasResponse()) {
+                $response = $exception->getResponse();
+                $responseContent = $response->getBody()->getContents();
+                $exceptionMessage = !empty($responseContent) ? $responseContent : $response->getReasonPhrase();
+
+                $notifierResult->setResponseData(
+                    $this->json->serialize(
+                        $exceptionMessage
+                    )
+                );
+            } else {
+                $notifierResult->setResponseData(
                     $exception->getMessage()
-                )
-            );
+                );
+            }
         }
 
         return $notifierResult;
