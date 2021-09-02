@@ -19,6 +19,10 @@ use Magento\Framework\Serialize\SerializerInterface;
 
 class RetryManager
 {
+    const DEATH_COUNT = 'death_count';
+    const SUBSCRIPTION_ID = 'subscription_id';
+    const CONTENT = 'content';
+
     /**
      * @var ConfigPool
      */
@@ -88,7 +92,11 @@ class RetryManager
     public function init(int $subscriptionId, $data): void
     {
         $this->assertDelayQueue(1, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY);
-        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [$subscriptionId, 1, $this->serializer->serialize($data)]);
+        $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [
+            self::SUBSCRIPTION_ID => $subscriptionId,
+            self::DEATH_COUNT => 1,
+            self::CONTENT => $this->serializer->serialize($data)
+        ]);
     }
 
     /**
@@ -103,7 +111,11 @@ class RetryManager
         $retryRoutingKey = 'webhook.retry.' . $backoff;
 
         $this->assertDelayQueue($backoff, $queueName, $retryRoutingKey);
-        $this->publisher->publish($retryRoutingKey, [$subscriptionId, $deathCount, $this->serializer->serialize($data)]);
+        $this->publisher->publish($retryRoutingKey, [
+            self::SUBSCRIPTION_ID => $subscriptionId,
+            self::DEATH_COUNT =>  $deathCount,
+            self::CONTENT => $this->serializer->serialize($data)
+        ]);
     }
 
     /**
@@ -112,7 +124,11 @@ class RetryManager
      */
     public function kill(int $subscriptionId, $data): void
     {
-        $this->publisher->publish(QueueMetadataInterface::DEAD_LETTER_KILL_KEY, [$subscriptionId, $this->serializer->serialize($data)]);
+        $this->publisher->publish(QueueMetadataInterface::DEAD_LETTER_KILL_KEY, [
+            self::SUBSCRIPTION_ID => $subscriptionId,
+            self::DEATH_COUNT => 0,
+            self::CONTENT => $this->serializer->serialize($data)
+        ]);
     }
 
     /**

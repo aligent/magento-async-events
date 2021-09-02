@@ -75,7 +75,7 @@ class AmqpPublisher implements PublisherInterface
                     'application_headers' => new AMQPTable([
                         // Since we have to conform to the interface, there is no nice way of passing this information
                         // when calling this method unless we allow temporal coupling or etc.
-                        'x-retry-count' => $data[1]
+                        'x-retry-count' => $data[RetryManager::DEATH_COUNT]
                     ])
                 ]
             ]
