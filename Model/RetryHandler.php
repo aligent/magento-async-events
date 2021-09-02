@@ -19,6 +19,8 @@ use Magento\Framework\Serialize\SerializerInterface;
 
 class RetryHandler
 {
+    const RETRY_LIMIT = 5;
+
     /**
      * @var SearchCriteriaBuilder
      */
@@ -98,22 +100,23 @@ class RetryHandler
             ->addFilter('subscription_id', $subscriptionId)
             ->create();
 
-        /** @var Webhook $webhook  */
-        [$webhook] = $this->webhookRepository->getList($searchCriteria)->getItems();
+        $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
 
-        $handler = $webhook->getMetadata();
-        $notifier = $this->notifierFactory->create($handler);
-        $response = $notifier->notify($webhook, [
-            'data' => $data
-        ]);
+        foreach ($webhooks as $webhook) {
+            $handler = $webhook->getMetadata();
+            $notifier = $this->notifierFactory->create($handler);
+            $response = $notifier->notify($webhook, [
+                'data' => $data
+            ]);
 
-        $this->log($response);
+            $this->log($response);
 
-        if (!$response->getSuccess()) {
-            if ($deathCount < 5) {
-                $this->retryManager->place($deathCount + 1, $subscriptionId, $data);
-            } else {
-                $this->retryManager->kill($subscriptionId, $data);
+            if (!$response->getSuccess()) {
+                if ($deathCount < self::RETRY_LIMIT) {
+                    $this->retryManager->place($deathCount + 1, $subscriptionId, $data);
+                } else {
+                    $this->retryManager->kill($subscriptionId, $data);
+                }
             }
         }
     }
