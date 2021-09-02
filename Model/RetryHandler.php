@@ -88,7 +88,9 @@ class RetryHandler
      */
     public function process(array $message)
     {
-        [$subscriptionId, $deathCount, $data] = $message;
+        $subscriptionId = $message[RetryManager::SUBSCRIPTION_ID];
+        $deathCount = $message[RetryManager::DEATH_COUNT];
+        $data = $message[RetryManager::CONTENT];
 
         $subscriptionId = (int) $subscriptionId;
         $deathCount = (int) $deathCount;

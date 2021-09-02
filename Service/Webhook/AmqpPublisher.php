@@ -63,10 +63,10 @@ class AmqpPublisher implements PublisherInterface
      */
     public function publish($topicName, $data)
     {
-        $data = $this->json->serialize($data);
+        $body = $this->json->serialize($data);
         $envelope = $this->envelopeFactory->create(
             [
-                'body' => $data,
+                'body' => $body,
                 'properties' => [
                     'delivery_mode' => 2,
                     // md5() here is not for cryptographic use.
