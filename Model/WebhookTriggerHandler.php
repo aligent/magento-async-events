@@ -82,7 +82,7 @@ class WebhookTriggerHandler
     {
         try {
             $eventName = $queueMessage[0];
-            $output = $this->json->unserialize($queueMessage[1] ?? []);
+            $output = $this->json->unserialize($queueMessage[1]);
 
             $configData = $this->webhookConfig->get($eventName);
             $serviceClassName = $configData['class'];
