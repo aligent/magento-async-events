@@ -74,7 +74,9 @@ class HttpNotifier implements NotifierInterface
                 $webhook->getRecipientUrl(),
                 [
                     'headers' => $headers,
-                    'json' => $body
+                    'json' => $body,
+                    'timeout' => 15,
+                    'connect_timeout' => 5
                 ]
             );
 
