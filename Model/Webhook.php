@@ -38,7 +38,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
      */
     public function getEventName(): string
     {
-        return $this->getData('event_name');
+        return (string) $this->getData('event_name');
     }
 
     /**
@@ -54,7 +54,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
      */
     public function getRecipientUrl(): string
     {
-        return $this->getData('recipient_url');
+        return (string) $this->getData('recipient_url');
     }
 
     /**
@@ -70,7 +70,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
      */
     public function getVerificationToken(): string
     {
-        return $this->getData('verification_token');
+        return (string) $this->getData('verification_token');
     }
 
     /**
@@ -86,7 +86,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
      */
     public function getStatus(): bool
     {
-        return $this->getData('status');
+        return (bool) $this->getData('status');
     }
 
     /**
@@ -102,7 +102,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
      */
     public function getSubscribedAt(): string
     {
-        return $this->getData('subscribed_at');
+        return (string) $this->getData('subscribed_at');
     }
 
     /**
@@ -118,7 +118,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
      */
     public function getMetadata(): string
     {
-        return $this->getData('metadata');
+        return (string) $this->getData('metadata');
     }
 
     /**

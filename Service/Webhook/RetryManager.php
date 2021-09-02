@@ -116,6 +116,11 @@ class RetryManager
     }
 
     /**
+     * Asserts the delay queue and binds it to the failover exchange.
+     *
+     * In RabbitMQ creating a queue is idempotent.
+     * https://www.rabbitmq.com/tutorials/tutorial-one-php.html
+     *
      * @param int $backoff
      * @param string $queueName
      * @param string $retryRoutingKey
