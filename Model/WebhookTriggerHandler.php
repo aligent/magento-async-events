@@ -81,6 +81,9 @@ class WebhookTriggerHandler
     public function process(array $queueMessage)
     {
         try {
+            // In every publish the data is an array of strings, the first string is the hook name itself, the second
+            // name is a serialised string of parameters that the service method accepts.
+            // In a future major version this will change to a schema type e.g: WebhookMessageInterface
             $eventName = $queueMessage[0];
             $output = $this->json->unserialize($queueMessage[1]);
 
