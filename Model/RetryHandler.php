@@ -1,21 +1,25 @@
 <?php
 
-namespace Aligent\Webhooks\Service\Webhook;
+/**
+ * Aligent Consulting
+ * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
+ */
+
+declare(strict_types=1);
+
+namespace Aligent\Webhooks\Model;
 
 use Aligent\Webhooks\Api\WebhookRepositoryInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
-use Aligent\Webhooks\Model\Webhook;
-use Aligent\Webhooks\Model\WebhookLogFactory;
-use Aligent\Webhooks\Model\WebhookLogRepository;
+use Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface;
+use Aligent\Webhooks\Service\Webhook\RetryManager;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Serialize\SerializerInterface;
 
-class EventDispatcher
+class RetryHandler
 {
-    /**
-     * @var WebhookRepositoryInterface
-     */
-    private WebhookRepositoryInterface $webhookRepository;
+    const RETRY_LIMIT = 5;
 
     /**
      * @var SearchCriteriaBuilder
@@ -23,14 +27,14 @@ class EventDispatcher
     private SearchCriteriaBuilder $searchCriteriaBuilder;
 
     /**
+     * @var WebhookRepositoryInterface
+     */
+    private WebhookRepositoryInterface $webhookRepository;
+
+    /**
      * @var NotifierFactoryInterface
      */
     private NotifierFactoryInterface $notifierFactory;
-
-    /**
-     * @var WebhookLogRepository
-     */
-    private WebhookLogRepository $webhookLogRepository;
 
     /**
      * @var WebhookLogFactory
@@ -38,61 +42,83 @@ class EventDispatcher
     private WebhookLogFactory $webhookLogFactory;
 
     /**
+     * @var WebhookLogRepository
+     */
+    private WebhookLogRepository $webhookLogRepository;
+
+    /**
      * @var RetryManager
      */
     private RetryManager $retryManager;
 
     /**
-     * @param WebhookRepositoryInterface $webhookRepository
-     * @param WebhookLogRepository $webhookLogRepository
+     * @var SerializerInterface
+     */
+    private SerializerInterface $serializer;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param WebhookRepositoryInterface $webhookRepository
      * @param NotifierFactoryInterface $notifierFactory
      * @param WebhookLogFactory $webhookLogFactory
+     * @param WebhookLogRepository $webhookLogRepository
      * @param RetryManager $retryManager
+     * @param SerializerInterface $serializer
      */
     public function __construct(
-        WebhookRepositoryInterface $webhookRepository,
-        WebhookLogRepository $webhookLogRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
+        WebhookRepositoryInterface $webhookRepository,
         NotifierFactoryInterface $notifierFactory,
         WebhookLogFactory $webhookLogFactory,
-        RetryManager $retryManager
+        WebhookLogRepository $webhookLogRepository,
+        RetryManager $retryManager,
+        SerializerInterface $serializer
     ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->notifierFactory = $notifierFactory;
-        $this->webhookLogRepository = $webhookLogRepository;
         $this->webhookLogFactory = $webhookLogFactory;
+        $this->webhookLogRepository = $webhookLogRepository;
         $this->retryManager = $retryManager;
+        $this->serializer = $serializer;
     }
 
     /**
-     * @param string $eventName
-     * @param mixed $output
+     * @param array $message
      */
-    public function dispatch(string $eventName, $output)
+    public function process(array $message)
     {
+        $subscriptionId = $message[RetryManager::SUBSCRIPTION_ID];
+        $deathCount = $message[RetryManager::DEATH_COUNT];
+        $data = $message[RetryManager::CONTENT];
+
+        $subscriptionId = (int) $subscriptionId;
+        $deathCount = (int) $deathCount;
+
+        $data = $this->serializer->unserialize($data);
+
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
-            ->addFilter('event_name', $eventName)
+            ->addFilter('subscription_id', $subscriptionId)
             ->create();
 
         $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
 
-        /** @var Webhook $webhook */
         foreach ($webhooks as $webhook) {
             $handler = $webhook->getMetadata();
-
             $notifier = $this->notifierFactory->create($handler);
-
             $response = $notifier->notify($webhook, [
-                'data' => $output
+                'data' => $data
             ]);
 
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                $this->retryManager->init($webhook->getSubscriptionId(), $output);
+                if ($deathCount < self::RETRY_LIMIT) {
+                    $this->retryManager->place($deathCount + 1, $subscriptionId, $data);
+                } else {
+                    $this->retryManager->kill($subscriptionId, $data);
+                }
             }
         }
     }
@@ -113,5 +139,4 @@ class EventDispatcher
             // Do nothing because a log entry can never already exist
         }
     }
-
 }

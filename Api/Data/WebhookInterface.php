@@ -5,79 +5,79 @@ namespace Aligent\Webhooks\Api\Data;
 interface WebhookInterface
 {
     /**
-     * @return int|null
+     * @return int
      */
-    public function getSubscriptionId();
+    public function getSubscriptionId(): int;
 
     /**
-     * @param int|null $id
-     * @return $this
+     * @param int $id
+     * @return void
      */
-    public function setSubscriptionId($id);
+    public function setSubscriptionId(int $id): void;
 
     /**
      * @return string
      */
-    public function getEventName();
+    public function getEventName(): string;
 
     /**
      * @param string $eventName
-     * @return $this
+     * @return void
      */
-    public function setEventName($eventName);
+    public function setEventName(string $eventName): void;
 
     /**
      * @return string
      */
-    public function getRecipientUrl();
+    public function getRecipientUrl(): string;
 
     /**
      * @param string $recipientURL
-     * @return $this
+     * @return void
      */
-    public function setRecipientUrl($recipientURL);
+    public function setRecipientUrl(string $recipientURL): void;
 
     /**
      * @return string
      */
-    public function getVerificationToken();
+    public function getVerificationToken(): string;
 
     /**
      * @param string $verificationToken
-     * @return WebhookInterface
+     * @return void
      */
-    public function setVerificationToken($verificationToken);
+    public function setVerificationToken(string $verificationToken): void;
 
     /**
      * @return bool
      */
-    public function getStatus();
+    public function getStatus(): bool;
 
     /**
      * @param bool $status
-     * @return $this
+     * @return void
      */
-    public function setStatus($status);
+    public function setStatus(bool $status): void;
 
     /**
      * @return string
      */
-    public function getSubscribedAt();
+    public function getSubscribedAt(): string;
 
     /**
      * @param string $subscribedAt
-     * @return \Aligent\Webhooks\Api\Data\WebhookInterface
+     * @return void
      */
-    public function setSubscribedAt($subscribedAt);
+    public function setSubscribedAt(string $subscribedAt): void;
 
     /**
      * @return string
      */
-    public function getMetadata();
+    public function getMetadata(): string;
 
     /**
      * @param string $metadata
-     * @return $this
+     * @return void
      */
-    public function setMetadata($metadata);
+    public function setMetadata(string $metadata): void;
 }

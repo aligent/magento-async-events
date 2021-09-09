@@ -4,32 +4,67 @@ namespace Aligent\Webhooks\Model;
 
 use Aligent\Webhooks\Model\Config as WebhookConfig;
 use Aligent\Webhooks\Service\Webhook\EventDispatcher;
+use Exception;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Webapi\ServiceInputProcessor;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
+use Psr\Log\LoggerInterface;
 
 class WebhookTriggerHandler
 {
+    /**
+     * @var EventDispatcher
+     */
     private EventDispatcher $dispatcher;
 
+    /**
+     * @var Json
+     */
     private Json $json;
 
+    /**
+     * @var ServiceOutputProcessor
+     */
     private ServiceOutputProcessor $outputProcessor;
 
+    /**
+     * @var Config
+     */
     private WebhookConfig $webhookConfig;
 
+    /**
+     * @var ObjectManagerInterface
+     */
     private ObjectManagerInterface $objectManager;
 
+    /**
+     * @var ServiceInputProcessor
+     */
     private ServiceInputProcessor $inputProcessor;
 
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
+     * @param EventDispatcher $dispatcher
+     * @param ServiceOutputProcessor $outputProcessor
+     * @param ObjectManagerInterface $objectManager
+     * @param Config $webhookConfig
+     * @param ServiceInputProcessor $inputProcessor
+     * @param Json $json
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         EventDispatcher $dispatcher,
         ServiceOutputProcessor $outputProcessor,
         ObjectManagerInterface $objectManager,
         WebhookConfig $webhookConfig,
         ServiceInputProcessor $inputProcessor,
-        Json $json
+        Json $json,
+        LoggerInterface $logger
     ) {
         $this->dispatcher = $dispatcher;
         $this->json = $json;
@@ -37,6 +72,7 @@ class WebhookTriggerHandler
         $this->webhookConfig = $webhookConfig;
         $this->objectManager = $objectManager;
         $this->inputProcessor = $inputProcessor;
+        $this->logger = $logger;
     }
 
     /**
@@ -44,27 +80,38 @@ class WebhookTriggerHandler
      */
     public function process(array $queueMessage)
     {
-        // todo: rename variables and refactor
-        $eventName = $queueMessage[0];
-        $output = $this->json->unserialize($queueMessage[1]);
+        try {
+            // In every publish the data is an array of strings, the first string is the hook name itself, the second
+            // name is a serialised string of parameters that the service method accepts.
+            // In a future major version this will change to a schema type e.g: WebhookMessageInterface
+            $eventName = $queueMessage[0];
+            $output = $this->json->unserialize($queueMessage[1]);
 
-        $configData = $this->webhookConfig->get($eventName);
-        $serviceClassName = $configData['class'];
-        $serviceMethodName = $configData['method'];
-        $service = $this->objectManager->create($serviceClassName);
-        $inputParams = $this->inputProcessor->process($serviceClassName, $serviceMethodName, $output);
+            $configData = $this->webhookConfig->get($eventName);
+            $serviceClassName = $configData['class'];
+            $serviceMethodName = $configData['method'];
+            $service = $this->objectManager->create($serviceClassName);
+            $inputParams = $this->inputProcessor->process($serviceClassName, $serviceMethodName, $output);
 
-        /**
-         * @var \Magento\Framework\Api\AbstractExtensibleObject $outputData
-         */
-        $outputData = call_user_func_array([$service, $serviceMethodName], $inputParams);
+            $outputData = call_user_func_array([$service, $serviceMethodName], $inputParams);
 
-        $outputData = $this->outputProcessor->process(
-            $outputData,
-            $serviceClassName,
-            $serviceMethodName
-        );
+            $outputData = $this->outputProcessor->process(
+                $outputData,
+                $serviceClassName,
+                $serviceMethodName
+            );
 
-        $this->dispatcher->dispatch($eventName, $outputData);
+            $this->dispatcher->dispatch($eventName, $outputData);
+        } catch (Exception $exception) {
+            $this->logger->critical(
+                __('Error when processing %hook webhook', [
+                    'hook' => $eventName
+                ]),
+                [
+                    'message' => $exception->getMessage(),
+                    'trace' => $exception->getTraceAsString()
+                ]
+            );
+        }
     }
 }

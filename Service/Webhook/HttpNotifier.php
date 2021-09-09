@@ -5,7 +5,7 @@ namespace Aligent\Webhooks\Service\Webhook;
 use Aligent\Webhooks\Api\Data\WebhookInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
@@ -59,15 +59,13 @@ class HttpNotifier implements NotifierInterface
         // Sign the payload that the client can verify. Which means a secret has to be provided when subscribing to a
         // webhook
         $headers = [
-            self::HASHING_ALGORITHM => hash_hmac(
+            'x-magento-signature' => hash_hmac(
                 self::HASHING_ALGORITHM,
                 $this->json->serialize($body),
                 $this->encryptor->decrypt($webhook->getVerificationToken())
             )
         ];
 
-        // TODO: should we just get rid of the NotifierResult, and return a WebhookLog model instead? that way we don't
-        // need to unwrap this object into a WebhookLog model later, and then save that to the db.
         $notifierResult = new NotifierResult();
         $notifierResult->setSubscriptionId($webhook->getSubscriptionId());
 
@@ -76,7 +74,9 @@ class HttpNotifier implements NotifierInterface
                 $webhook->getRecipientUrl(),
                 [
                     'headers' => $headers,
-                    'json' => $body
+                    'json' => $body,
+                    'timeout' => 15,
+                    'connect_timeout' => 5
                 ]
             );
 
@@ -90,14 +90,29 @@ class HttpNotifier implements NotifierInterface
                     $response->getBody()->getContents()
                 )
             );
-        } catch (GuzzleException $exception) {
+        } catch (RequestException $exception) {
+
+            /**
+             * Catch a RequestException so we cover even the network layer exceptions which might sometimes
+             * not have a response.
+             */
             $notifierResult->setSuccess(false);
 
-            $notifierResult->setResponseData(
-                $this->json->serialize(
+            if ($exception->hasResponse()) {
+                $response = $exception->getResponse();
+                $responseContent = $response->getBody()->getContents();
+                $exceptionMessage = !empty($responseContent) ? $responseContent : $response->getReasonPhrase();
+
+                $notifierResult->setResponseData(
+                    $this->json->serialize(
+                        $exceptionMessage
+                    )
+                );
+            } else {
+                $notifierResult->setResponseData(
                     $exception->getMessage()
-                )
-            );
+                );
+            }
         }
 
         return $notifierResult;

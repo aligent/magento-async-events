@@ -20,119 +20,112 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface
     /**
      * {@inheritDoc}
      */
-    public function getSubscriptionId()
+    public function getSubscriptionId(): int
     {
-        return $this->getData('subscription_id');
+        return (int) $this->getData('subscription_id');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getEventName()
+    public function setSubscriptionId(int $id): void
     {
-        return $this->getData('event_name');
+        $this->setData('subscription_id', $id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setEventName($eventName)
+    public function getEventName(): string
+    {
+        return (string) $this->getData('event_name');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEventName(string $eventName): void
     {
         $this->setData('event_name', $eventName);
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getRecipientUrl()
+    public function getRecipientUrl(): string
     {
-        return $this->getData('recipient_url');
+        return (string) $this->getData('recipient_url');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setRecipientUrl($recipientURL)
+    public function setRecipientUrl(string $recipientURL): void
     {
         $this->setData('recipient_url', $recipientURL);
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getVerificationToken()
+    public function getVerificationToken(): string
     {
-        return $this->getData('verification_token');
+        return (string) $this->getData('verification_token');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setVerificationToken($verificationToken)
+    public function setVerificationToken(string $verificationToken): void
     {
         $this->setData('verification_token', $verificationToken);
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getStatus()
+    public function getStatus(): bool
     {
-        return $this->getData('status');
+        return (bool) $this->getData('status');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setStatus($status)
+    public function setStatus(bool $status): void
     {
         $this->setData('status', $status);
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getSubscribedAt()
+    public function getSubscribedAt(): string
     {
-        return $this->getData('subscribed_at');
+        return (string) $this->getData('subscribed_at');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setSubscribedAt($subscribedAt)
+    public function setSubscribedAt(string $subscribedAt): void
     {
         $this->setData('subscribed_at', $subscribedAt);
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setSubscriptionId($id)
+    public function getMetadata(): string
     {
-        return $this->setData('subscription_id', $id);
+        return (string) $this->getData('metadata');
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
-    public function getMetadata()
-    {
-        return $this->getData('metadata');
-    }
-
-    /**
-     * @param string $metadata
-     * @return $this
-     */
-    public function setMetadata($metadata)
+    public function setMetadata(string $metadata): void
     {
         $this->setData('metadata', $metadata);
-        return $this;
     }
 }

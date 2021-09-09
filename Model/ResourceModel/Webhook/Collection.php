@@ -2,7 +2,11 @@
 
 namespace Aligent\Webhooks\Model\ResourceModel\Webhook;
 
-class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+use Aligent\Webhooks\Model\ResourceModel\Webhook as WebhookResource;
+use Aligent\Webhooks\Model\Webhook;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+
+class Collection extends AbstractCollection
 {
 
     /**
@@ -13,8 +17,8 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     protected function _construct()
     {
         $this->_init(
-            \Aligent\Webhooks\Model\Webhook::class,
-            \Aligent\Webhooks\Model\ResourceModel\Webhook::class
+            Webhook::class,
+            WebhookResource::class
         );
     }
 }
