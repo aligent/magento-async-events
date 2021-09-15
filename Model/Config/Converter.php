@@ -26,26 +26,17 @@ class Converter implements ConverterInterface
             $hookName = $webhookConfig->attributes->getNamedItem('hook_name')->nodeValue;
 
             $webhookService = [];
+            $webhookResources = [];
 
             /** @var DOMNode $serviceConfig */
-            foreach ($webhookConfig->childNodes as $serviceConfig) {
-                if ($serviceConfig->nodeName != 'service' || $serviceConfig->nodeType != XML_ELEMENT_NODE) {
-                    continue;
+            foreach ($webhookConfig->childNodes as $child) {
+                if ($child->nodeName === 'service') {
+                    $webhookService = $this->convertServiceConfig($child);
+                } elseif ($child->nodeName === 'resources') {
+                    $webhookResources = $this->convertResourcesConfig($child);
                 }
-
-                $webhookServiceMethodNode = $serviceConfig->attributes->getNamedItem('class');
-                if (!$webhookServiceMethodNode) {
-                    throw new InvalidArgumentException('Attribute class is missing');
-                }
-
-                $webhookServiceMethodNode = $serviceConfig->attributes->getNamedItem('method');
-                if (!$webhookServiceMethodNode) {
-                    throw new InvalidArgumentException('Attribute method is missing');
-                }
-
-                $webhookService = $this->convertServiceConfig($serviceConfig);
             }
-            $output[mb_strtolower($hookName)] = $webhookService;
+            $output[mb_strtolower($hookName)] = array_merge($webhookService, $webhookResources);
         }
 
         return $output;
@@ -54,18 +45,50 @@ class Converter implements ConverterInterface
     private function convertServiceConfig($observerConfig): array
     {
         $output = [];
-        /** Parse class configuration */
+
         $classAttribute = $observerConfig->attributes->getNamedItem('class');
-        if ($classAttribute) {
-            $output['class'] = $classAttribute->nodeValue;
+        if (!$classAttribute || !$classAttribute->nodeValue) {
+            throw new InvalidArgumentException('Attribute class is missing');
         }
 
-        /** Parse instance method configuration */
         $methodAttribute = $observerConfig->attributes->getNamedItem('method');
-        if ($methodAttribute) {
-            $output['method'] = $methodAttribute->nodeValue;
+        if (!$methodAttribute || !$methodAttribute->nodeValue) {
+            throw new InvalidArgumentException('Attribute method is missing');
         }
+
+        // check that the specified class/method exists and is public
+        try {
+            $serviceClass = new \ReflectionClass($classAttribute->nodeValue);
+        } catch (\ReflectionException $e) {
+            throw new InvalidArgumentException(__('Class %1 does not exist', $classAttribute->nodeValue));
+        }
+        try {
+            $serviceMethod = $serviceClass->getMethod($methodAttribute->nodeValue);
+        } catch (\ReflectionException $e) {
+            throw new InvalidArgumentException(
+                __('Method %1 does not exist is class %2', $methodAttribute->nodeValue, $classAttribute->nodeValue)
+            );
+        }
+        if (!$serviceMethod->isPublic()) {
+            throw new InvalidArgumentException(
+                __('Method %1 in class %2 is not public', $methodAttribute->nodeValue, $classAttribute->nodeValue)
+            );
+        }
+
+        $output['class'] = $classAttribute->nodeValue;
+        $output['method'] = $methodAttribute->nodeValue;
 
         return $output;
+    }
+
+    private function convertResourcesConfig($resourcesConfig): array
+    {
+        $resources = [];
+
+        foreach ($resourcesConfig->childNodes as $resourceNode) {
+            $resources[] = $resourceNode->nodeValue;
+        }
+
+        return ['resources' => $resources];
     }
 }

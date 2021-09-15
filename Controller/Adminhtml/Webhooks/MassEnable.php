@@ -63,7 +63,7 @@ class MassEnable extends Action implements HttpPostActionInterface
             if (!$webhook->getStatus()) {
                 try {
                     $webhook->setStatus(true);
-                    $this->webhookRepository->save($webhook);
+                    $this->webhookRepository->save($webhook, false);
                     $alreadyEnabled--;
                     $enabled++;
                 } catch (\Exception $e) {

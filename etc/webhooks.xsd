@@ -19,7 +19,8 @@
 
     <xs:complexType name="webhookDeclaration">
         <xs:sequence>
-            <xs:element name="service" type="serviceDeclaration" minOccurs="1" maxOccurs="1" />
+            <xs:element name="service" type="serviceDeclaration" />
+            <xs:element name="resources" type="resourceDeclaration" minOccurs="0" />
         </xs:sequence>
         <xs:attribute name="hook_name" type="hookName" use="required" />
     </xs:complexType>
@@ -32,6 +33,17 @@
         </xs:annotation>
         <xs:attribute name="class" type="xs:string" use="required" />
         <xs:attribute name="method" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="resourceDeclaration">
+        <xs:annotation>
+            <xs:documentation>
+                Permissions declaration.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="resource" type="xs:string" maxOccurs="unbounded" />
+        </xs:sequence>
     </xs:complexType>
 
     <xs:simpleType name="hookName">

@@ -65,7 +65,7 @@ class MassDisable extends Action implements HttpPostActionInterface
             if ($webhook->getStatus()) {
                 try {
                     $webhook->setStatus(false);
-                    $this->webhookRepository->save($webhook);
+                    $this->webhookRepository->save($webhook, false);
                     $alreadyDisabled--;
                     $disabled++;
                 } catch (\Exception $e) {
