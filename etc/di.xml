@@ -10,7 +10,7 @@
                 type="Aligent\Webhooks\Model\Webhook" />
 
     <preference for="Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface"
-                type="Magento\Framework\Api\SearchResults" />
+                type="Aligent\Webhooks\Model\WebhookSearchResults" />
 
     <type name="Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection">
         <arguments>
