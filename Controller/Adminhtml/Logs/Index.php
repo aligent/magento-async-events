@@ -1,24 +1,30 @@
 <?php
-namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
+
+/**
+ * Aligent Consulting
+ * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
+ */
+
+declare(strict_types=1);
+
+namespace Aligent\Webhooks\Controller\Adminhtml\Logs;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 class Index extends Action implements HttpGetActionInterface
 {
-    const MENU_ID = 'Aligent_Webhooks::integrations_webhooks';
+
+    const MENU_ID = 'Aligent_Webhooks::webhooks';
 
     /**
      * @var PageFactory
      */
-    protected $resultPageFactory;
+    protected PageFactory $resultPageFactory;
 
     /**
-     * Index constructor.
-     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
@@ -31,16 +37,11 @@ class Index extends Action implements HttpGetActionInterface
         $this->resultPageFactory = $resultPageFactory;
     }
 
-    /**
-     * Load the page defined in view/adminhtml/layout/webhooks_webhooks_index.xml
-     *
-     * @return Page
-     */
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);
-        $resultPage->getConfig()->getTitle()->prepend(__('Webhooks'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Webhook Logs'));
 
         return $resultPage;
     }

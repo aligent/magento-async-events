@@ -23,9 +23,17 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="webhooks_webhooks_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection</item>
+                <item name="webhooks_logs_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
             </argument>
         </arguments>
     </type>
+
+    <virtualType name="Aligent\Webhooks\Model\ResourceModel\WebhookLogs\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">webhook_subscriber_log</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\WebhookLog</argument>
+        </arguments>
+    </virtualType>
 
     <type name="Aligent\Webhooks\Model\Config\Reader">
         <arguments>
@@ -47,6 +55,5 @@
             <argument name="dataStorage" xsi:type="object">webhookDataStorage</argument>
         </arguments>
     </type>
-
 
 </config>
