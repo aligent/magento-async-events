@@ -60,18 +60,19 @@ class Converter implements ConverterInterface
         try {
             $serviceClass = new \ReflectionClass($classAttribute->nodeValue);
         } catch (\ReflectionException $e) {
-            throw new InvalidArgumentException(__('Class %1 does not exist', $classAttribute->nodeValue));
+            throw new InvalidArgumentException(
+                sprintf('Class %s does not exist', $classAttribute->nodeValue)
+            );
         }
         try {
             $serviceMethod = $serviceClass->getMethod($methodAttribute->nodeValue);
         } catch (\ReflectionException $e) {
             throw new InvalidArgumentException(
-                __('Method %1 does not exist is class %2', $methodAttribute->nodeValue, $classAttribute->nodeValue)
-            );
-        }
-        if (!$serviceMethod->isPublic()) {
-            throw new InvalidArgumentException(
-                __('Method %1 in class %2 is not public', $methodAttribute->nodeValue, $classAttribute->nodeValue)
+                sprintf(
+                    'Method %s does not exist is class %s',
+                    $methodAttribute->nodeValue,
+                    $classAttribute->nodeValue
+                )
             );
         }
 
