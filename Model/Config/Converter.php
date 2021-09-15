@@ -42,7 +42,7 @@ class Converter implements ConverterInterface
         return $output;
     }
 
-    private function convertServiceConfig($observerConfig): array
+    private function convertServiceConfig(DomNode $observerConfig): array
     {
         $output = [];
 
@@ -81,12 +81,13 @@ class Converter implements ConverterInterface
         return $output;
     }
 
-    private function convertResourcesConfig($resourcesConfig): array
+    private function convertResourcesConfig(DOMNode $resourcesConfig): array
     {
         $resources = [];
-
         foreach ($resourcesConfig->childNodes as $resourceNode) {
-            $resources[] = $resourceNode->nodeValue;
+            if ($resourceNode->nodeName === 'resource') {
+                $resources[] = $resourceNode->nodeValue;
+            }
         }
 
         return ['resources' => $resources];
