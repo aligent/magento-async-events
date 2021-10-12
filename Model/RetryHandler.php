@@ -24,37 +24,37 @@ class RetryHandler
     /**
      * @var SearchCriteriaBuilder
      */
-    private SearchCriteriaBuilder $searchCriteriaBuilder;
+    private  $searchCriteriaBuilder;
 
     /**
      * @var WebhookRepositoryInterface
      */
-    private WebhookRepositoryInterface $webhookRepository;
+    private  $webhookRepository;
 
     /**
      * @var NotifierFactoryInterface
      */
-    private NotifierFactoryInterface $notifierFactory;
+    private  $notifierFactory;
 
     /**
      * @var WebhookLogFactory
      */
-    private WebhookLogFactory $webhookLogFactory;
+    private  $webhookLogFactory;
 
     /**
      * @var WebhookLogRepository
      */
-    private WebhookLogRepository $webhookLogRepository;
+    private  $webhookLogRepository;
 
     /**
      * @var RetryManager
      */
-    private RetryManager $retryManager;
+    private  $retryManager;
 
     /**
      * @var SerializerInterface
      */
-    private SerializerInterface $serializer;
+    private  $serializer;
 
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -125,8 +125,9 @@ class RetryHandler
 
     /**
      * @param NotifierResult $response
+     * @return void
      */
-    private function log(NotifierResult $response): void
+    private function log(NotifierResult $response)
     {
         $webhookLog = $this->webhookLogFactory->create();
         $webhookLog->setSuccess($response->getSuccess());

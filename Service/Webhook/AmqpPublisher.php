@@ -29,17 +29,17 @@ class AmqpPublisher implements PublisherInterface
     /**
      * @var Config
      */
-    private Config $amqpConfig;
+    private $amqpConfig;
 
     /**
      * @var EnvelopeFactory
      */
-    private EnvelopeFactory $envelopeFactory;
+    private $envelopeFactory;
 
     /**
      * @var Json
      */
-    private Json $json;
+    private $json;
 
     /**
      * @param Config $amqpConfig

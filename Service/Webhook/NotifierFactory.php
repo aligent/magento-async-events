@@ -12,7 +12,7 @@ class NotifierFactory implements NotifierFactoryInterface
     /**
      * @var array
      */
-    private array $notifierClasses;
+    private $notifierClasses;
 
     /**
      * NotifierFactory constructor.

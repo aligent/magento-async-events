@@ -16,37 +16,37 @@ class WebhookTriggerHandler
     /**
      * @var EventDispatcher
      */
-    private EventDispatcher $dispatcher;
+    private $dispatcher;
 
     /**
      * @var Json
      */
-    private Json $json;
+    private $json;
 
     /**
      * @var ServiceOutputProcessor
      */
-    private ServiceOutputProcessor $outputProcessor;
+    private $outputProcessor;
 
     /**
      * @var Config
      */
-    private WebhookConfig $webhookConfig;
+    private $webhookConfig;
 
     /**
      * @var ObjectManagerInterface
      */
-    private ObjectManagerInterface $objectManager;
+    private $objectManager;
 
     /**
      * @var ServiceInputProcessor
      */
-    private ServiceInputProcessor $inputProcessor;
+    private $inputProcessor;
 
     /**
      * @var LoggerInterface
      */
-    private LoggerInterface $logger;
+    private $logger;
 
     /**
      * @param EventDispatcher $dispatcher

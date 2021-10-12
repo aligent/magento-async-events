@@ -22,7 +22,7 @@ class Index extends Action implements HttpGetActionInterface
     /**
      * @var PageFactory
      */
-    protected PageFactory $resultPageFactory;
+    protected $resultPageFactory;
 
     /**
      * @param Context $context

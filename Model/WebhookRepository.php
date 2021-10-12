@@ -26,42 +26,42 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * @var WebhookFactory
      */
-    private WebhookFactory $webhookFactory;
+    private  $webhookFactory;
 
     /**
      * @var WebhookResource
      */
-    private WebhookResource $webhookResource;
+    private  $webhookResource;
 
     /**
      * @var WebhookConfig
      */
-    private WebhookConfig $webhookConfig;
+    private  $webhookConfig;
 
     /**
      * @var SearchResultsFactory
      */
-    private SearchResultsFactory $searchResultsFactory;
+    private $searchResultsFactory;
 
     /**
      * @var WebhookCollectionFactory
      */
-    private WebhookCollectionFactory $webhookCollectionFactory;
+    private $webhookCollectionFactory;
 
     /**
      * @var CollectionProcessorInterface
      */
-    private CollectionProcessorInterface $collectionProcessor;
+    private $collectionProcessor;
 
     /**
      * @var EncryptorInterface
      */
-    private EncryptorInterface $encryptor;
+    private $encryptor;
 
     /**
      * @var AuthorizationInterface
      */
-    private AuthorizationInterface $authorization;
+    private $authorization;
 
     /**
      * @param WebhookFactory $webhookFactory
@@ -167,8 +167,9 @@ class WebhookRepository implements WebhookRepositoryInterface
 
     /**
      * @param WebhookInterface $webhook
+     * @return void
      */
-    private function validateResources(WebhookInterface $webhook): void
+    private function validateResources(WebhookInterface $webhook)
     {
         $configData = $this->webhookConfig->get($webhook->getEventName());
         $resources = $configData['resources'] ?? [];

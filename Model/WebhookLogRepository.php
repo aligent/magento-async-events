@@ -15,7 +15,7 @@ class WebhookLogRepository
     /**
      * @var WebhookResource
      */
-    private WebhookResource $webhookLogResource;
+    private $webhookLogResource;
 
     public function __construct(
         WebhookResource $webhookLogResource

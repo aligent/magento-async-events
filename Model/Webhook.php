@@ -29,7 +29,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface, Webho
     /**
      * {@inheritDoc}
      */
-    public function setSubscriptionId(int $id): void
+    public function setSubscriptionId(int $id)
     {
         $this->setData('subscription_id', $id);
     }
@@ -45,7 +45,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface, Webho
     /**
      * {@inheritDoc}
      */
-    public function setEventName(string $eventName): void
+    public function setEventName(string $eventName)
     {
         $this->setData('event_name', $eventName);
     }
@@ -61,7 +61,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface, Webho
     /**
      * {@inheritDoc}
      */
-    public function setRecipientUrl(string $recipientURL): void
+    public function setRecipientUrl(string $recipientURL)
     {
         $this->setData('recipient_url', $recipientURL);
     }
@@ -77,7 +77,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface, Webho
     /**
      * {@inheritDoc}
      */
-    public function setVerificationToken(string $verificationToken): void
+    public function setVerificationToken(string $verificationToken)
     {
         $this->setData('verification_token', $verificationToken);
     }
@@ -93,7 +93,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface, Webho
     /**
      * {@inheritDoc}
      */
-    public function setStatus(bool $status): void
+    public function setStatus(bool $status)
     {
         $this->setData('status', $status);
     }
@@ -109,7 +109,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface, Webho
     /**
      * {@inheritDoc}
      */
-    public function setSubscribedAt(string $subscribedAt): void
+    public function setSubscribedAt(string $subscribedAt)
     {
         $this->setData('subscribed_at', $subscribedAt);
     }
@@ -125,7 +125,7 @@ class Webhook extends AbstractExtensibleModel implements WebhookInterface, Webho
     /**
      * {@inheritDoc}
      */
-    public function setMetadata(string $metadata): void
+    public function setMetadata(string $metadata)
     {
         $this->setData('metadata', $metadata);
     }

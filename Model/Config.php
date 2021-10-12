@@ -16,7 +16,7 @@ class Config
     /**
      * @var DataInterface
      */
-    protected DataInterface $_dataStorage;
+    protected $_dataStorage;
 
     /**
      * @param DataInterface $dataStorage
