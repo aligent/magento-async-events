@@ -26,37 +26,37 @@ class RetryManager
     /**
      * @var ConfigPool
      */
-    private ConfigPool $configPool;
+    private $configPool;
 
     /**
      * @var QueueInstaller
      */
-    private QueueInstaller $queueInstaller;
+    private $queueInstaller;
 
     /**
      * @var BindingInstallerInterface
      */
-    private BindingInstallerInterface $bindingInstaller;
+    private $bindingInstaller;
 
     /**
      * @var AmqpPublisher
      */
-    private AmqpPublisher $publisher;
+    private $publisher;
 
     /**
      * @var QueueConfigItemFactory
      */
-    private QueueConfigItemFactory $queueConfigItemFactory;
+    private $queueConfigItemFactory;
 
     /**
      * @var BindingFactory
      */
-    private BindingFactory $bindingFactory;
+    private $bindingFactory;
 
     /**
      * @var SerializerInterface
      */
-    private SerializerInterface $serializer;
+    private  $serializer;
 
     /**
      * @param ConfigPool $configPool
@@ -88,8 +88,9 @@ class RetryManager
     /**
      * @param int $subscriptionId
      * @param $data
+     * @return void
      */
-    public function init(int $subscriptionId, $data): void
+    public function init(int $subscriptionId, $data)
     {
         $this->assertDelayQueue(1, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY);
         $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [
@@ -103,8 +104,9 @@ class RetryManager
      * @param int $deathCount
      * @param int $subscriptionId
      * @param $data
+     * @return void
      */
-    public function place(int $deathCount, int $subscriptionId, $data): void
+    public function place(int $deathCount, int $subscriptionId, $data)
     {
         $backoff = $this->calculateBackoff($deathCount);
         $queueName = 'webhook.delay.' . $backoff;
@@ -121,8 +123,9 @@ class RetryManager
     /**
      * @param int $subscriptionId
      * @param $data
+     * @return void
      */
-    public function kill(int $subscriptionId, $data): void
+    public function kill(int $subscriptionId, $data)
     {
         $this->publisher->publish(QueueMetadataInterface::DEAD_LETTER_KILL_KEY, [
             self::SUBSCRIPTION_ID => $subscriptionId,
@@ -140,8 +143,9 @@ class RetryManager
      * @param int $backoff
      * @param string $queueName
      * @param string $retryRoutingKey
+     * @return void
      */
-    private function assertDelayQueue(int $backoff, string $queueName, string $retryRoutingKey): void
+    private function assertDelayQueue(int $backoff, string $queueName, string $retryRoutingKey)
     {
         $config = $this->configPool->get('amqp');
 
