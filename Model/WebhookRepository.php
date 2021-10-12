@@ -12,7 +12,6 @@ use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCol
 use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use DateTime;
-use DateTimeInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\AuthorizationInterface;
@@ -140,7 +139,7 @@ class WebhookRepository implements WebhookRepositoryInterface
 
         if (!$webhook->getSubscriptionId()) {
             $webhook->setStatus(true);
-            $webhook->setSubscribedAt((new DateTime())->format(DateTimeInterface::ATOM));
+            $webhook->setSubscribedAt((new DateTime())->format(DateTime::ATOM));
             $secretVerificationToken = $this->encryptor->encrypt($webhook->getVerificationToken());
             $webhook->setVerificationToken($secretVerificationToken);
 
@@ -168,6 +167,7 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * @param WebhookInterface $webhook
      * @return void
+     * @throws AuthorizationException
      */
     private function validateResources(WebhookInterface $webhook)
     {

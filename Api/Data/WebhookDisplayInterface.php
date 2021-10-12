@@ -12,20 +12,20 @@ interface WebhookDisplayInterface
     /**
      * @return string
      */
-    public function getEventName();
+    public function getEventName(): string;
 
     /**
      * @return string
      */
-    public function getRecipientUrl();
+    public function getRecipientUrl(): string;
 
     /**
      * @return bool
      */
-    public function getStatus();
+    public function getStatus(): bool;
 
     /**
      * @return string
      */
-    public function getSubscribedAt();
+    public function getSubscribedAt(): string;
 }
