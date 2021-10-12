@@ -2,10 +2,11 @@
 
 namespace Aligent\Webhooks\Model;
 
+use Aligent\Webhooks\Api\Data\WebhookDisplayInterface;
 use Aligent\Webhooks\Api\Data\WebhookInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 
-class Webhook extends AbstractExtensibleModel implements WebhookInterface
+class Webhook extends AbstractExtensibleModel implements WebhookInterface, WebhookDisplayInterface
 {
     /**
      * @var string
