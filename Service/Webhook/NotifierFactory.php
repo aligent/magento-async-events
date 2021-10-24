@@ -12,7 +12,7 @@ class NotifierFactory implements NotifierFactoryInterface
     /**
      * @var array
      */
-    private array $notifierClasses;
+    private $notifierClasses;
 
     /**
      * NotifierFactory constructor.
@@ -32,7 +32,7 @@ class NotifierFactory implements NotifierFactoryInterface
         $notifier = $this->notifierClasses[$type] ?? null;
 
         if (!$notifier instanceof NotifierInterface) {
-            throw new InvalidArgumentException(__("{$notifier} must implement NotifierInterface."));
+            throw new InvalidArgumentException(__("Cannot instantiate a notifier for $notifier"));
         }
 
         return $notifier;

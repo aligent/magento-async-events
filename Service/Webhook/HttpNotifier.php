@@ -22,22 +22,22 @@ class HttpNotifier implements NotifierInterface
     /**
      * Hash algorithm. Changing this in future will be a breaking change
      */
-    private const HASHING_ALGORITHM = 'sha256';
+    const HASHING_ALGORITHM = 'sha256';
 
     /**
      * @var Client
      */
-    private Client $client;
+    private $client;
 
     /**
      * @var Json
      */
-    private Json $json;
+    private $json;
 
     /**
      * @var EncryptorInterface
      */
-    private EncryptorInterface $encryptor;
+    private $encryptor;
 
     public function __construct(
         Client $client,

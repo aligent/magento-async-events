@@ -15,32 +15,32 @@ class EventDispatcher
     /**
      * @var WebhookRepositoryInterface
      */
-    private WebhookRepositoryInterface $webhookRepository;
+    private $webhookRepository;
 
     /**
      * @var SearchCriteriaBuilder
      */
-    private SearchCriteriaBuilder $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * @var NotifierFactoryInterface
      */
-    private NotifierFactoryInterface $notifierFactory;
+    private $notifierFactory;
 
     /**
      * @var WebhookLogRepository
      */
-    private WebhookLogRepository $webhookLogRepository;
+    private $webhookLogRepository;
 
     /**
      * @var WebhookLogFactory
      */
-    private WebhookLogFactory $webhookLogFactory;
+    private $webhookLogFactory;
 
     /**
      * @var RetryManager
      */
-    private RetryManager $retryManager;
+    private $retryManager;
 
     /**
      * @param WebhookRepositoryInterface $webhookRepository
@@ -99,8 +99,9 @@ class EventDispatcher
 
     /**
      * @param NotifierResult $response
+     * @return void
      */
-    private function log(NotifierResult $response): void
+    private function log(NotifierResult $response)
     {
         $webhookLog = $this->webhookLogFactory->create();
         $webhookLog->setSuccess($response->getSuccess());

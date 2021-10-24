@@ -3,7 +3,7 @@
   "description": "An event-driven flexible webhooks module that allows you to dispatch anything to any application at the time it occurs.\n",
   "type": "magento2-module",
   "require": {
-    "php":  "~7.4.0",
+    "php":  ">=7.0",
     "magento/framework": "*"
   },
   "repositories": [

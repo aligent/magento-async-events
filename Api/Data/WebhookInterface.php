@@ -13,7 +13,7 @@ interface WebhookInterface
      * @param int $id
      * @return void
      */
-    public function setSubscriptionId(int $id): void;
+    public function setSubscriptionId(int $id);
 
     /**
      * @return string
@@ -24,7 +24,7 @@ interface WebhookInterface
      * @param string $eventName
      * @return void
      */
-    public function setEventName(string $eventName): void;
+    public function setEventName(string $eventName);
 
     /**
      * @return string
@@ -35,7 +35,7 @@ interface WebhookInterface
      * @param string $recipientURL
      * @return void
      */
-    public function setRecipientUrl(string $recipientURL): void;
+    public function setRecipientUrl(string $recipientURL);
 
     /**
      * @return string
@@ -46,7 +46,7 @@ interface WebhookInterface
      * @param string $verificationToken
      * @return void
      */
-    public function setVerificationToken(string $verificationToken): void;
+    public function setVerificationToken(string $verificationToken);
 
     /**
      * @return bool
@@ -57,7 +57,7 @@ interface WebhookInterface
      * @param bool $status
      * @return void
      */
-    public function setStatus(bool $status): void;
+    public function setStatus(bool $status);
 
     /**
      * @return string
@@ -68,7 +68,7 @@ interface WebhookInterface
      * @param string $subscribedAt
      * @return void
      */
-    public function setSubscribedAt(string $subscribedAt): void;
+    public function setSubscribedAt(string $subscribedAt);
 
     /**
      * @return string
@@ -79,5 +79,5 @@ interface WebhookInterface
      * @param string $metadata
      * @return void
      */
-    public function setMetadata(string $metadata): void;
+    public function setMetadata(string $metadata);
 }

@@ -16,17 +16,17 @@ class MassEnable extends Action implements HttpPostActionInterface
     /**
      * @var CollectionFactory
      */
-    protected CollectionFactory $collectionFactory;
+    protected $collectionFactory;
 
     /**
      * @var Filter
      */
-    private Filter $filter;
+    private $filter;
 
     /**
      * @var WebhookRepositoryInterface
      */
-    private WebhookRepositoryInterface $webhookRepository;
+    private $webhookRepository;
 
     public function __construct(
         Context $context,

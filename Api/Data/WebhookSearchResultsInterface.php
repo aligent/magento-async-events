@@ -16,5 +16,5 @@ interface WebhookSearchResultsInterface extends SearchResultsInterface
      * @param \Aligent\Webhooks\Api\Data\WebhookInterface[] $items
      * @return $this
      */
-    public function setItems($items);
+    public function setItems(array $items);
 }

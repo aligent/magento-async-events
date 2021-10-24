@@ -12,7 +12,6 @@ use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCol
 use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use DateTime;
-use DateTimeInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\AuthorizationInterface;
@@ -26,42 +25,42 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * @var WebhookFactory
      */
-    private WebhookFactory $webhookFactory;
+    private  $webhookFactory;
 
     /**
      * @var WebhookResource
      */
-    private WebhookResource $webhookResource;
+    private  $webhookResource;
 
     /**
      * @var WebhookConfig
      */
-    private WebhookConfig $webhookConfig;
+    private  $webhookConfig;
 
     /**
      * @var SearchResultsFactory
      */
-    private SearchResultsFactory $searchResultsFactory;
+    private $searchResultsFactory;
 
     /**
      * @var WebhookCollectionFactory
      */
-    private WebhookCollectionFactory $webhookCollectionFactory;
+    private $webhookCollectionFactory;
 
     /**
      * @var CollectionProcessorInterface
      */
-    private CollectionProcessorInterface $collectionProcessor;
+    private $collectionProcessor;
 
     /**
      * @var EncryptorInterface
      */
-    private EncryptorInterface $encryptor;
+    private $encryptor;
 
     /**
      * @var AuthorizationInterface
      */
-    private AuthorizationInterface $authorization;
+    private $authorization;
 
     /**
      * @param WebhookFactory $webhookFactory
@@ -140,7 +139,7 @@ class WebhookRepository implements WebhookRepositoryInterface
 
         if (!$webhook->getSubscriptionId()) {
             $webhook->setStatus(true);
-            $webhook->setSubscribedAt((new DateTime())->format(DateTimeInterface::ATOM));
+            $webhook->setSubscribedAt((new DateTime())->format(DateTime::ATOM));
             $secretVerificationToken = $this->encryptor->encrypt($webhook->getVerificationToken());
             $webhook->setVerificationToken($secretVerificationToken);
 
@@ -167,8 +166,10 @@ class WebhookRepository implements WebhookRepositoryInterface
 
     /**
      * @param WebhookInterface $webhook
+     * @return void
+     * @throws AuthorizationException
      */
-    private function validateResources(WebhookInterface $webhook): void
+    private function validateResources(WebhookInterface $webhook)
     {
         $configData = $this->webhookConfig->get($webhook->getEventName());
         $resources = $configData['resources'] ?? [];
