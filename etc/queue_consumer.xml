@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
     <consumer name="webhook.trigger.consumer" queue="webhook.trigger" connection="amqp"
               consumerInstance="Magento\Framework\MessageQueue\Consumer"
-              handler="Aligent\Webhooks\Model\WebhookTriggerHandler::process"/>
+              handler="Aligent\Webhooks\Model\AsyncEventTriggerHandler::process"/>
 
     <consumer name="webhook.retry.consumer" queue="webhook.failover.retry" connection="amqp"
               consumerInstance="Magento\Framework\MessageQueue\Consumer" />
