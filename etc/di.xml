@@ -12,7 +12,7 @@
     <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface"
                 type="Aligent\AsyncEvents\Model\AsyncEventSearchResults" />
 
-    <type name="Aligent\AsyncEvents\Model\ResourceModel\Webhook\Grid\Collection">
+    <type name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">async_event_subscriber</argument>
             <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent</argument>
@@ -22,7 +22,9 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="async_events_events_listing_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\Webhook\Grid\Collection</item>
+                <item name="async_events_events_listing_data_source" xsi:type="string">
+                    Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection
+                </item>
                 <item name="async_events_logs_listing_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
             </argument>
         </arguments>

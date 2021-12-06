@@ -3,7 +3,7 @@
 namespace Aligent\AsyncEvents\Model;
 
 use Aligent\AsyncEvents\Model\Config as AsyncEventConfig;
-use Aligent\AsyncEvents\Service\Webhook\EventDispatcher;
+use Aligent\AsyncEvents\Service\AsyncEvent\EventDispatcher;
 use Exception;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;

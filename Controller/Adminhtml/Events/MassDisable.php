@@ -4,9 +4,9 @@ namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Model\AsyncEvent;
-use Aligent\AsyncEvents\Model\ResourceModel\Webhook\Collection;
+use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Collection;
 use Magento\Ui\Component\MassAction\Filter;
-use Aligent\AsyncEvents\Model\ResourceModel\Webhook\CollectionFactory;
+use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\CollectionFactory;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;

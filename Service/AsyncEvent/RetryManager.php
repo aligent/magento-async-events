@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Aligent\AsyncEvents\Service\Webhook;
+namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
 use Aligent\AsyncEvents\Helper\QueueMetadataInterface;
 use Magento\Framework\Amqp\ConfigPool;

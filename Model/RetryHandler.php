@@ -11,8 +11,8 @@ namespace Aligent\AsyncEvents\Model;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Helper\NotifierResult;
-use Aligent\AsyncEvents\Service\Webhook\NotifierFactoryInterface;
-use Aligent\AsyncEvents\Service\Webhook\RetryManager;
+use Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactoryInterface;
+use Aligent\AsyncEvents\Service\AsyncEvent\RetryManager;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Serialize\SerializerInterface;

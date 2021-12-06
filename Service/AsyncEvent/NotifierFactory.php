@@ -1,6 +1,6 @@
 <?php
 
-namespace Aligent\AsyncEvents\Service\Webhook;
+namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
 use InvalidArgumentException;
 

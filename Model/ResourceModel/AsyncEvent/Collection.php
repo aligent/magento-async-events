@@ -1,6 +1,6 @@
 <?php
 
-namespace Aligent\AsyncEvents\Model\ResourceModel\Webhook;
+namespace Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent;
 
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent as AsyncEventResource;
 use Aligent\AsyncEvents\Model\AsyncEvent;

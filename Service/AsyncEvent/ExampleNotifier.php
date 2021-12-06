@@ -1,6 +1,6 @@
 <?php
 
-namespace Aligent\AsyncEvents\Service\Webhook;
+namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
 use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
 use Aligent\AsyncEvents\Helper\NotifierResult;

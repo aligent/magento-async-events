@@ -8,7 +8,7 @@ use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface;
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Model\Config as AsyncEventConfig;
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent as AsyncEventResource;
-use Aligent\AsyncEvents\Model\ResourceModel\Webhook\CollectionFactory as AsyncEventCollectionFactory;
+use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\CollectionFactory as AsyncEventCollectionFactory;
 use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use DateTime;

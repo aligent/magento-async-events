@@ -1,6 +1,6 @@
 <?php
 
-namespace Aligent\AsyncEvents\Model\ResourceModel\Webhook\Grid;
+namespace Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid;
 
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface as FetchStrategy;
 use Magento\Framework\Data\Collection\EntityFactoryInterface as EntityFactory;

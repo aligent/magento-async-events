@@ -4,8 +4,8 @@ namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Model\AsyncEvent;
-use Aligent\AsyncEvents\Model\ResourceModel\Webhook\Collection;
-use Aligent\AsyncEvents\Model\ResourceModel\Webhook\CollectionFactory;
+use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Collection;
+use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\CollectionFactory;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
