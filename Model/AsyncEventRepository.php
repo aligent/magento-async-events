@@ -9,7 +9,7 @@ use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Model\Config as WebhookConfig;
 use Aligent\Webhooks\Model\ResourceModel\AsyncEvent as WebhookResource;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCollectionFactory;
-use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResultsFactory;
+use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use DateTime;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
@@ -23,7 +23,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class AsyncEventRepository implements AsyncEventRepositoryInterface
 {
     /**
-     * @var WebhookFactory
+     * @var AsyncEventFactory
      */
     private  $webhookFactory;
 
@@ -63,7 +63,7 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     private $authorization;
 
     /**
-     * @param WebhookFactory $webhookFactory
+     * @param AsyncEventFactory $webhookFactory
      * @param WebhookResource $webhookResource
      * @param WebhookConfig $webhookConfig
      * @param SearchResultsFactory $searchResultsFactory
@@ -73,7 +73,7 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
      * @param AuthorizationInterface $authorization
      */
     public function __construct(
-        WebhookFactory $webhookFactory,
+        AsyncEventFactory $webhookFactory,
         WebhookResource $webhookResource,
         WebhookConfig $webhookConfig,
         SearchResultsFactory $searchResultsFactory,

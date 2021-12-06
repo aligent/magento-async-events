@@ -5,7 +5,7 @@ namespace Aligent\Webhooks\Service\Webhook;
 use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
 use Aligent\Webhooks\Model\AsyncEvent;
-use Aligent\Webhooks\Model\WebhookLogFactory;
+use Aligent\Webhooks\Model\AsyncEventLogFactory;
 use Aligent\Webhooks\Model\AsyncEventLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -33,7 +33,7 @@ class EventDispatcher
     private $webhookLogRepository;
 
     /**
-     * @var WebhookLogFactory
+     * @var AsyncEventLogFactory
      */
     private $webhookLogFactory;
 
@@ -47,7 +47,7 @@ class EventDispatcher
      * @param AsyncEventLogRepository $webhookLogRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param NotifierFactoryInterface $notifierFactory
-     * @param WebhookLogFactory $webhookLogFactory
+     * @param AsyncEventLogFactory $webhookLogFactory
      * @param RetryManager $retryManager
      */
     public function __construct(
@@ -55,7 +55,7 @@ class EventDispatcher
         AsyncEventLogRepository       $webhookLogRepository,
         SearchCriteriaBuilder         $searchCriteriaBuilder,
         NotifierFactoryInterface      $notifierFactory,
-        WebhookLogFactory             $webhookLogFactory,
+        AsyncEventLogFactory             $webhookLogFactory,
         RetryManager                  $retryManager
     ) {
         $this->webhookRepository = $webhookRepository;

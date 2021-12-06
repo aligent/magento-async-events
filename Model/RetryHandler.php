@@ -37,7 +37,7 @@ class RetryHandler
     private  $notifierFactory;
 
     /**
-     * @var WebhookLogFactory
+     * @var AsyncEventLogFactory
      */
     private  $webhookLogFactory;
 
@@ -60,7 +60,7 @@ class RetryHandler
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param AsyncEventRepositoryInterface $webhookRepository
      * @param NotifierFactoryInterface $notifierFactory
-     * @param WebhookLogFactory $webhookLogFactory
+     * @param AsyncEventLogFactory $webhookLogFactory
      * @param AsyncEventLogRepository $webhookLogRepository
      * @param RetryManager $retryManager
      * @param SerializerInterface $serializer
@@ -69,7 +69,7 @@ class RetryHandler
         SearchCriteriaBuilder         $searchCriteriaBuilder,
         AsyncEventRepositoryInterface $webhookRepository,
         NotifierFactoryInterface      $notifierFactory,
-        WebhookLogFactory             $webhookLogFactory,
+        AsyncEventLogFactory             $webhookLogFactory,
         AsyncEventLogRepository       $webhookLogRepository,
         RetryManager                  $retryManager,
         SerializerInterface           $serializer
