@@ -41,7 +41,7 @@ class Index extends Action implements HttpGetActionInterface
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);
-        $resultPage->getConfig()->getTitle()->prepend(__('Webhook Logs'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Event Logs'));
 
         return $resultPage;
     }

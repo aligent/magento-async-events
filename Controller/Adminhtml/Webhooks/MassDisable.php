@@ -3,7 +3,8 @@
 namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
 
 use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
-use Aligent\Webhooks\Model\ResourceModel\AsyncEvent;
+use Aligent\Webhooks\Model\AsyncEvent;
+use Aligent\Webhooks\Model\ResourceModel\Webhook\Collection;
 use Magento\Ui\Component\MassAction\Filter;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory;
 use Magento\Backend\App\Action;
@@ -54,12 +55,12 @@ class MassDisable extends Action implements HttpPostActionInterface
         return $resultRedirect;
     }
 
-    private function disableWebhooks(Webhook\Collection $webhookCollection)
+    private function disableWebhooks(Collection $webhookCollection)
     {
         $disabled = 0;
         $alreadyDisabled = 0;
 
-        /** @var \Aligent\Webhooks\Model\AsyncEvent $webhook */
+        /** @var AsyncEvent $webhook */
         foreach ($webhookCollection as $webhook) {
             $alreadyDisabled++;
             if ($webhook->getStatus()) {

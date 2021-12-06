@@ -3,6 +3,7 @@
 namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
 
 use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
+use Aligent\Webhooks\Model\AsyncEvent;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\Collection;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory;
 use Magento\Backend\App\Action;
@@ -57,7 +58,7 @@ class MassEnable extends Action implements HttpPostActionInterface
         $enabled = 0;
         $alreadyEnabled = 0;
 
-        /** @var \Aligent\Webhooks\Model\AsyncEvent $webhook */
+        /** @var AsyncEvent $webhook */
         foreach ($webhookCollection as $webhook) {
             $alreadyEnabled++;
             if (!$webhook->getStatus()) {
