@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
-    <topic name="webhook.trigger" request="string[]" is_synchronous="false">
-        <handler name="webhook.trigger.handler" type="Aligent\Webhooks\Model\AsyncEventTriggerHandler" method="process" />
+    <topic name="event.trigger" request="string[]" is_synchronous="false">
+        <handler name="event.trigger.handler" type="Aligent\Webhooks\Model\AsyncEventTriggerHandler" method="process" />
     </topic>
 
-    <topic name="webhook.retry" request="string[]" is_synchronous="false">
-        <handler name="webhook.retry.handler" type="Aligent\Webhooks\Model\RetryHandler" method="process" />
+    <topic name="event.retry" request="string[]" is_synchronous="false">
+        <handler name="event.retry.handler" type="Aligent\Webhooks\Model\RetryHandler" method="process" />
     </topic>
 
-    <topic name="webhook.retry.kill" request="string[]" is_synchronous="false" />
+    <topic name="event.retry.kill" request="string[]" is_synchronous="false" />
 </config>

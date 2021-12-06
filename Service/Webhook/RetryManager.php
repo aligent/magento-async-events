@@ -109,8 +109,8 @@ class RetryManager
     public function place(int $deathCount, int $subscriptionId, $data)
     {
         $backoff = $this->calculateBackoff($deathCount);
-        $queueName = 'webhook.delay.' . $backoff;
-        $retryRoutingKey = 'webhook.retry.' . $backoff;
+        $queueName = 'event.delay.' . $backoff;
+        $retryRoutingKey = 'event.retry.' . $backoff;
 
         $this->assertDelayQueue($backoff, $queueName, $retryRoutingKey);
         $this->publisher->publish($retryRoutingKey, [

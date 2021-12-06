@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
     <exchange name="magento" type="topic" connection="amqp">
-        <binding id="webhook.trigger" topic="webhook.trigger" destinationType="queue" destination="webhook.trigger"/>
+        <binding id="event.trigger" topic="event.trigger" destinationType="queue" destination="event.trigger"/>
     </exchange>
 
-    <exchange name="webhook.failover" type="topic" connection="amqp">
-        <binding id="WebhookFailoverRetry" topic="webhook.retry" destinationType="queue" destination="webhook.failover.retry"/>
-        <binding id="WebhookKillerBinding" topic="webhook.retry.kill" destinationType="queue" destination="webhook.failover.deadletter"/>
+    <exchange name="event.failover" type="topic" connection="amqp">
+        <binding id="WebhookFailoverRetry" topic="event.retry" destinationType="queue" destination="event.failover.retry"/>
+        <binding id="WebhookKillerBinding" topic="event.retry.kill" destinationType="queue" destination="event.failover.deadletter"/>
     </exchange>
 </config>
