@@ -19,24 +19,24 @@ class Converter implements ConverterInterface
     public function convert($source): array
     {
         $output = [];
-        $webhooks = $source->getElementsByTagName('async_event');
+        $asyncEvents = $source->getElementsByTagName('async_event');
 
-        /** @var DOMNode $webhookConfig */
-        foreach ($webhooks as $webhookConfig) {
-            $hookName = $webhookConfig->attributes->getNamedItem('name')->nodeValue;
+        /** @var DOMNode $asyncEventConfig */
+        foreach ($asyncEvents as $asyncEventConfig) {
+            $eventName = $asyncEventConfig->attributes->getNamedItem('name')->nodeValue;
 
-            $webhookService = [];
-            $webhookResources = [];
+            $eventService = [];
+            $eventResources = [];
 
             /** @var DOMNode $serviceConfig */
-            foreach ($webhookConfig->childNodes as $child) {
+            foreach ($asyncEventConfig->childNodes as $child) {
                 if ($child->nodeName === 'service') {
-                    $webhookService = $this->convertServiceConfig($child);
+                    $eventService = $this->convertServiceConfig($child);
                 } elseif ($child->nodeName === 'resources') {
-                    $webhookResources = $this->convertResourcesConfig($child);
+                    $eventResources = $this->convertResourcesConfig($child);
                 }
             }
-            $output[mb_strtolower($hookName)] = array_merge($webhookService, $webhookResources);
+            $output[mb_strtolower($eventName)] = array_merge($eventService, $eventResources);
         }
 
         return $output;

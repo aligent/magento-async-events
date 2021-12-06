@@ -6,6 +6,7 @@ use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Model\AsyncEvent;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\Collection;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory;
+use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
@@ -27,7 +28,7 @@ class MassEnable extends Action implements HttpPostActionInterface
     /**
      * @var AsyncEventRepositoryInterface
      */
-    private $webhookRepository;
+    private $asyncEventRepository;
 
     public function __construct(
         Context $context,
@@ -38,7 +39,7 @@ class MassEnable extends Action implements HttpPostActionInterface
         parent::__construct($context);
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
-        $this->webhookRepository = $asyncEventRepository;
+        $this->asyncEventRepository = $asyncEventRepository;
     }
 
     public function execute()
@@ -46,28 +47,28 @@ class MassEnable extends Action implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('async_events/events/index');
 
-        $webhookCollection = $this->collectionFactory->create();
-        $this->filter->getCollection($webhookCollection);
-        $this->enableWebhooks($webhookCollection);
+        $asyncEventCollection = $this->collectionFactory->create();
+        $this->filter->getCollection($asyncEventCollection);
+        $this->enableAsyncEvents($asyncEventCollection);
 
         return $resultRedirect;
     }
 
-    private function enableWebhooks(Collection $webhookCollection)
+    private function enableAsyncEvents(Collection $asyncEventCollection)
     {
         $enabled = 0;
         $alreadyEnabled = 0;
 
-        /** @var AsyncEvent $webhook */
-        foreach ($webhookCollection as $webhook) {
+        /** @var AsyncEvent $asyncEvent */
+        foreach ($asyncEventCollection as $asyncEvent) {
             $alreadyEnabled++;
-            if (!$webhook->getStatus()) {
+            if (!$asyncEvent->getStatus()) {
                 try {
-                    $webhook->setStatus(true);
-                    $this->webhookRepository->save($webhook, false);
+                    $asyncEvent->setStatus(true);
+                    $this->asyncEventRepository->save($asyncEvent, false);
                     $alreadyEnabled--;
                     $enabled++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->messageManager->addErrorMessage($e->getMessage());
                 }
             }
@@ -75,13 +76,13 @@ class MassEnable extends Action implements HttpPostActionInterface
 
         if ($enabled) {
             $this->messageManager->addSuccessMessage(
-                __('A total of %1 webhook(s) have been enabled.', $enabled)
+                __('A total of %1 event(s) have been enabled.', $enabled)
             );
         }
 
         if ($alreadyEnabled) {
             $this->messageManager->addNoticeMessage(
-                __('A total of %1 webhook(s) are already enabled.', $alreadyEnabled)
+                __('A total of %1 event(s) are already enabled.', $alreadyEnabled)
             );
         }
     }

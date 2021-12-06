@@ -7,28 +7,28 @@
 
 namespace Aligent\Webhooks\Model;
 
-use Aligent\Webhooks\Model\ResourceModel\AsyncEventLog as WebhookResource;
+use Aligent\Webhooks\Model\ResourceModel\AsyncEventLog as AsyncEventLogResource;
 use Magento\Framework\Exception\AlreadyExistsException;
 
 class AsyncEventLogRepository
 {
     /**
-     * @var WebhookResource
+     * @var AsyncEventLogResource
      */
-    private $webhookLogResource;
+    private $asyncEventLogResource;
 
     public function __construct(
-        WebhookResource $webhookLogResource
+        AsyncEventLogResource $asyncEventLog
     ) {
-        $this->webhookLogResource = $webhookLogResource;
+        $this->asyncEventLogResource = $asyncEventLog;
     }
 
     /**
-     * @param AsyncEventLog $webhookLog
+     * @param AsyncEventLog $asyncEvent
      * @throws AlreadyExistsException
      */
-    public function save($webhookLog)
+    public function save(AsyncEventLog $asyncEvent)
     {
-        $this->webhookLogResource->save($webhookLog);
+        $this->asyncEventLogResource->save($asyncEvent);
     }
 }

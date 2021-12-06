@@ -10,14 +10,14 @@ class ExampleNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify(AsyncEventInterface $webhook, array $data): NotifierResult
+    public function notify(AsyncEventInterface $asyncEvent, array $data): NotifierResult
     {
         // Do something here with any data
         $data = "Example notifier with some data: " . $data["objectId"];
 
         $result = new NotifierResult();
         $result->setSuccess(true);
-        $result->setSubscriptionId($webhook->getSubscriptionId());
+        $result->setSubscriptionId($asyncEvent->getSubscriptionId());
         $result->setResponseData($data);
 
         return $result;

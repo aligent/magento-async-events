@@ -6,9 +6,9 @@ use Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface;
 use Aligent\Webhooks\Api\Data\AsyncEventInterface;
 use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterface;
 use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
-use Aligent\Webhooks\Model\Config as WebhookConfig;
-use Aligent\Webhooks\Model\ResourceModel\AsyncEvent as WebhookResource;
-use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCollectionFactory;
+use Aligent\Webhooks\Model\Config as AsyncEventConfig;
+use Aligent\Webhooks\Model\ResourceModel\AsyncEvent as AsyncEventResource;
+use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as AsyncEventCollectionFactory;
 use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use DateTime;
@@ -25,17 +25,17 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     /**
      * @var AsyncEventFactory
      */
-    private  $webhookFactory;
+    private  $asyncEventFactory;
 
     /**
-     * @var WebhookResource
+     * @var AsyncEventResource
      */
-    private  $webhookResource;
+    private  $asyncEventResource;
 
     /**
-     * @var WebhookConfig
+     * @var AsyncEventConfig
      */
-    private  $webhookConfig;
+    private  $asyncEventConfig;
 
     /**
      * @var SearchResultsFactory
@@ -43,9 +43,9 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     private $searchResultsFactory;
 
     /**
-     * @var WebhookCollectionFactory
+     * @var AsyncEventCollectionFactory
      */
-    private $webhookCollectionFactory;
+    private $asyncEventCollectionFactory;
 
     /**
      * @var CollectionProcessorInterface
@@ -63,30 +63,30 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     private $authorization;
 
     /**
-     * @param AsyncEventFactory $webhookFactory
-     * @param WebhookResource $webhookResource
-     * @param WebhookConfig $webhookConfig
+     * @param AsyncEventFactory $asyncEventFactory
+     * @param AsyncEventResource $asyncEventResource
+     * @param AsyncEventConfig $asyncEventConfig
      * @param SearchResultsFactory $searchResultsFactory
-     * @param WebhookCollectionFactory $webhookCollectionFactory
+     * @param AsyncEventCollectionFactory $asyncEventCollectionFactory
      * @param CollectionProcessorInterface $collectionProcessor
      * @param EncryptorInterface $encryptor
      * @param AuthorizationInterface $authorization
      */
     public function __construct(
-        AsyncEventFactory $webhookFactory,
-        WebhookResource $webhookResource,
-        WebhookConfig $webhookConfig,
-        SearchResultsFactory $searchResultsFactory,
-        WebhookCollectionFactory $webhookCollectionFactory,
+        AsyncEventFactory            $asyncEventFactory,
+        AsyncEventResource           $asyncEventResource,
+        AsyncEventConfig             $asyncEventConfig,
+        SearchResultsFactory         $searchResultsFactory,
+        AsyncEventCollectionFactory  $asyncEventCollectionFactory,
         CollectionProcessorInterface $collectionProcessor,
-        EncryptorInterface $encryptor,
-        AuthorizationInterface $authorization
+        EncryptorInterface           $encryptor,
+        AuthorizationInterface       $authorization
     ) {
-        $this->webhookFactory = $webhookFactory;
-        $this->webhookResource = $webhookResource;
-        $this->webhookConfig = $webhookConfig;
+        $this->asyncEventFactory = $asyncEventFactory;
+        $this->asyncEventResource = $asyncEventResource;
+        $this->asyncEventConfig = $asyncEventConfig;
         $this->searchResultsFactory = $searchResultsFactory;
-        $this->webhookCollectionFactory = $webhookCollectionFactory;
+        $this->asyncEventCollectionFactory = $asyncEventCollectionFactory;
         $this->collectionProcessor = $collectionProcessor;
         $this->encryptor = $encryptor;
         $this->authorization = $authorization;
@@ -97,14 +97,14 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
      */
     public function get(string $subscriptionId): AsyncEventDisplayInterface
     {
-        $webhook = $this->webhookFactory->create();
-        $this->webhookResource->load($webhook, $subscriptionId);
+        $asyncEvent = $this->asyncEventFactory->create();
+        $this->asyncEventResource->load($asyncEvent, $subscriptionId);
 
-        if (!$webhook->getId()) {
-            throw new NoSuchEntityException(__('Webhook with subscription ID %1 does not exist', $subscriptionId));
+        if (!$asyncEvent->getId()) {
+            throw new NoSuchEntityException(__('Async event with subscription ID %1 does not exist', $subscriptionId));
         }
 
-        return $webhook;
+        return $asyncEvent;
     }
 
     /**
@@ -112,18 +112,18 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria): AsyncEventSearchResultsInterface
     {
-        $collection = $this->webhookCollectionFactory->create();
+        $collection = $this->asyncEventCollectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);
 
-        $webhooks = [];
+        $asyncEvents = [];
 
-        /** @var AsyncEvent $webhookModel */
-        foreach ($collection as $webhookModel) {
-            $webhooks[] = $webhookModel;
+        /** @var AsyncEvent $asyncEvent */
+        foreach ($collection as $asyncEvent) {
+            $asyncEvents[] = $asyncEvent;
         }
 
         return $this->searchResultsFactory->create()
-            ->setItems($webhooks)
+            ->setItems($asyncEvents)
             ->setTotalCount($collection->getSize())
             ->setSearchCriteria($searchCriteria);
     }
@@ -159,19 +159,19 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
             }
         }
 
-        $this->webhookResource->save($asyncEvent);
+        $this->asyncEventResource->save($asyncEvent);
 
         return $asyncEvent;
     }
 
     /**
-     * @param AsyncEventInterface $webhook
+     * @param AsyncEventInterface $asyncEvent
      * @return void
      * @throws AuthorizationException
      */
-    private function validateResources(AsyncEventInterface $webhook)
+    private function validateResources(AsyncEventInterface $asyncEvent)
     {
-        $configData = $this->webhookConfig->get($webhook->getEventName());
+        $configData = $this->asyncEventConfig->get($asyncEvent->getEventName());
         $resources = $configData['resources'] ?? [];
         foreach ($resources as $resource) {
             if (!$this->authorization->isAllowed($resource)) {

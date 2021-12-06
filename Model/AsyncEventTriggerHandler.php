@@ -2,7 +2,7 @@
 
 namespace Aligent\Webhooks\Model;
 
-use Aligent\Webhooks\Model\Config as WebhookConfig;
+use Aligent\Webhooks\Model\Config as AsyncEventConfig;
 use Aligent\Webhooks\Service\Webhook\EventDispatcher;
 use Exception;
 use Magento\Framework\ObjectManagerInterface;
@@ -29,9 +29,9 @@ class AsyncEventTriggerHandler
     private $outputProcessor;
 
     /**
-     * @var Config
+     * @var AsyncEventConfig
      */
-    private $webhookConfig;
+    private $asyncEventConfig;
 
     /**
      * @var ObjectManagerInterface
@@ -52,24 +52,24 @@ class AsyncEventTriggerHandler
      * @param EventDispatcher $dispatcher
      * @param ServiceOutputProcessor $outputProcessor
      * @param ObjectManagerInterface $objectManager
-     * @param Config $webhookConfig
+     * @param AsyncEventConfig $asyncEventConfig
      * @param ServiceInputProcessor $inputProcessor
      * @param Json $json
      * @param LoggerInterface $logger
      */
     public function __construct(
-        EventDispatcher $dispatcher,
+        EventDispatcher        $dispatcher,
         ServiceOutputProcessor $outputProcessor,
         ObjectManagerInterface $objectManager,
-        WebhookConfig $webhookConfig,
-        ServiceInputProcessor $inputProcessor,
-        Json $json,
-        LoggerInterface $logger
+        AsyncEventConfig       $asyncEventConfig,
+        ServiceInputProcessor  $inputProcessor,
+        Json                   $json,
+        LoggerInterface        $logger
     ) {
         $this->dispatcher = $dispatcher;
         $this->json = $json;
         $this->outputProcessor = $outputProcessor;
-        $this->webhookConfig = $webhookConfig;
+        $this->asyncEventConfig = $asyncEventConfig;
         $this->objectManager = $objectManager;
         $this->inputProcessor = $inputProcessor;
         $this->logger = $logger;
@@ -83,11 +83,11 @@ class AsyncEventTriggerHandler
         try {
             // In every publish the data is an array of strings, the first string is the hook name itself, the second
             // name is a serialised string of parameters that the service method accepts.
-            // In a future major version this will change to a schema type e.g: WebhookMessageInterface
+            // In a future major version this will change to a schema type e.g: AsyncEventMessageInterface
             $eventName = $queueMessage[0];
             $output = $this->json->unserialize($queueMessage[1]);
 
-            $configData = $this->webhookConfig->get($eventName);
+            $configData = $this->asyncEventConfig->get($eventName);
             $serviceClassName = $configData['class'];
             $serviceMethodName = $configData['method'];
             $service = $this->objectManager->create($serviceClassName);
@@ -104,8 +104,8 @@ class AsyncEventTriggerHandler
             $this->dispatcher->dispatch($eventName, $outputData);
         } catch (Exception $exception) {
             $this->logger->critical(
-                __('Error when processing %hook webhook', [
-                    'hook' => $eventName
+                __('Error when processing %async_event async event', [
+                    'async_event' => $eventName
                 ]),
                 [
                     'message' => $exception->getMessage(),

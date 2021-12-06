@@ -10,9 +10,9 @@ interface NotifierInterface
     /**
      * The notifier method
      *
-     * @param AsyncEventInterface $webhook
+     * @param AsyncEventInterface $asyncEvent
      * @param array $data
      * @return NotifierResult
      */
-    public function notify(AsyncEventInterface $webhook, array $data): NotifierResult;
+    public function notify(AsyncEventInterface $asyncEvent, array $data): NotifierResult;
 }

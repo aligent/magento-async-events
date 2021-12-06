@@ -15,7 +15,7 @@ class EventDispatcher
     /**
      * @var AsyncEventRepositoryInterface
      */
-    private $webhookRepository;
+    private $asyncEventRepository;
 
     /**
      * @var SearchCriteriaBuilder
@@ -30,12 +30,12 @@ class EventDispatcher
     /**
      * @var AsyncEventLogRepository
      */
-    private $webhookLogRepository;
+    private $asyncEventLogRepository;
 
     /**
      * @var AsyncEventLogFactory
      */
-    private $webhookLogFactory;
+    private $asyncEventLogFactory;
 
     /**
      * @var RetryManager
@@ -43,26 +43,26 @@ class EventDispatcher
     private $retryManager;
 
     /**
-     * @param AsyncEventRepositoryInterface $webhookRepository
-     * @param AsyncEventLogRepository $webhookLogRepository
+     * @param AsyncEventRepositoryInterface $asyncEventRepository
+     * @param AsyncEventLogRepository $asyncEventLogRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param NotifierFactoryInterface $notifierFactory
-     * @param AsyncEventLogFactory $webhookLogFactory
+     * @param AsyncEventLogFactory $asyncEventLogFactory
      * @param RetryManager $retryManager
      */
     public function __construct(
-        AsyncEventRepositoryInterface $webhookRepository,
-        AsyncEventLogRepository       $webhookLogRepository,
+        AsyncEventRepositoryInterface $asyncEventRepository,
+        AsyncEventLogRepository       $asyncEventLogRepository,
         SearchCriteriaBuilder         $searchCriteriaBuilder,
         NotifierFactoryInterface      $notifierFactory,
-        AsyncEventLogFactory             $webhookLogFactory,
+        AsyncEventLogFactory          $asyncEventLogFactory,
         RetryManager                  $retryManager
     ) {
-        $this->webhookRepository = $webhookRepository;
+        $this->asyncEventRepository = $asyncEventRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->notifierFactory = $notifierFactory;
-        $this->webhookLogRepository = $webhookLogRepository;
-        $this->webhookLogFactory = $webhookLogFactory;
+        $this->asyncEventLogRepository = $asyncEventLogRepository;
+        $this->asyncEventLogFactory = $asyncEventLogFactory;
         $this->retryManager = $retryManager;
     }
 
@@ -77,22 +77,22 @@ class EventDispatcher
             ->addFilter('event_name', $eventName)
             ->create();
 
-        $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
+        $asyncEvents = $this->asyncEventRepository->getList($searchCriteria)->getItems();
 
-        /** @var AsyncEvent $webhook */
-        foreach ($webhooks as $webhook) {
-            $handler = $webhook->getMetadata();
+        /** @var AsyncEvent $asyncEvent */
+        foreach ($asyncEvents as $asyncEvent) {
+            $handler = $asyncEvent->getMetadata();
 
             $notifier = $this->notifierFactory->create($handler);
 
-            $response = $notifier->notify($webhook, [
+            $response = $notifier->notify($asyncEvent, [
                 'data' => $output
             ]);
 
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                $this->retryManager->init($webhook->getSubscriptionId(), $output);
+                $this->retryManager->init($asyncEvent->getSubscriptionId(), $output);
             }
         }
     }
@@ -103,13 +103,13 @@ class EventDispatcher
      */
     private function log(NotifierResult $response)
     {
-        $webhookLog = $this->webhookLogFactory->create();
-        $webhookLog->setSuccess($response->getSuccess());
-        $webhookLog->setSubscriptionId($response->getSubscriptionId());
-        $webhookLog->setResponseData($response->getResponseData());
+        $asyncEventLog = $this->asyncEventLogFactory->create();
+        $asyncEventLog->setSuccess($response->getSuccess());
+        $asyncEventLog->setSubscriptionId($response->getSubscriptionId());
+        $asyncEventLog->setResponseData($response->getResponseData());
 
         try {
-            $this->webhookLogRepository->save($webhookLog);
+            $this->asyncEventLogRepository->save($asyncEventLog);
         } catch (AlreadyExistsException $exception) {
             // Do nothing because a log entry can never already exist
         }

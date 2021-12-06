@@ -52,7 +52,7 @@ class HttpNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify(AsyncEventInterface $webhook, array $data): NotifierResult
+    public function notify(AsyncEventInterface $asyncEvent, array $data): NotifierResult
     {
         $body = $data;
 
@@ -62,16 +62,16 @@ class HttpNotifier implements NotifierInterface
             'x-magento-signature' => hash_hmac(
                 self::HASHING_ALGORITHM,
                 $this->json->serialize($body),
-                $this->encryptor->decrypt($webhook->getVerificationToken())
+                $this->encryptor->decrypt($asyncEvent->getVerificationToken())
             )
         ];
 
         $notifierResult = new NotifierResult();
-        $notifierResult->setSubscriptionId($webhook->getSubscriptionId());
+        $notifierResult->setSubscriptionId($asyncEvent->getSubscriptionId());
 
         try {
             $response = $this->client->post(
-                $webhook->getRecipientUrl(),
+                $asyncEvent->getRecipientUrl(),
                 [
                     'headers' => $headers,
                     'json' => $body,
