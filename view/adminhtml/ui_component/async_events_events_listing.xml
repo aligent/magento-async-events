@@ -2,16 +2,16 @@
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">webhooks_webhooks_listing.webhooks_webhooks_listing_data_source</item>
+            <item name="provider" xsi:type="string">async_events_events_listing.async_events_events_listing_data_source</item>
         </item>
     </argument>
     <settings>
-        <spinner>webhooks_webhooks_columns</spinner>
+        <spinner>async_events_events_column</spinner>
         <deps>
-            <dep>webhooks_webhooks_listing.webhooks_webhooks_listing_data_source</dep>
+            <dep>async_events_events_listing.async_events_events_listing_data_source</dep>
         </deps>
     </settings>
-    <dataSource name="webhooks_webhooks_listing_data_source" component="Magento_Ui/js/grid/provider">
+    <dataSource name="async_events_events_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <storageConfig>
                 <param name="indexField" xsi:type="string">subscription_id</param>
@@ -19,7 +19,7 @@
             <updateUrl path="mui/index/render"/>
         </settings>
         <aclResource>Aligent_Webhooks::manage</aclResource>
-        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="webhooks_webhooks_listing_data_source">
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="async_events_events_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>subscription_id</primaryFieldName>
@@ -52,7 +52,7 @@
                         <message translate="true">Are you sure you want to disable the selected webhooks?</message>
                         <title translate="true">Disable webhooks</title>
                     </confirm>
-                    <url path="webhooks/webhooks/massDisable"/>
+                    <url path="async_events/events/massDisable"/>
                     <type>disable</type>
                     <label translate="true">Disable</label>
                 </settings>
@@ -63,7 +63,7 @@
                         <message translate="true">Are you sure you want to enable the selected webhooks?</message>
                         <title translate="true">Enable webhooks</title>
                     </confirm>
-                    <url path="webhooks/webhooks/massEnable"/>
+                    <url path="async_events/events/massEnable"/>
                     <type>enable</type>
                     <label translate="true">Enable</label>
                 </settings>
@@ -71,11 +71,11 @@
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
-    <columns name="webhooks_webhooks_columns">
+    <columns name="async_events_events_column">
         <settings>
             <childDefaults>
                 <param name="fieldAction" xsi:type="array">
-                    <item name="provider" xsi:type="string">webhooks_webhooks_listing.webhooks_webhooks_listing_data_source</item>
+                    <item name="provider" xsi:type="string">async_events_events_listing.async_events_events_listing_data_source</item>
                     <item name="target" xsi:type="string">applyAction</item>
                     <item name="params" xsi:type="array">
                         <item name="0" xsi:type="string">view</item>

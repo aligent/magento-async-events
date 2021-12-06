@@ -1,5 +1,5 @@
 <?php
-namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
+namespace Aligent\Webhooks\Controller\Adminhtml\Events;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
