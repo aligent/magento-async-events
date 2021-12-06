@@ -29,7 +29,7 @@ class RetryHandler
     /**
      * @var AsyncEventRepositoryInterface
      */
-    private  $webhookRepository;
+    private  $asyncEventRepository;
 
     /**
      * @var NotifierFactoryInterface
@@ -39,12 +39,12 @@ class RetryHandler
     /**
      * @var AsyncEventLogFactory
      */
-    private  $webhookLogFactory;
+    private  $asyncEventLogFactory;
 
     /**
      * @var AsyncEventLogRepository
      */
-    private  $webhookLogRepository;
+    private  $asyncEventLogRepository;
 
     /**
      * @var RetryManager
@@ -58,27 +58,27 @@ class RetryHandler
 
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param AsyncEventRepositoryInterface $webhookRepository
+     * @param AsyncEventRepositoryInterface $asyncEventRepository
      * @param NotifierFactoryInterface $notifierFactory
-     * @param AsyncEventLogFactory $webhookLogFactory
-     * @param AsyncEventLogRepository $webhookLogRepository
+     * @param AsyncEventLogFactory $asyncEventLogFactory
+     * @param AsyncEventLogRepository $asyncEventLogRepository
      * @param RetryManager $retryManager
      * @param SerializerInterface $serializer
      */
     public function __construct(
         SearchCriteriaBuilder         $searchCriteriaBuilder,
-        AsyncEventRepositoryInterface $webhookRepository,
+        AsyncEventRepositoryInterface $asyncEventRepository,
         NotifierFactoryInterface      $notifierFactory,
-        AsyncEventLogFactory             $webhookLogFactory,
-        AsyncEventLogRepository       $webhookLogRepository,
+        AsyncEventLogFactory          $asyncEventLogFactory,
+        AsyncEventLogRepository       $asyncEventLogRepository,
         RetryManager                  $retryManager,
         SerializerInterface           $serializer
     ) {
-        $this->webhookRepository = $webhookRepository;
+        $this->asyncEventRepository = $asyncEventRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->notifierFactory = $notifierFactory;
-        $this->webhookLogFactory = $webhookLogFactory;
-        $this->webhookLogRepository = $webhookLogRepository;
+        $this->asyncEventLogFactory = $asyncEventLogFactory;
+        $this->asyncEventLogRepository = $asyncEventLogRepository;
         $this->retryManager = $retryManager;
         $this->serializer = $serializer;
     }
@@ -102,12 +102,12 @@ class RetryHandler
             ->addFilter('subscription_id', $subscriptionId)
             ->create();
 
-        $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
+        $asyncEvents = $this->asyncEventRepository->getList($searchCriteria)->getItems();
 
-        foreach ($webhooks as $webhook) {
-            $handler = $webhook->getMetadata();
+        foreach ($asyncEvents as $asyncEvent) {
+            $handler = $asyncEvent->getMetadata();
             $notifier = $this->notifierFactory->create($handler);
-            $response = $notifier->notify($webhook, [
+            $response = $notifier->notify($asyncEvent, [
                 'data' => $data
             ]);
 
@@ -129,13 +129,13 @@ class RetryHandler
      */
     private function log(NotifierResult $response)
     {
-        $webhookLog = $this->webhookLogFactory->create();
-        $webhookLog->setSuccess($response->getSuccess());
-        $webhookLog->setSubscriptionId($response->getSubscriptionId());
-        $webhookLog->setResponseData($response->getResponseData());
+        $asyncEventLog = $this->asyncEventLogFactory->create();
+        $asyncEventLog->setSuccess($response->getSuccess());
+        $asyncEventLog->setSubscriptionId($response->getSubscriptionId());
+        $asyncEventLog->setResponseData($response->getResponseData());
 
         try {
-            $this->webhookLogRepository->save($webhookLog);
+            $this->asyncEventLogRepository->save($asyncEventLog);
         } catch (AlreadyExistsException $exception) {
             // Do nothing because a log entry can never already exist
         }

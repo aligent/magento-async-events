@@ -33,12 +33,12 @@ class MassEnable extends Action implements HttpPostActionInterface
         Context $context,
         Filter $filter,
         CollectionFactory $collectionFactory,
-        AsyncEventRepositoryInterface $webhookRepository
+        AsyncEventRepositoryInterface $asyncEventRepository
     ) {
         parent::__construct($context);
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
-        $this->webhookRepository = $webhookRepository;
+        $this->webhookRepository = $asyncEventRepository;
     }
 
     public function execute()

@@ -26,18 +26,18 @@ class MassDisable extends Action implements HttpPostActionInterface
     /**
      * @var AsyncEventRepositoryInterface
      */
-    private $webhookRepository;
+    private $asyncEventRepository;
 
     public function __construct(
         Context $context,
         Filter $filter,
         CollectionFactory $collectionFactory,
-        AsyncEventRepositoryInterface $webhookRepository
+        AsyncEventRepositoryInterface $asyncEventRepository
     ) {
         parent::__construct($context);
         $this->collectionFactory = $collectionFactory;
         $this->filter = $filter;
-        $this->webhookRepository = $webhookRepository;
+        $this->asyncEventRepository = $asyncEventRepository;
     }
 
     /**
@@ -48,25 +48,25 @@ class MassDisable extends Action implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('async_events/events/index');
 
-        $webhookCollection = $this->collectionFactory->create();
-        $this->filter->getCollection($webhookCollection);
-        $this->disableWebhooks($webhookCollection);
+        $asyncEventCollection = $this->collectionFactory->create();
+        $this->filter->getCollection($asyncEventCollection);
+        $this->disableAsyncEvents($asyncEventCollection);
 
         return $resultRedirect;
     }
 
-    private function disableWebhooks(Collection $webhookCollection)
+    private function disableAsyncEvents(Collection $asyncEventCollection)
     {
         $disabled = 0;
         $alreadyDisabled = 0;
 
-        /** @var AsyncEvent $webhook */
-        foreach ($webhookCollection as $webhook) {
+        /** @var AsyncEvent $asyncEvent */
+        foreach ($asyncEventCollection as $asyncEvent) {
             $alreadyDisabled++;
-            if ($webhook->getStatus()) {
+            if ($asyncEvent->getStatus()) {
                 try {
-                    $webhook->setStatus(false);
-                    $this->webhookRepository->save($webhook, false);
+                    $asyncEvent->setStatus(false);
+                    $this->asyncEventRepository->save($asyncEvent, false);
                     $alreadyDisabled--;
                     $disabled++;
                 } catch (\Exception $e) {
@@ -77,13 +77,13 @@ class MassDisable extends Action implements HttpPostActionInterface
 
         if ($disabled) {
             $this->messageManager->addSuccessMessage(
-                __('A total of %1 webhook(s) have been disabled.', $disabled)
+                __('A total of %1 event(s) have been disabled.', $disabled)
             );
         }
 
         if ($alreadyDisabled) {
             $this->messageManager->addNoticeMessage(
-                __('A total of %1 webhook(s) are already disabled.', $alreadyDisabled)
+                __('A total of %1 event(s) are already disabled.', $alreadyDisabled)
             );
         }
     }

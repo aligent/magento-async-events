@@ -131,37 +131,37 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function save(AsyncEventInterface $webhook, bool $checkResources = true): AsyncEventDisplayInterface
+    public function save(AsyncEventInterface $asyncEvent, bool $checkResources = true): AsyncEventDisplayInterface
     {
         if ($checkResources) {
-            $this->validateResources($webhook);
+            $this->validateResources($asyncEvent);
         }
 
-        if (!$webhook->getSubscriptionId()) {
-            $webhook->setStatus(true);
-            $webhook->setSubscribedAt((new DateTime())->format(DateTime::ATOM));
-            $secretVerificationToken = $this->encryptor->encrypt($webhook->getVerificationToken());
-            $webhook->setVerificationToken($secretVerificationToken);
+        if (!$asyncEvent->getSubscriptionId()) {
+            $asyncEvent->setStatus(true);
+            $asyncEvent->setSubscribedAt((new DateTime())->format(DateTime::ATOM));
+            $secretVerificationToken = $this->encryptor->encrypt($asyncEvent->getVerificationToken());
+            $asyncEvent->setVerificationToken($secretVerificationToken);
 
         } else {
-            if ($webhook->getStatus() === null) {
+            if ($asyncEvent->getStatus() === null) {
                 throw new LocalizedException(__("Status is required"));
             }
 
-            $newStatus = $webhook->getStatus();
-            $newMetadata = $webhook->getMetadata();
+            $newStatus = $asyncEvent->getStatus();
+            $newMetadata = $asyncEvent->getMetadata();
 
-            $webhook = $this->get($webhook->getSubscriptionId());
-            $webhook->setStatus($newStatus);
+            $asyncEvent = $this->get($asyncEvent->getSubscriptionId());
+            $asyncEvent->setStatus($newStatus);
 
             if ($newMetadata) {
-                $webhook->setMetadata($newMetadata);
+                $asyncEvent->setMetadata($newMetadata);
             }
         }
 
-        $this->webhookResource->save($webhook);
+        $this->webhookResource->save($asyncEvent);
 
-        return $webhook;
+        return $asyncEvent;
     }
 
     /**

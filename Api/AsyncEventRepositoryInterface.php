@@ -23,7 +23,7 @@ interface AsyncEventRepositoryInterface
     public function getList(SearchCriteriaInterface $searchCriteria): AsyncEventSearchResultsInterface;
 
     /**
-     * @param \Aligent\Webhooks\Api\Data\AsyncEventInterface $webhook
+     * @param \Aligent\Webhooks\Api\Data\AsyncEventInterface $asyncEvent
      * @param bool $checkResources
      * @return \Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
@@ -31,5 +31,5 @@ interface AsyncEventRepositoryInterface
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\AuthorizationException
      */
-    public function save(AsyncEventInterface $webhook, bool $checkResources = true): AsyncEventDisplayInterface;
+    public function save(AsyncEventInterface $asyncEvent, bool $checkResources = true): AsyncEventDisplayInterface;
 }
