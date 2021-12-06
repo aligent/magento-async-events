@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="webhook_subscriber" charset="utf8mb4" collation="utf8mb4_unicode_ci">
+    <table name="async_event_subscriber" charset="utf8mb4" collation="utf8mb4_unicode_ci">
         <column name="subscription_id" xsi:type="int" unsigned="true" identity="true" nullable="false"/>
         <column name="event_name" xsi:type="varchar" nullable="false"/>
         <column name="recipient_url" xsi:type="varchar" nullable="false"/>
         <column name="verification_token" xsi:type="varchar" nullable="false"/>
         <column name="status" xsi:type="boolean" nullable="false" default="0"
-                comment="Whether the webhook is active or not"/>
+                comment="Whether the subscription is active or not"/>
         <column name="subscribed_at" xsi:type="datetime" default="NULL"/>
         <column name="modified" xsi:type="datetime" on_update="true"/>
         <column name="metadata" xsi:type="text" nullable="false" comment="Extra information for instantiating notifiers" />
@@ -17,17 +17,19 @@
         </constraint>
     </table>
 
-    <table name="webhook_subscriber_log">
+    <table name="async_event_subscriber_log">
         <column name="log_id" xsi:type="int" unsigned="true" identity="true" nullable="false"/>
         <column name="subscription_id" xsi:type="int" unsigned="true" nullable="false"/>
         <column name="success" xsi:type="boolean" nullable="false" />
         <column name="response_data" xsi:type="text" nullable="false" />
         <column name="created" xsi:type="datetime" default="CURRENT_TIMESTAMP" nullable="false"/>
 
-        <constraint xsi:type="foreign" referenceId="FK_DDF25ACE5F1E5EC1BEBA8C81A1DCBC4F" table="webhook_subscriber_log"
+        <constraint xsi:type="foreign" referenceId="FK_5DC4CE95673D2497179D07B60DE79F61"
+                    table="async_event_subscriber_log"
                     column="subscription_id"
-                    referenceTable="webhook_subscriber"
-                    referenceColumn="subscription_id"/>
+                    referenceTable="async_event_subscriber"
+                    referenceColumn="subscription_id"
+        />
 
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="log_id"/>

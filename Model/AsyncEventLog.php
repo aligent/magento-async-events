@@ -10,7 +10,7 @@ class AsyncEventLog extends AbstractModel
     /**
      * @var string
      */
-    protected $_eventPrefix = 'webhook_subscriber_log';
+    protected $_eventPrefix = 'async_event_subscriber_log';
 
     protected function _construct()
     {

@@ -8,6 +8,6 @@ class AsyncEvent extends AbstractDb
 {
     protected function _construct()
     {
-        $this->_init('webhook_subscriber', 'subscription_id');
+        $this->_init('async_event_subscriber', 'subscription_id');
     }
 }

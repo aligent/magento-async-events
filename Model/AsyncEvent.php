@@ -11,7 +11,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @var string
      */
-    protected $_eventPrefix = 'webhook_subscriber';
+    protected $_eventPrefix = 'async_event_subscriber';
 
     protected function _construct()
     {
