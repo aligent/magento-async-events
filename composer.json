@@ -1,6 +1,6 @@
 {
-  "name": "aligent/webhooks",
-  "description": "An event-driven flexible webhooks module that allows you to dispatch anything to any application at the time it occurs.\n",
+  "name": "aligent/async-events",
+  "description": "An event-driven flexible async events module that allows you to process any event asynchronously.\n",
   "type": "magento2-module",
   "require": {
     "php":  ">=7.0",
@@ -24,7 +24,7 @@
         "registration.php"
     ],
     "psr-4": {
-      "Aligent\\Webhooks\\": ""
+      "Aligent\\AsyncEvents\\": ""
     }
   },
   "scripts": {

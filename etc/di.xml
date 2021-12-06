@@ -1,59 +1,61 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Aligent\Webhooks\Api\WebhookRepositoryInterface"
-                type="Aligent\Webhooks\Model\WebhookRepository" />
+    <preference for="Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface"
+                type="Aligent\AsyncEvents\Model\AsyncEventRepository" />
 
-    <preference for="Aligent\Webhooks\Api\Data\WebhookInterface"
-                type="Aligent\Webhooks\Model\Webhook" />
+    <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventInterface"
+                type="Aligent\AsyncEvents\Model\AsyncEvent" />
 
-    <preference for="Aligent\Webhooks\Api\Data\WebhookDisplayInterface"
-                type="Aligent\Webhooks\Model\Webhook" />
+    <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface"
+                type="Aligent\AsyncEvents\Model\AsyncEvent" />
 
-    <preference for="Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface"
-                type="Aligent\Webhooks\Model\WebhookSearchResults" />
+    <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface"
+                type="Aligent\AsyncEvents\Model\AsyncEventSearchResults" />
 
-    <type name="Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection">
+    <type name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection">
         <arguments>
-            <argument name="mainTable" xsi:type="string">webhook_subscriber</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook</argument>
+            <argument name="mainTable" xsi:type="string">async_event_subscriber</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent</argument>
         </arguments>
     </type>
 
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="webhooks_webhooks_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection</item>
-                <item name="webhooks_logs_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
+                <item name="async_events_events_listing_data_source" xsi:type="string">
+                    Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection
+                </item>
+                <item name="async_events_logs_listing_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
             </argument>
         </arguments>
     </type>
 
-    <virtualType name="Aligent\Webhooks\Model\ResourceModel\WebhookLogs\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <virtualType name="Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
-            <argument name="mainTable" xsi:type="string">webhook_subscriber_log</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\WebhookLog</argument>
+            <argument name="mainTable" xsi:type="string">async_event_subscriber_log</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog</argument>
         </arguments>
     </virtualType>
 
-    <type name="Aligent\Webhooks\Model\Config\Reader">
+    <!-- XML/XSD Config -->
+    <type name="Aligent\AsyncEvents\Model\Config\Reader">
         <arguments>
-            <argument name="fileName" xsi:type="string">webhooks.xml</argument>
-            <argument name="converter" xsi:type="object">Aligent\Webhooks\Model\Config\Converter</argument>
-            <argument name="schemaLocator" xsi:type="object">Aligent\Webhooks\Model\Config\SchemaLocator</argument>
+            <argument name="fileName" xsi:type="string">async_events.xml</argument>
+            <argument name="converter" xsi:type="object">Aligent\AsyncEvents\Model\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Aligent\AsyncEvents\Model\Config\SchemaLocator</argument>
         </arguments>
     </type>
 
-    <virtualType name="webhookDataStorage" type="Magento\Framework\Config\Data">
+    <virtualType name="asyncEventDataStorage" type="Magento\Framework\Config\Data">
         <arguments>
-            <argument name="reader" xsi:type="object">Aligent\Webhooks\Model\Config\Reader</argument>
-            <argument name="cacheId" xsi:type="string">webhook_config_cache</argument>
+            <argument name="reader" xsi:type="object">Aligent\AsyncEvents\Model\Config\Reader</argument>
+            <argument name="cacheId" xsi:type="string">async_event_config_cache</argument>
         </arguments>
     </virtualType>
 
-    <type name="Aligent\Webhooks\Model\Config">
+    <type name="Aligent\AsyncEvents\Model\Config">
         <arguments>
-            <argument name="dataStorage" xsi:type="object">webhookDataStorage</argument>
+            <argument name="dataStorage" xsi:type="object">asyncEventDataStorage</argument>
         </arguments>
     </type>
-
 </config>

@@ -1,124 +1,98 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
-declare(strict_types=1);
-
-namespace Aligent\AsyncEvents\Model;
+namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Helper\NotifierResult;
-use Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactoryInterface;
-use Aligent\AsyncEvents\Service\AsyncEvent\RetryManager;
+use Aligent\AsyncEvents\Model\AsyncEvent;
+use Aligent\AsyncEvents\Model\AsyncEventLogFactory;
+use Aligent\AsyncEvents\Model\AsyncEventLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
-use Magento\Framework\Serialize\SerializerInterface;
 
-class RetryHandler
+class EventDispatcher
 {
-    const RETRY_LIMIT = 5;
+    /**
+     * @var AsyncEventRepositoryInterface
+     */
+    private $asyncEventRepository;
 
     /**
      * @var SearchCriteriaBuilder
      */
-    private  $searchCriteriaBuilder;
-
-    /**
-     * @var AsyncEventRepositoryInterface
-     */
-    private  $asyncEventRepository;
+    private $searchCriteriaBuilder;
 
     /**
      * @var NotifierFactoryInterface
      */
-    private  $notifierFactory;
-
-    /**
-     * @var AsyncEventLogFactory
-     */
-    private  $asyncEventLogFactory;
+    private $notifierFactory;
 
     /**
      * @var AsyncEventLogRepository
      */
-    private  $asyncEventLogRepository;
+    private $asyncEventLogRepository;
+
+    /**
+     * @var AsyncEventLogFactory
+     */
+    private $asyncEventLogFactory;
 
     /**
      * @var RetryManager
      */
-    private  $retryManager;
+    private $retryManager;
 
     /**
-     * @var SerializerInterface
-     */
-    private  $serializer;
-
-    /**
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param AsyncEventRepositoryInterface $asyncEventRepository
+     * @param AsyncEventLogRepository $asyncEventLogRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param NotifierFactoryInterface $notifierFactory
      * @param AsyncEventLogFactory $asyncEventLogFactory
-     * @param AsyncEventLogRepository $asyncEventLogRepository
      * @param RetryManager $retryManager
-     * @param SerializerInterface $serializer
      */
     public function __construct(
-        SearchCriteriaBuilder         $searchCriteriaBuilder,
         AsyncEventRepositoryInterface $asyncEventRepository,
+        AsyncEventLogRepository       $asyncEventLogRepository,
+        SearchCriteriaBuilder         $searchCriteriaBuilder,
         NotifierFactoryInterface      $notifierFactory,
         AsyncEventLogFactory          $asyncEventLogFactory,
-        AsyncEventLogRepository       $asyncEventLogRepository,
-        RetryManager                  $retryManager,
-        SerializerInterface           $serializer
+        RetryManager                  $retryManager
     ) {
         $this->asyncEventRepository = $asyncEventRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->notifierFactory = $notifierFactory;
-        $this->asyncEventLogFactory = $asyncEventLogFactory;
         $this->asyncEventLogRepository = $asyncEventLogRepository;
+        $this->asyncEventLogFactory = $asyncEventLogFactory;
         $this->retryManager = $retryManager;
-        $this->serializer = $serializer;
     }
 
     /**
-     * @param array $message
+     * @param string $eventName
+     * @param mixed $output
      */
-    public function process(array $message)
+    public function dispatch(string $eventName, $output)
     {
-        $subscriptionId = $message[RetryManager::SUBSCRIPTION_ID];
-        $deathCount = $message[RetryManager::DEATH_COUNT];
-        $data = $message[RetryManager::CONTENT];
-
-        $subscriptionId = (int) $subscriptionId;
-        $deathCount = (int) $deathCount;
-
-        $data = $this->serializer->unserialize($data);
-
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
-            ->addFilter('subscription_id', $subscriptionId)
+            ->addFilter('event_name', $eventName)
             ->create();
 
         $asyncEvents = $this->asyncEventRepository->getList($searchCriteria)->getItems();
 
+        /** @var AsyncEvent $asyncEvent */
         foreach ($asyncEvents as $asyncEvent) {
             $handler = $asyncEvent->getMetadata();
+
             $notifier = $this->notifierFactory->create($handler);
+
             $response = $notifier->notify($asyncEvent, [
-                'data' => $data
+                'data' => $output
             ]);
 
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                if ($deathCount < self::RETRY_LIMIT) {
-                    $this->retryManager->place($deathCount + 1, $subscriptionId, $data);
-                } else {
-                    $this->retryManager->kill($subscriptionId, $data);
-                }
+                $this->retryManager->init($asyncEvent->getSubscriptionId(), $output);
             }
         }
     }
@@ -140,4 +114,5 @@ class RetryHandler
             // Do nothing because a log entry can never already exist
         }
     }
+
 }

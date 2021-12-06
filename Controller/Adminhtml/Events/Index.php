@@ -1,23 +1,15 @@
 <?php
-
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
-declare(strict_types=1);
-
-namespace Aligent\AsyncEvents\Controller\Adminhtml\Logs;
+namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 class Index extends Action implements HttpGetActionInterface
 {
-
-    const MENU_ID = 'Aligent_AsyncEvents::logs';
+    const MENU_ID = 'Aligent_AsyncEvents::index';
 
     /**
      * @var PageFactory
@@ -25,6 +17,8 @@ class Index extends Action implements HttpGetActionInterface
     protected $resultPageFactory;
 
     /**
+     * Index constructor.
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
@@ -37,11 +31,16 @@ class Index extends Action implements HttpGetActionInterface
         $this->resultPageFactory = $resultPageFactory;
     }
 
+    /**
+     * Load the page defined in view/adminhtml/layout/async_events_events_index.xml
+     *
+     * @return Page
+     */
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);
-        $resultPage->getConfig()->getTitle()->prepend(__('Event Logs'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Asynchronous Events'));
 
         return $resultPage;
     }

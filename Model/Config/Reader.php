@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Aligent\Webhooks\Model\Config;
+namespace Aligent\AsyncEvents\Model\Config;
 
 use Magento\Framework\Config\Reader\Filesystem;
 
@@ -19,6 +19,6 @@ class Reader extends Filesystem
      * @var array
      */
     protected $_idAttributes = [
-        '/config/webhook' => 'hook_name'
+        '/config/async_event' => 'name'
     ];
 }
