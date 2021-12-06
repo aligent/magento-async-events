@@ -23,7 +23,7 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="webhooks_webhooks_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection</item>
-                <item name="webhooks_logs_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
+                <item name="async_events_logs_listing_data_source" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
             </argument>
         </arguments>
     </type>

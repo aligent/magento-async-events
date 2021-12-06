@@ -3,16 +3,16 @@
          xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">webhooks_logs_listing.webhooks_logs_listing_data_source</item>
+            <item name="provider" xsi:type="string">async_events_logs_listing.async_events_logs_listing_data_source</item>
         </item>
     </argument>
     <settings>
-        <spinner>webhooks_logs_columns</spinner>
+        <spinner>async_events_logs_columns</spinner>
         <deps>
-            <dep>webhooks_logs_listing.webhooks_logs_listing_data_source</dep>
+            <dep>async_events_logs_listing.async_events_logs_listing_data_source</dep>
         </deps>
     </settings>
-    <dataSource name="webhooks_logs_listing_data_source" component="Magento_Ui/js/grid/provider">
+    <dataSource name="async_events_logs_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <storageConfig>
                 <param name="indexField" xsi:type="string">log_id</param>
@@ -20,7 +20,7 @@
             <updateUrl path="mui/index/render"/>
         </settings>
         <aclResource>Aligent_Webhooks::manage</aclResource>
-        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="webhooks_logs_listing_data_source">
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="async_events_logs_listing_data_source">
             <settings>
                 <requestFieldName>log_id</requestFieldName>
                 <primaryFieldName>log_id</primaryFieldName>
@@ -38,7 +38,7 @@
     </listingToolbar>
 
     <!--The list of columns-->
-    <columns name="webhooks_logs_columns">
+    <columns name="async_events_logs_columns">
         <selectionsColumn name="ids" sortOrder="0">
             <settings>
                 <indexField>log_id</indexField>

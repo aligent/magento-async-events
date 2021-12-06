@@ -12,6 +12,6 @@
 
         <add id="Aligent_Webhooks::webhooks_logs" title="Logs" translate="title" module="Aligent_Webhooks"
              parent="Aligent_Webhooks::integrations" sortOrder="10" dependsOnModule="Aligent_Webhooks"
-             action="webhooks/logs" resource="Aligent_Webhooks::manage" />
+             action="async_events/logs" resource="Aligent_Webhooks::manage" />
     </menu>
 </config>
