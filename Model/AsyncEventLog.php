@@ -4,7 +4,7 @@ namespace Aligent\Webhooks\Model;
 
 use Magento\Framework\Model\AbstractModel;
 
-class WebhookLog extends AbstractModel
+class AsyncEventLog extends AbstractModel
 {
 
     /**

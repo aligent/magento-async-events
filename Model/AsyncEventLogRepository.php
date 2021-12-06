@@ -10,7 +10,7 @@ namespace Aligent\Webhooks\Model;
 use Aligent\Webhooks\Model\ResourceModel\AsyncEventLog as WebhookResource;
 use Magento\Framework\Exception\AlreadyExistsException;
 
-class WebhookLogRepository
+class AsyncEventLogRepository
 {
     /**
      * @var WebhookResource
@@ -24,7 +24,7 @@ class WebhookLogRepository
     }
 
     /**
-     * @param WebhookLog $webhookLog
+     * @param AsyncEventLog $webhookLog
      * @throws AlreadyExistsException
      */
     public function save($webhookLog)

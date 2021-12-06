@@ -11,7 +11,7 @@ use Magento\Framework\Webapi\ServiceInputProcessor;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
 use Psr\Log\LoggerInterface;
 
-class WebhookTriggerHandler
+class AsyncEventTriggerHandler
 {
     /**
      * @var EventDispatcher
