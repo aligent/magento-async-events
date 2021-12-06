@@ -2,16 +2,16 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Aligent_Webhooks::integrations" title="Asynchronous Events" translate="title" module="Aligent_Webhooks"
+        <add id="Aligent_AsyncEvents::integrations" title="Asynchronous Events" translate="title" module="Aligent_Webhooks"
              parent="Magento_Backend::content" sortOrder="50" dependsOnModule="Aligent_Webhooks"
-             resource="Aligent_Webhooks::manage"/>
+             resource="Aligent_AsyncEvents::manage"/>
 
-        <add id="Aligent_Webhooks::webhooks" title="Subscribers" translate="title" module="Aligent_Webhooks"
-             parent="Aligent_Webhooks::integrations" sortOrder="10" dependsOnModule="Aligent_Webhooks"
-             action="async_events/events" resource="Aligent_Webhooks::manage" />
+        <add id="Aligent_AsyncEvents::webhooks" title="Subscribers" translate="title" module="Aligent_Webhooks"
+             parent="Aligent_AsyncEvents::integrations" sortOrder="10" dependsOnModule="Aligent_Webhooks"
+             action="async_events/events" resource="Aligent_AsyncEvents::manage" />
 
-        <add id="Aligent_Webhooks::webhooks_logs" title="Logs" translate="title" module="Aligent_Webhooks"
-             parent="Aligent_Webhooks::integrations" sortOrder="10" dependsOnModule="Aligent_Webhooks"
-             action="async_events/logs" resource="Aligent_Webhooks::manage" />
+        <add id="Aligent_AsyncEvents::webhooks_logs" title="Logs" translate="title" module="Aligent_Webhooks"
+             parent="Aligent_AsyncEvents::integrations" sortOrder="10" dependsOnModule="Aligent_Webhooks"
+             action="async_events/logs" resource="Aligent_AsyncEvents::manage" />
     </menu>
 </config>

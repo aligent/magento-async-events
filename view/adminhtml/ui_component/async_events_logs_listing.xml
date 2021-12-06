@@ -19,7 +19,7 @@
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <aclResource>Aligent_Webhooks::manage</aclResource>
+        <aclResource>Aligent_AsyncEvents::manage</aclResource>
         <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="async_events_logs_listing_data_source">
             <settings>
                 <requestFieldName>log_id</requestFieldName>

@@ -4,25 +4,25 @@
     <route url="/V1/webhook/:subscriptionId" method="GET">
         <service class="Aligent\Webhooks\Api\AsyncEventRepositoryInterface" method="get"/>
         <resources>
-            <resource ref="Aligent_Webhooks::manage" />
+            <resource ref="Aligent_AsyncEvents::manage" />
         </resources>
     </route>
     <route url="/V1/webhooks" method="GET">
         <service class="Aligent\Webhooks\Api\AsyncEventRepositoryInterface" method="getList"/>
         <resources>
-            <resource ref="Aligent_Webhooks::manage" />
+            <resource ref="Aligent_AsyncEvents::manage" />
         </resources>
     </route>
     <route url="/V1/webhook" method="POST">
         <service class="Aligent\Webhooks\Api\AsyncEventRepositoryInterface" method="save"/>
         <resources>
-            <resource ref="Aligent_Webhooks::manage" />
+            <resource ref="Aligent_AsyncEvents::manage" />
         </resources>
     </route>
     <route url="/V1/webhook/:subscriptionId" method="PUT">
         <service class="Aligent\Webhooks\Api\AsyncEventRepositoryInterface" method="save"/>
         <resources>
-            <resource ref="Aligent_Webhooks::manage" />
+            <resource ref="Aligent_AsyncEvents::manage" />
         </resources>
     </route>
 </routes>
