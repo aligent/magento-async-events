@@ -2,7 +2,7 @@
 
 namespace Aligent\Webhooks\Model\ResourceModel;
 
-class WebhookLog extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+class AsyncEventLog extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
 
     protected function _construct()

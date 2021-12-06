@@ -14,7 +14,7 @@ class WebhookLog extends AbstractModel
 
     protected function _construct()
     {
-        $this->_init(ResourceModel\WebhookLog::class);
+        $this->_init(ResourceModel\AsyncEventLog::class);
     }
 
     public function getLogId()

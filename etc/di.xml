@@ -15,7 +15,7 @@
     <type name="Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">webhook_subscriber</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\Webhook</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\AsyncEvent</argument>
         </arguments>
     </type>
 
@@ -31,7 +31,7 @@
     <virtualType name="Aligent\Webhooks\Model\ResourceModel\WebhookLogs\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">webhook_subscriber_log</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\WebhookLog</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\Webhooks\Model\ResourceModel\AsyncEventLog</argument>
         </arguments>
     </virtualType>
 

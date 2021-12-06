@@ -3,7 +3,7 @@
 namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
 
 use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
-use Aligent\Webhooks\Model\ResourceModel\Webhook;
+use Aligent\Webhooks\Model\ResourceModel\AsyncEvent;
 use Magento\Ui\Component\MassAction\Filter;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory;
 use Magento\Backend\App\Action;

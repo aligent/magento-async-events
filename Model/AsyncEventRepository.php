@@ -7,7 +7,7 @@ use Aligent\Webhooks\Api\Data\AsyncEventInterface;
 use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterface;
 use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Model\Config as WebhookConfig;
-use Aligent\Webhooks\Model\ResourceModel\Webhook as WebhookResource;
+use Aligent\Webhooks\Model\ResourceModel\AsyncEvent as WebhookResource;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCollectionFactory;
 use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterfaceFactory as SearchResultsFactory;
 

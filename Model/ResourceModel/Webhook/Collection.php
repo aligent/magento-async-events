@@ -2,7 +2,7 @@
 
 namespace Aligent\Webhooks\Model\ResourceModel\Webhook;
 
-use Aligent\Webhooks\Model\ResourceModel\Webhook as WebhookResource;
+use Aligent\Webhooks\Model\ResourceModel\AsyncEvent as AsyncEventResource;
 use Aligent\Webhooks\Model\AsyncEvent;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
@@ -18,7 +18,7 @@ class Collection extends AbstractCollection
     {
         $this->_init(
             AsyncEvent::class,
-            WebhookResource::class
+            AsyncEventResource::class
         );
     }
 }

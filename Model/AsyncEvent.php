@@ -15,7 +15,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
 
     protected function _construct()
     {
-        $this->_init(ResourceModel\Webhook::class);
+        $this->_init(ResourceModel\AsyncEvent::class);
     }
 
     /**
