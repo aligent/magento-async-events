@@ -35,8 +35,8 @@ class SchemaLocator implements SchemaLocatorInterface
     public function __construct(\Magento\Framework\Module\Dir\Reader $moduleReader)
     {
         $dir = $moduleReader->getModuleDir(Dir::MODULE_ETC_DIR, 'Aligent_Webhooks');
-        $this->_schema = $dir . '/webhooks.xsd';
-        $this->_schemaFile = $dir . '/webhooks.xsd';
+        $this->_schema = $dir . '/async_events.xsd';
+        $this->_schemaFile = $dir . '/async_events.xsd';
     }
 
     /**

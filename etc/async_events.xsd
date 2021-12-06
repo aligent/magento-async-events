@@ -3,26 +3,26 @@
     <xs:element name="config">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="webhook" type="webhookDeclaration" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="async_event" type="asyncEventDeclaration" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
         </xs:complexType>
-        <xs:unique name="uniqueHookName">
+        <xs:unique name="uniqueAsyncEventName">
             <xs:annotation>
                 <xs:documentation>
-                    Webhook name must be unique.
+                    Async event name must be unique.
                 </xs:documentation>
             </xs:annotation>
-            <xs:selector xpath="webhook" />
-            <xs:field xpath="@hook_name" />
+            <xs:selector xpath="async_event" />
+            <xs:field xpath="@name" />
         </xs:unique>
     </xs:element>
 
-    <xs:complexType name="webhookDeclaration">
+    <xs:complexType name="asyncEventDeclaration">
         <xs:sequence>
             <xs:element name="service" type="serviceDeclaration" />
             <xs:element name="resources" type="resourceDeclaration" minOccurs="0" />
         </xs:sequence>
-        <xs:attribute name="hook_name" type="hookName" use="required" />
+        <xs:attribute name="name" type="eventName" use="required" />
     </xs:complexType>
 
     <xs:complexType name="serviceDeclaration">
@@ -46,7 +46,7 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:simpleType name="hookName">
+    <xs:simpleType name="eventName">
         <xs:annotation>
             <xs:documentation>
                 Event name can contain only [a-zA-Z0-9._-].

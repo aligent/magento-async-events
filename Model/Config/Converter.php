@@ -19,11 +19,11 @@ class Converter implements ConverterInterface
     public function convert($source): array
     {
         $output = [];
-        $webhooks = $source->getElementsByTagName('webhook');
+        $webhooks = $source->getElementsByTagName('async_event');
 
         /** @var DOMNode $webhookConfig */
         foreach ($webhooks as $webhookConfig) {
-            $hookName = $webhookConfig->attributes->getNamedItem('hook_name')->nodeValue;
+            $hookName = $webhookConfig->attributes->getNamedItem('name')->nodeValue;
 
             $webhookService = [];
             $webhookResources = [];

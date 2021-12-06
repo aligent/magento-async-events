@@ -19,6 +19,6 @@ class Reader extends Filesystem
      * @var array
      */
     protected $_idAttributes = [
-        '/config/webhook' => 'hook_name'
+        '/config/async_event' => 'name'
     ];
 }

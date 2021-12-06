@@ -35,25 +35,25 @@
         </arguments>
     </virtualType>
 
+    <!-- XML/XSD Config -->
     <type name="Aligent\Webhooks\Model\Config\Reader">
         <arguments>
-            <argument name="fileName" xsi:type="string">webhooks.xml</argument>
+            <argument name="fileName" xsi:type="string">async_events.xml</argument>
             <argument name="converter" xsi:type="object">Aligent\Webhooks\Model\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Aligent\Webhooks\Model\Config\SchemaLocator</argument>
         </arguments>
     </type>
 
-    <virtualType name="webhookDataStorage" type="Magento\Framework\Config\Data">
+    <virtualType name="asyncEventDataStorage" type="Magento\Framework\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Aligent\Webhooks\Model\Config\Reader</argument>
-            <argument name="cacheId" xsi:type="string">webhook_config_cache</argument>
+            <argument name="cacheId" xsi:type="string">async_event_config_cache</argument>
         </arguments>
     </virtualType>
 
     <type name="Aligent\Webhooks\Model\Config">
         <arguments>
-            <argument name="dataStorage" xsi:type="object">webhookDataStorage</argument>
+            <argument name="dataStorage" xsi:type="object">asyncEventDataStorage</argument>
         </arguments>
     </type>
-
 </config>
