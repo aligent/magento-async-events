@@ -7,7 +7,7 @@ class NotifierResult
     private $_success;
 
     /**
-     * Refers back to the actual webhook entity id that is associated,
+     * Refers back to the actual event entity id that is associated,
      * not the subscription name id like customer_created, customer_updated
      * and so on
      */

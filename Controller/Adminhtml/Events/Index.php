@@ -9,7 +9,7 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Index extends Action implements HttpGetActionInterface
 {
-    const MENU_ID = 'Aligent_AsyncEvents::integrations_webhooks';
+    const MENU_ID = 'Aligent_AsyncEvents::index';
 
     /**
      * @var PageFactory
@@ -32,7 +32,7 @@ class Index extends Action implements HttpGetActionInterface
     }
 
     /**
-     * Load the page defined in view/adminhtml/layout/webhooks_webhooks_index.xml
+     * Load the page defined in view/adminhtml/layout/async_events_events_index.xml
      *
      * @return Page
      */

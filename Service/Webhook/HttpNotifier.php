@@ -56,8 +56,7 @@ class HttpNotifier implements NotifierInterface
     {
         $body = $data;
 
-        // Sign the payload that the client can verify. Which means a secret has to be provided when subscribing to a
-        // webhook
+        // Sign the payload that the client can verify.
         $headers = [
             'x-magento-signature' => hash_hmac(
                 self::HASHING_ALGORITHM,

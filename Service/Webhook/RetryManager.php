@@ -167,7 +167,7 @@ class RetryManager
 
         $bindingConfig = $this->bindingFactory->create();
         $bindingConfig->setData([
-            'id' => 'WebhookRetry' . $backoff . 'Binding',
+            'id' => 'EventRetry' . $backoff . 'Binding',
             'destinationType' => 'queue',
             'destination' => $queueName,
             'arguments' => [],
