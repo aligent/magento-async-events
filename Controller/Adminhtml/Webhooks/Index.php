@@ -40,7 +40,7 @@ class Index extends Action implements HttpGetActionInterface
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);
-        $resultPage->getConfig()->getTitle()->prepend(__('Webhooks'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Asynchronous Events'));
 
         return $resultPage;
     }
