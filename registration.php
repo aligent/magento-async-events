@@ -2,4 +2,4 @@
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Aligent_Webhooks', __DIR__);
+ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Aligent_AsyncEvents', __DIR__);

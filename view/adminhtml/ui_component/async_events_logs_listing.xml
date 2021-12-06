@@ -59,7 +59,7 @@
             </settings>
         </column>
 
-        <column name="success" class="Aligent\Webhooks\Ui\Component\Listing\Columns\Status" sortOrder="30">
+        <column name="success" class="Aligent\AsyncEvents\Ui\Component\Listing\Columns\Status" sortOrder="30">
             <settings>
                 <filter>text</filter>
                 <label translate="true">Status</label>

@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Aligent\Webhooks\Controller\Adminhtml\Logs;
+namespace Aligent\AsyncEvents\Controller\Adminhtml\Logs;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;

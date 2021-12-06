@@ -1,12 +1,12 @@
 <?php
 
-namespace Aligent\Webhooks\Service\Webhook;
+namespace Aligent\AsyncEvents\Service\Webhook;
 
-use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
-use Aligent\Webhooks\Helper\NotifierResult;
-use Aligent\Webhooks\Model\AsyncEvent;
-use Aligent\Webhooks\Model\AsyncEventLogFactory;
-use Aligent\Webhooks\Model\AsyncEventLogRepository;
+use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
+use Aligent\AsyncEvents\Helper\NotifierResult;
+use Aligent\AsyncEvents\Model\AsyncEvent;
+use Aligent\AsyncEvents\Model\AsyncEventLogFactory;
+use Aligent\AsyncEvents\Model\AsyncEventLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
 

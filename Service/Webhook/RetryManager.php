@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace Aligent\Webhooks\Service\Webhook;
+namespace Aligent\AsyncEvents\Service\Webhook;
 
-use Aligent\Webhooks\Helper\QueueMetadataInterface;
+use Aligent\AsyncEvents\Helper\QueueMetadataInterface;
 use Magento\Framework\Amqp\ConfigPool;
 use Magento\Framework\Amqp\Topology\BindingInstallerInterface;
 use Magento\Framework\Amqp\Topology\QueueInstaller;

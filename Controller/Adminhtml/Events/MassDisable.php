@@ -1,12 +1,12 @@
 <?php
 
-namespace Aligent\Webhooks\Controller\Adminhtml\Events;
+namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 
-use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
-use Aligent\Webhooks\Model\AsyncEvent;
-use Aligent\Webhooks\Model\ResourceModel\Webhook\Collection;
+use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
+use Aligent\AsyncEvents\Model\AsyncEvent;
+use Aligent\AsyncEvents\Model\ResourceModel\Webhook\Collection;
 use Magento\Ui\Component\MassAction\Filter;
-use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory;
+use Aligent\AsyncEvents\Model\ResourceModel\Webhook\CollectionFactory;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;

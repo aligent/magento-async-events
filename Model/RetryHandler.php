@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace Aligent\Webhooks\Model;
+namespace Aligent\AsyncEvents\Model;
 
-use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
-use Aligent\Webhooks\Helper\NotifierResult;
-use Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface;
-use Aligent\Webhooks\Service\Webhook\RetryManager;
+use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
+use Aligent\AsyncEvents\Helper\NotifierResult;
+use Aligent\AsyncEvents\Service\Webhook\NotifierFactoryInterface;
+use Aligent\AsyncEvents\Service\Webhook\RetryManager;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Serialize\SerializerInterface;

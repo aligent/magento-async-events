@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Aligent\Webhooks\Model;
+namespace Aligent\AsyncEvents\Model;
 
 use Magento\Framework\Config\DataInterface;
 

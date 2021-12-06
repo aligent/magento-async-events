@@ -5,9 +5,9 @@
  * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
  */
 
-namespace Aligent\Webhooks\Model;
+namespace Aligent\AsyncEvents\Model;
 
-use Aligent\Webhooks\Model\ResourceModel\AsyncEventLog as AsyncEventLogResource;
+use Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog as AsyncEventLogResource;
 use Magento\Framework\Exception\AlreadyExistsException;
 
 class AsyncEventLogRepository

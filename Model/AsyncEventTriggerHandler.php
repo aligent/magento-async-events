@@ -1,9 +1,9 @@
 <?php
 
-namespace Aligent\Webhooks\Model;
+namespace Aligent\AsyncEvents\Model;
 
-use Aligent\Webhooks\Model\Config as AsyncEventConfig;
-use Aligent\Webhooks\Service\Webhook\EventDispatcher;
+use Aligent\AsyncEvents\Model\Config as AsyncEventConfig;
+use Aligent\AsyncEvents\Service\Webhook\EventDispatcher;
 use Exception;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;

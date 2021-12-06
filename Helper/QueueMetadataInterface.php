@@ -1,6 +1,6 @@
 <?php
 
-namespace Aligent\Webhooks\Helper;
+namespace Aligent\AsyncEvents\Helper;
 
 interface QueueMetadataInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Aligent\Webhooks\Model\ResourceModel;
+namespace Aligent\AsyncEvents\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 

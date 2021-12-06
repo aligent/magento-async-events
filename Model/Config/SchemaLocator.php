@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Aligent\Webhooks\Model\Config;
+namespace Aligent\AsyncEvents\Model\Config;
 
 use Magento\Framework\Config\SchemaLocatorInterface;
 use Magento\Framework\Module\Dir;

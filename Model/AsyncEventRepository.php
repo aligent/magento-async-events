@@ -1,15 +1,15 @@
 <?php
 
-namespace Aligent\Webhooks\Model;
+namespace Aligent\AsyncEvents\Model;
 
-use Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface;
-use Aligent\Webhooks\Api\Data\AsyncEventInterface;
-use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterface;
-use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
-use Aligent\Webhooks\Model\Config as AsyncEventConfig;
-use Aligent\Webhooks\Model\ResourceModel\AsyncEvent as AsyncEventResource;
-use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as AsyncEventCollectionFactory;
-use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterfaceFactory as SearchResultsFactory;
+use Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface;
+use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
+use Aligent\AsyncEvents\Model\Config as AsyncEventConfig;
+use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent as AsyncEventResource;
+use Aligent\AsyncEvents\Model\ResourceModel\Webhook\CollectionFactory as AsyncEventCollectionFactory;
+use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterfaceFactory as SearchResultsFactory;
 
 use DateTime;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;

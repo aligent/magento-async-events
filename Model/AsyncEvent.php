@@ -1,9 +1,9 @@
 <?php
 
-namespace Aligent\Webhooks\Model;
+namespace Aligent\AsyncEvents\Model;
 
-use Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface;
-use Aligent\Webhooks\Api\Data\AsyncEventInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 
 class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface, AsyncEventDisplayInterface

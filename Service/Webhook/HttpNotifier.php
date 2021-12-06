@@ -1,9 +1,9 @@
 <?php
 
-namespace Aligent\Webhooks\Service\Webhook;
+namespace Aligent\AsyncEvents\Service\Webhook;
 
-use Aligent\Webhooks\Api\Data\AsyncEventInterface;
-use Aligent\Webhooks\Helper\NotifierResult;
+use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
+use Aligent\AsyncEvents\Helper\NotifierResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Magento\Framework\Encryption\EncryptorInterface;

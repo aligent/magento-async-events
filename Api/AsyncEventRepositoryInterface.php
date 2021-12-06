@@ -1,31 +1,31 @@
 <?php
 
-namespace Aligent\Webhooks\Api;
+namespace Aligent\AsyncEvents\Api;
 
-use Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface;
-use Aligent\Webhooks\Api\Data\AsyncEventInterface;
-use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 
 interface AsyncEventRepositoryInterface
 {
     /**
      * @param string $subscriptionId
-     * @return \Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface
+     * @return \Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function get(string $subscriptionId): AsyncEventDisplayInterface;
 
     /**
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterface
+     * @return \Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria): AsyncEventSearchResultsInterface;
 
     /**
-     * @param \Aligent\Webhooks\Api\Data\AsyncEventInterface $asyncEvent
+     * @param \Aligent\AsyncEvents\Api\Data\AsyncEventInterface $asyncEvent
      * @param bool $checkResources
-     * @return \Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface
+     * @return \Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\AlreadyExistsException

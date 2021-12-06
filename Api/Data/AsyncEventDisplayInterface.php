@@ -1,6 +1,6 @@
 <?php
 
-namespace Aligent\Webhooks\Api\Data;
+namespace Aligent\AsyncEvents\Api\Data;
 
 interface AsyncEventDisplayInterface
 {

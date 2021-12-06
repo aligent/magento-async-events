@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Aligent\Webhooks\Model\Config;
+namespace Aligent\AsyncEvents\Model\Config;
 
 use DOMNode;
 use InvalidArgumentException;
