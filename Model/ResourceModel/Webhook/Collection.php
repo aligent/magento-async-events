@@ -3,7 +3,7 @@
 namespace Aligent\Webhooks\Model\ResourceModel\Webhook;
 
 use Aligent\Webhooks\Model\ResourceModel\Webhook as WebhookResource;
-use Aligent\Webhooks\Model\Webhook;
+use Aligent\Webhooks\Model\AsyncEvent;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
@@ -17,7 +17,7 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(
-            Webhook::class,
+            AsyncEvent::class,
             WebhookResource::class
         );
     }

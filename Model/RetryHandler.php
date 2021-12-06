@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Aligent\Webhooks\Model;
 
-use Aligent\Webhooks\Api\WebhookRepositoryInterface;
+use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
 use Aligent\Webhooks\Service\Webhook\NotifierFactoryInterface;
 use Aligent\Webhooks\Service\Webhook\RetryManager;
@@ -27,7 +27,7 @@ class RetryHandler
     private  $searchCriteriaBuilder;
 
     /**
-     * @var WebhookRepositoryInterface
+     * @var AsyncEventRepositoryInterface
      */
     private  $webhookRepository;
 
@@ -58,7 +58,7 @@ class RetryHandler
 
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param WebhookRepositoryInterface $webhookRepository
+     * @param AsyncEventRepositoryInterface $webhookRepository
      * @param NotifierFactoryInterface $notifierFactory
      * @param WebhookLogFactory $webhookLogFactory
      * @param WebhookLogRepository $webhookLogRepository
@@ -66,13 +66,13 @@ class RetryHandler
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        WebhookRepositoryInterface $webhookRepository,
-        NotifierFactoryInterface $notifierFactory,
-        WebhookLogFactory $webhookLogFactory,
-        WebhookLogRepository $webhookLogRepository,
-        RetryManager $retryManager,
-        SerializerInterface $serializer
+        SearchCriteriaBuilder         $searchCriteriaBuilder,
+        AsyncEventRepositoryInterface $webhookRepository,
+        NotifierFactoryInterface      $notifierFactory,
+        WebhookLogFactory             $webhookLogFactory,
+        WebhookLogRepository          $webhookLogRepository,
+        RetryManager                  $retryManager,
+        SerializerInterface           $serializer
     ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;

@@ -2,9 +2,9 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
-use Aligent\Webhooks\Api\WebhookRepositoryInterface;
+use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
-use Aligent\Webhooks\Model\Webhook;
+use Aligent\Webhooks\Model\AsyncEvent;
 use Aligent\Webhooks\Model\WebhookLogFactory;
 use Aligent\Webhooks\Model\WebhookLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -13,7 +13,7 @@ use Magento\Framework\Exception\AlreadyExistsException;
 class EventDispatcher
 {
     /**
-     * @var WebhookRepositoryInterface
+     * @var AsyncEventRepositoryInterface
      */
     private $webhookRepository;
 
@@ -43,7 +43,7 @@ class EventDispatcher
     private $retryManager;
 
     /**
-     * @param WebhookRepositoryInterface $webhookRepository
+     * @param AsyncEventRepositoryInterface $webhookRepository
      * @param WebhookLogRepository $webhookLogRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param NotifierFactoryInterface $notifierFactory
@@ -51,12 +51,12 @@ class EventDispatcher
      * @param RetryManager $retryManager
      */
     public function __construct(
-        WebhookRepositoryInterface $webhookRepository,
-        WebhookLogRepository $webhookLogRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        NotifierFactoryInterface $notifierFactory,
-        WebhookLogFactory $webhookLogFactory,
-        RetryManager $retryManager
+        AsyncEventRepositoryInterface $webhookRepository,
+        WebhookLogRepository          $webhookLogRepository,
+        SearchCriteriaBuilder         $searchCriteriaBuilder,
+        NotifierFactoryInterface      $notifierFactory,
+        WebhookLogFactory             $webhookLogFactory,
+        RetryManager                  $retryManager
     ) {
         $this->webhookRepository = $webhookRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -79,7 +79,7 @@ class EventDispatcher
 
         $webhooks = $this->webhookRepository->getList($searchCriteria)->getItems();
 
-        /** @var Webhook $webhook */
+        /** @var AsyncEvent $webhook */
         foreach ($webhooks as $webhook) {
             $handler = $webhook->getMetadata();
 

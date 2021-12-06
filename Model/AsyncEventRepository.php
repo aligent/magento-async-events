@@ -2,10 +2,10 @@
 
 namespace Aligent\Webhooks\Model;
 
-use Aligent\Webhooks\Api\Data\WebhookDisplayInterface;
-use Aligent\Webhooks\Api\Data\WebhookInterface;
-use Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface;
-use Aligent\Webhooks\Api\WebhookRepositoryInterface;
+use Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface;
+use Aligent\Webhooks\Api\Data\AsyncEventInterface;
+use Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterface;
+use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Model\Config as WebhookConfig;
 use Aligent\Webhooks\Model\ResourceModel\Webhook as WebhookResource;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory as WebhookCollectionFactory;
@@ -20,7 +20,7 @@ use Magento\Framework\Exception\AuthorizationException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
-class WebhookRepository implements WebhookRepositoryInterface
+class AsyncEventRepository implements AsyncEventRepositoryInterface
 {
     /**
      * @var WebhookFactory
@@ -95,7 +95,7 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $subscriptionId): WebhookDisplayInterface
+    public function get(string $subscriptionId): AsyncEventDisplayInterface
     {
         $webhook = $this->webhookFactory->create();
         $this->webhookResource->load($webhook, $subscriptionId);
@@ -110,14 +110,14 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getList(SearchCriteriaInterface $searchCriteria): WebhookSearchResultsInterface
+    public function getList(SearchCriteriaInterface $searchCriteria): AsyncEventSearchResultsInterface
     {
         $collection = $this->webhookCollectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);
 
         $webhooks = [];
 
-        /** @var Webhook $webhookModel */
+        /** @var AsyncEvent $webhookModel */
         foreach ($collection as $webhookModel) {
             $webhooks[] = $webhookModel;
         }
@@ -131,7 +131,7 @@ class WebhookRepository implements WebhookRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function save(WebhookInterface $webhook, bool $checkResources = true): WebhookDisplayInterface
+    public function save(AsyncEventInterface $webhook, bool $checkResources = true): AsyncEventDisplayInterface
     {
         if ($checkResources) {
             $this->validateResources($webhook);
@@ -165,11 +165,11 @@ class WebhookRepository implements WebhookRepositoryInterface
     }
 
     /**
-     * @param WebhookInterface $webhook
+     * @param AsyncEventInterface $webhook
      * @return void
      * @throws AuthorizationException
      */
-    private function validateResources(WebhookInterface $webhook)
+    private function validateResources(AsyncEventInterface $webhook)
     {
         $configData = $this->webhookConfig->get($webhook->getEventName());
         $resources = $configData['resources'] ?? [];

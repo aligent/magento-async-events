@@ -2,7 +2,7 @@
 
 namespace Aligent\Webhooks\Service\Webhook;
 
-use Aligent\Webhooks\Api\Data\WebhookInterface;
+use Aligent\Webhooks\Api\Data\AsyncEventInterface;
 use Aligent\Webhooks\Helper\NotifierResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -52,7 +52,7 @@ class HttpNotifier implements NotifierInterface
     /**
      * {@inheritDoc}
      */
-    public function notify(WebhookInterface $webhook, array $data): NotifierResult
+    public function notify(AsyncEventInterface $webhook, array $data): NotifierResult
     {
         $body = $data;
 

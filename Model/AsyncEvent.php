@@ -2,11 +2,11 @@
 
 namespace Aligent\Webhooks\Model;
 
-use Aligent\Webhooks\Api\Data\WebhookDisplayInterface;
-use Aligent\Webhooks\Api\Data\WebhookInterface;
+use Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface;
+use Aligent\Webhooks\Api\Data\AsyncEventInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 
-class Webhook extends AbstractExtensibleModel implements WebhookInterface, WebhookDisplayInterface
+class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface, AsyncEventDisplayInterface
 {
     /**
      * @var string

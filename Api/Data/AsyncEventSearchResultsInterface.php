@@ -5,15 +5,15 @@ namespace Aligent\Webhooks\Api\Data;
 
 use Magento\Framework\Api\SearchResultsInterface;
 
-interface WebhookSearchResultsInterface extends SearchResultsInterface
+interface AsyncEventSearchResultsInterface extends SearchResultsInterface
 {
     /**
-     * @return \Aligent\Webhooks\Api\Data\WebhookInterface[]
+     * @return \Aligent\Webhooks\Api\Data\AsyncEventInterface[]
      */
     public function getItems();
 
     /**
-     * @param \Aligent\Webhooks\Api\Data\WebhookInterface[] $items
+     * @param \Aligent\Webhooks\Api\Data\AsyncEventInterface[] $items
      * @return $this
      */
     public function setItems(array $items);

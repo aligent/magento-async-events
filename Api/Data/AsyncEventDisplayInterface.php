@@ -2,7 +2,7 @@
 
 namespace Aligent\Webhooks\Api\Data;
 
-interface WebhookDisplayInterface
+interface AsyncEventDisplayInterface
 {
     /**
      * @return int|null

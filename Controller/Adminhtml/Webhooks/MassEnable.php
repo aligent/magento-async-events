@@ -2,7 +2,7 @@
 
 namespace Aligent\Webhooks\Controller\Adminhtml\Webhooks;
 
-use Aligent\Webhooks\Api\WebhookRepositoryInterface;
+use Aligent\Webhooks\Api\AsyncEventRepositoryInterface;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\Collection;
 use Aligent\Webhooks\Model\ResourceModel\Webhook\CollectionFactory;
 use Magento\Backend\App\Action;
@@ -24,7 +24,7 @@ class MassEnable extends Action implements HttpPostActionInterface
     private $filter;
 
     /**
-     * @var WebhookRepositoryInterface
+     * @var AsyncEventRepositoryInterface
      */
     private $webhookRepository;
 
@@ -32,7 +32,7 @@ class MassEnable extends Action implements HttpPostActionInterface
         Context $context,
         Filter $filter,
         CollectionFactory $collectionFactory,
-        WebhookRepositoryInterface $webhookRepository
+        AsyncEventRepositoryInterface $webhookRepository
     ) {
         parent::__construct($context);
         $this->filter = $filter;
@@ -57,7 +57,7 @@ class MassEnable extends Action implements HttpPostActionInterface
         $enabled = 0;
         $alreadyEnabled = 0;
 
-        /** @var \Aligent\Webhooks\Model\Webhook $webhook */
+        /** @var \Aligent\Webhooks\Model\AsyncEvent $webhook */
         foreach ($webhookCollection as $webhook) {
             $alreadyEnabled++;
             if (!$webhook->getStatus()) {

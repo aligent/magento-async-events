@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Aligent\Webhooks\Api\WebhookRepositoryInterface"
-                type="Aligent\Webhooks\Model\WebhookRepository" />
+    <preference for="Aligent\Webhooks\Api\AsyncEventRepositoryInterface"
+                type="Aligent\Webhooks\Model\AsyncEventRepository" />
 
-    <preference for="Aligent\Webhooks\Api\Data\WebhookInterface"
-                type="Aligent\Webhooks\Model\Webhook" />
+    <preference for="Aligent\Webhooks\Api\Data\AsyncEventInterface"
+                type="Aligent\Webhooks\Model\AsyncEvent" />
 
-    <preference for="Aligent\Webhooks\Api\Data\WebhookDisplayInterface"
-                type="Aligent\Webhooks\Model\Webhook" />
+    <preference for="Aligent\Webhooks\Api\Data\AsyncEventDisplayInterface"
+                type="Aligent\Webhooks\Model\AsyncEvent" />
 
-    <preference for="Aligent\Webhooks\Api\Data\WebhookSearchResultsInterface"
-                type="Aligent\Webhooks\Model\WebhookSearchResults" />
+    <preference for="Aligent\Webhooks\Api\Data\AsyncEventSearchResultsInterface"
+                type="Aligent\Webhooks\Model\AsyncEventSearchResults" />
 
     <type name="Aligent\Webhooks\Model\ResourceModel\Webhook\Grid\Collection">
         <arguments>
