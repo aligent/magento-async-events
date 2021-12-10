@@ -17,7 +17,7 @@
     "magento/magento-coding-standard": "^6.0"
   },
     "license": [
-    "Proprietary"
+    "GPL-3.0-only"
   ],
   "autoload": {
     "files": [
