@@ -37,6 +37,18 @@
         </arguments>
     </virtualType>
 
+   <!-- NotifierFactory and Notifier setup -->
+    <preference for="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactoryInterface"
+                type="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactory" />
+
+    <type name="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactory">
+        <arguments>
+            <argument name="notifierClasses" xsi:type="array">
+                <item name="http" xsi:type="object">Aligent\AsyncEvent\Service\AsyncEvent\HttpNotifier</item>
+            </argument>
+        </arguments>
+    </type>
+
     <!-- XML/XSD Config -->
     <type name="Aligent\AsyncEvents\Model\Config\Reader">
         <arguments>
