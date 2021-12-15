@@ -18,6 +18,11 @@ class NotifierResult
      */
     private $_responseData;
 
+    /**
+     * @var string
+     */
+    private $uuid;
+
     public function getSuccess()
     {
         return $this->_success;
@@ -48,6 +53,17 @@ class NotifierResult
     public function setResponseData($responseData)
     {
         $this->_responseData = $responseData;
+        return $this;
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
         return $this;
     }
 }

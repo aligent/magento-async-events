@@ -71,4 +71,14 @@ class AsyncEventLog extends AbstractModel
         $this->setData('response_data', $responseData);
         return $this;
     }
+
+    public function getUuid(): string
+    {
+        return (string) $this->getData('uuid');
+    }
+
+    public function setUuid(string $uuid)
+    {
+        $this->setData('uuid', $uuid);
+    }
 }
