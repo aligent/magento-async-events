@@ -44,7 +44,7 @@
     <type name="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactory">
         <arguments>
             <argument name="notifierClasses" xsi:type="array">
-                <item name="http" xsi:type="object">Aligent\AsyncEvent\Service\AsyncEvent\HttpNotifier</item>
+                <item name="http" xsi:type="object">Aligent\AsyncEvents\Service\AsyncEvent\HttpNotifier</item>
             </argument>
         </arguments>
     </type>
