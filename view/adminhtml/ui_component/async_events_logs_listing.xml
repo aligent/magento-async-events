@@ -52,14 +52,21 @@
             </settings>
         </column>
 
-        <column name="subscription_id" sortOrder="20">
+        <column name="uuid" sortOrder="20">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">uuid</label>
+            </settings>
+        </column>
+
+        <column name="subscription_id" sortOrder="30">
             <settings>
                 <filter>text</filter>
                 <label translate="true">Subscription</label>
             </settings>
         </column>
 
-        <column name="success" class="Aligent\AsyncEvents\Ui\Component\Listing\Columns\Status" sortOrder="30">
+        <column name="success" class="Aligent\AsyncEvents\Ui\Component\Listing\Columns\Status" sortOrder="40">
             <settings>
                 <filter>text</filter>
                 <label translate="true">Status</label>
@@ -70,7 +77,7 @@
             </settings>
         </column>
 
-        <column name="response_data" sortOrder="40">
+        <column name="response_data" sortOrder="50">
             <settings>
                 <filter>text</filter>
                 <label translate="true">Response</label>

@@ -20,11 +20,15 @@
             "subscription_id": true,
             "success": true,
             "response_data": true,
-            "created": true
+            "created": true,
+            "uuid": true
         },
         "constraint": {
             "FK_5DC4CE95673D2497179D07B60DE79F61": true,
             "PRIMARY": true
+        },
+        "index": {
+            "ASYNC_EVENT_SUBSCRIBER_LOG_UUID": true
         }
     }
 }

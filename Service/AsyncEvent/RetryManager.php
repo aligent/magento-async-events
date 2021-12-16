@@ -22,6 +22,7 @@ class RetryManager
     const DEATH_COUNT = 'death_count';
     const SUBSCRIPTION_ID = 'subscription_id';
     const CONTENT = 'content';
+    const UUID = 'uuid';
 
     /**
      * @var ConfigPool
@@ -88,15 +89,17 @@ class RetryManager
     /**
      * @param int $subscriptionId
      * @param $data
+     * @param string
      * @return void
      */
-    public function init(int $subscriptionId, $data)
+    public function init(int $subscriptionId, $data, string $uuid)
     {
         $this->assertDelayQueue(1, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY);
         $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [
             self::SUBSCRIPTION_ID => $subscriptionId,
             self::DEATH_COUNT => 1,
-            self::CONTENT => $this->serializer->serialize($data)
+            self::CONTENT => $this->serializer->serialize($data),
+            self::UUID => $uuid
         ]);
     }
 
@@ -104,9 +107,10 @@ class RetryManager
      * @param int $deathCount
      * @param int $subscriptionId
      * @param $data
+     * @param string $uuid
      * @return void
      */
-    public function place(int $deathCount, int $subscriptionId, $data)
+    public function place(int $deathCount, int $subscriptionId, $data, string $uuid)
     {
         $backoff = $this->calculateBackoff($deathCount);
         $queueName = 'event.delay.' . $backoff;
@@ -116,7 +120,8 @@ class RetryManager
         $this->publisher->publish($retryRoutingKey, [
             self::SUBSCRIPTION_ID => $subscriptionId,
             self::DEATH_COUNT =>  $deathCount,
-            self::CONTENT => $this->serializer->serialize($data)
+            self::CONTENT => $this->serializer->serialize($data),
+            self::UUID => $uuid
         ]);
     }
 

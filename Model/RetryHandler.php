@@ -91,6 +91,7 @@ class RetryHandler
         $subscriptionId = $message[RetryManager::SUBSCRIPTION_ID];
         $deathCount = $message[RetryManager::DEATH_COUNT];
         $data = $message[RetryManager::CONTENT];
+        $uuid = $message[RetryManager::UUID];
 
         $subscriptionId = (int) $subscriptionId;
         $deathCount = (int) $deathCount;
@@ -110,12 +111,12 @@ class RetryHandler
             $response = $notifier->notify($asyncEvent, [
                 'data' => $data
             ]);
-
+            $response->setUuid($uuid);
             $this->log($response);
 
             if (!$response->getSuccess()) {
                 if ($deathCount < self::RETRY_LIMIT) {
-                    $this->retryManager->place($deathCount + 1, $subscriptionId, $data);
+                    $this->retryManager->place($deathCount + 1, $subscriptionId, $data, $uuid);
                 } else {
                     $this->retryManager->kill($subscriptionId, $data);
                 }
@@ -133,6 +134,7 @@ class RetryHandler
         $asyncEventLog->setSuccess($response->getSuccess());
         $asyncEventLog->setSubscriptionId($response->getSubscriptionId());
         $asyncEventLog->setResponseData($response->getResponseData());
+        $asyncEventLog->setUuid($response->getUuid());
 
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);

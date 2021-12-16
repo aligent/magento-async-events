@@ -9,6 +9,7 @@ use Aligent\AsyncEvents\Model\AsyncEventLogFactory;
 use Aligent\AsyncEvents\Model\AsyncEventLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Ramsey\Uuid\Uuid;
 
 class EventDispatcher
 {
@@ -89,10 +90,13 @@ class EventDispatcher
                 'data' => $output
             ]);
 
+            $uuid = Uuid::uuid4()->toString();
+            $response->setUuid($uuid);
+
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                $this->retryManager->init($asyncEvent->getSubscriptionId(), $output);
+                $this->retryManager->init($asyncEvent->getSubscriptionId(), $output, $uuid);
             }
         }
     }
@@ -107,6 +111,7 @@ class EventDispatcher
         $asyncEventLog->setSuccess($response->getSuccess());
         $asyncEventLog->setSubscriptionId($response->getSubscriptionId());
         $asyncEventLog->setResponseData($response->getResponseData());
+        $asyncEventLog->setUuid($response->getUuid());
 
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);
