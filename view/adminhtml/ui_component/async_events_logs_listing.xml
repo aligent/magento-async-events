@@ -91,5 +91,6 @@
                 <label translate="true">Delivery</label>
             </settings>
         </column>
+        <actionsColumn name="actions" class="Aligent\AsyncEvents\Ui\Component\Listing\Columns\AsyncEventActions" />
     </columns>
 </listing>
