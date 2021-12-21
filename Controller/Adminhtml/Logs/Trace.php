@@ -37,8 +37,6 @@ class Trace extends Action implements HttpGetActionInterface
      */
     public function execute()
     {
-        $uuid = $this->getRequest()->getParam('uuid');
-
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(static::MENU_ID);
         $resultPage->getConfig()->getTitle()->prepend(__('Trace'));

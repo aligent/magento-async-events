@@ -24,6 +24,8 @@
         <column name="success" xsi:type="boolean" nullable="false" />
         <column name="response_data" xsi:type="text" nullable="false" />
         <column name="created" xsi:type="datetime" default="CURRENT_TIMESTAMP" nullable="false"/>
+        <column xsi:type="blob" name="serialized_data" nullable="true"
+                comment="Data (serialized) that is associated with a delivery." />
 
         <constraint xsi:type="foreign" referenceId="FK_5DC4CE95673D2497179D07B60DE79F61"
                     table="async_event_subscriber_log"

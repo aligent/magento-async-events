@@ -5,6 +5,7 @@ namespace Aligent\AsyncEvents\Service\AsyncEvent;
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Helper\NotifierResult;
 use Aligent\AsyncEvents\Model\AsyncEvent;
+use Aligent\AsyncEvents\Model\AsyncEventLog;
 use Aligent\AsyncEvents\Model\AsyncEventLogFactory;
 use Aligent\AsyncEvents\Model\AsyncEventLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -107,11 +108,13 @@ class EventDispatcher
      */
     private function log(NotifierResult $response)
     {
+        /** @var AsyncEventLog $asyncEventLog */
         $asyncEventLog = $this->asyncEventLogFactory->create();
         $asyncEventLog->setSuccess($response->getSuccess());
         $asyncEventLog->setSubscriptionId($response->getSubscriptionId());
         $asyncEventLog->setResponseData($response->getResponseData());
         $asyncEventLog->setUuid($response->getUuid());
+        $asyncEventLog->setSerializedData($response->getAsyncEventData());
 
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);

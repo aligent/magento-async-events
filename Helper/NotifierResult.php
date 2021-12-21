@@ -23,6 +23,8 @@ class NotifierResult
      */
     private $uuid;
 
+    private $data;
+
     public function getSuccess()
     {
         return $this->_success;
@@ -65,5 +67,15 @@ class NotifierResult
     {
         $this->uuid = $uuid;
         return $this;
+    }
+
+    public function setAsyncEventData($eventData)
+    {
+        $this->data = $eventData;
+    }
+
+    public function getAsyncEventData()
+    {
+        return $this->data;
     }
 }
