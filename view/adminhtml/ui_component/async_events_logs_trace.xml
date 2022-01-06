@@ -54,6 +54,12 @@
                 <label translate="true">UUID</label>
             </settings>
         </field>
+        <field name="serialized_data" formElement="textarea">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Serialized Data</label>
+            </settings>
+        </field>
     </fieldset>
     <htmlContent name="async_events_trace_tab_view_content" sortOrder="20">
         <block class="Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View" name="async_events_trace_tab_view" template="Aligent_AsyncEvents::tab/view.phtml">
