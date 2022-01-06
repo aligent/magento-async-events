@@ -79,13 +79,16 @@ class Details
         $deathCount = 0;
         $success = false;
         foreach ($traces as $trace) {
-            if (!$trace['success']) {
-                $deathCount++;
-            } else {
+            $deathCount++;
+
+            if ($trace['success']) {
                 $success = true;
                 break;
             }
         }
+
+        // Deduct one which is taking the initial delivery into consideration
+        $deathCount--;
 
         if ($success) {
             $message = 'Delivered';

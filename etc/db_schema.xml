@@ -17,7 +17,7 @@
         </constraint>
     </table>
 
-    <table name="async_event_subscriber_log">
+    <table name="async_event_subscriber_log" charset="utf8mb4" collation="utf8mb4_unicode_ci">
         <column name="log_id" xsi:type="int" unsigned="true" identity="true" nullable="false"/>
         <column name="uuid" xsi:type="varchar" nullable="true" />
         <column name="subscription_id" xsi:type="int" unsigned="true" nullable="false"/>

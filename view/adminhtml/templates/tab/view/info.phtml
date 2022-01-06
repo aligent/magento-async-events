@@ -18,13 +18,13 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
                 <table class="admin__table-secondary order-information-table">
                     <tbody>
                     <?= $block->getChildHtml() ?>
-                    <tr>
+                    <tr class="">
                         <th><?= 'uuid' ?></th>
                         <td><?= $block->getUuid() ?></td>
                     </tr>
                     <tr>
-                        <th><?= 'Status' ?></th>
-                        <td><?= $block->getStatus() ?></td>
+                        <th style="font-weight: bold"><?= 'Status' ?></th>
+                        <td style="font-weight: bold"><?= $block->getStatus() ?></td>
                     </tr>
                     <tr>
                         <th><?= 'First attempt time' ?></th>
@@ -81,45 +81,39 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
     <div class="fieldset-wrapper-title">
         <span class="title"><?= 'Traces' ?></span>
     </div>
+    <div class="admin__table-wrapper">
+        <table class="admin__table-primary">
+            <thead>
+            <tr>
+                <th><?= __('Log Id') ?></th>
+                <th><?= __('Delivery Time') ?></th>
+                <th><?= __('uuid') ?></th>
+                <th><?= __('Response') ?></th>
+                <th><?= __('Status') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($block->getLogs() as $item): ?>
+                <tr>
+                    <td style="padding: 1rem">
+                        <?= $item['log_id'] ?>
+                    </td>
+                    <td style="padding: 1rem">
+                        <?= $item['created'] ?>
+                    </td>
+                    <td style="padding: 1rem">
+                        <?= $item['uuid'] ?>
+                    </td>
+                    <td style="padding: 1rem">
+                        <?= $item['response_data'] ?>
+                    </td>
+                    <td style="padding: 1rem" class="col-severity">
+                        <?= $item['success'] ? '<span class="grid-severity-notice"><span>Success</span></span>' : '<span class="grid-severity-critical"><span>Failed</span></span>' ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<section class="">
-    <div class=>
-        <div class="">
-            <div class=>
-                <table class="">
-                    <thead>
-                        <tr>
-                            <th><?= __('Log Id') ?></th>
-                            <th><?= __('Delivery Time') ?></th>
-                            <th><?= __('uuid') ?></th>
-                            <th><?= __('Response') ?></th>
-                            <th><?= __('Status') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($block->getLogs() as $item): ?>
-                        <tr>
-                            <td style="padding: 1rem">
-                                <?= $item['log_id'] ?>
-                            </td>
-                            <td style="padding: 1rem">
-                                <?= $item['created'] ?>
-                            </td>
-                            <td style="padding: 1rem">
-                                <?= $item['uuid'] ?>
-                            </td>
-                            <td style="padding: 1rem">
-                                <?= $item['response_data'] ?>
-                            </td>
-                            <td style="padding: 1rem">
-                                <?= $item['success'] ? 'Success' : 'Failed' ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</section>

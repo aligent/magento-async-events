@@ -55,6 +55,11 @@
             </settings>
         </field>
         <field name="serialized_data" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="rows" xsi:type="number">20</item>
+                </item>
+            </argument>
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Serialized Data</label>
