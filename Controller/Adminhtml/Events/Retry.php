@@ -51,7 +51,11 @@ class Retry extends Action implements HttpPostActionInterface
     {
         $data = $this->getRequest()->getPostValue()['general'];
 
-        $this->retryManager->init((int) $data['subscription_id'], $this->serializer->unserialize($data['serialized_data'])['data'] , $data['uuid']);
+        $this->retryManager->init(
+            (int) $data['subscription_id'],
+            $this->serializer->unserialize($data['serialized_data'])['data'] ,
+            $data['uuid']
+        );
 
         $this->_redirect($this->_redirect->getRefererUrl());
     }
