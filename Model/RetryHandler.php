@@ -130,11 +130,13 @@ class RetryHandler
      */
     private function log(NotifierResult $response)
     {
+        /** @var AsyncEventLog $asyncEventLog */
         $asyncEventLog = $this->asyncEventLogFactory->create();
         $asyncEventLog->setSuccess($response->getSuccess());
         $asyncEventLog->setSubscriptionId($response->getSubscriptionId());
         $asyncEventLog->setResponseData($response->getResponseData());
         $asyncEventLog->setUuid($response->getUuid());
+        $asyncEventLog->setSerializedData($response->getAsyncEventData());
 
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);

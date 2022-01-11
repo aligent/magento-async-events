@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">async_events_logs_trace.async_events_logs_trace_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Trace Information</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" class="Aligent\AsyncEvents\Block\Adminhtml\Trace\Details\ReplayButton" />
+            <button name="back" class="Aligent\AsyncEvents\Block\Adminhtml\Trace\Details\BackButton" />
+        </buttons>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+        <namespace>async_events_logs_trace</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>async_events_logs_trace.async_events_logs_trace_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="async_events_logs_trace_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="async_events/events/retry" />
+        </settings>
+        <dataProvider class="Aligent\AsyncEvents\Ui\DataProvider\AsyncEventsTrace" name="async_events_logs_trace_data_source">
+            <settings>
+                <requestFieldName>uuid</requestFieldName>
+                <primaryFieldName>uuid</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general" sortOrder="0">
+        <settings>
+            <label translate="true">Info</label>
+        </settings>
+        <field name="uuid" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <dataType>text</dataType>
+                <label translate="true">UUID</label>
+            </settings>
+        </field>
+        <field name="serialized_data" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="rows" xsi:type="number">20</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Serialized Data</label>
+            </settings>
+        </field>
+    </fieldset>
+    <htmlContent name="async_events_trace_tab_view_content" sortOrder="20">
+        <block class="Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View" name="async_events_trace_tab_view" template="Aligent_AsyncEvents::tab/view.phtml">
+            <arguments>
+                <argument name="sort_order" xsi:type="number">10</argument>
+                <argument name="tab_label" xsi:type="string" translate="true">Overview</argument>
+            </arguments>
+            <block class="Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info" name="trace_info" template="Aligent_AsyncEvents::tab/view/info.phtml" />
+        </block>
+    </htmlContent>
+</form>

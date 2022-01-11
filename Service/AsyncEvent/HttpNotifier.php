@@ -67,6 +67,7 @@ class HttpNotifier implements NotifierInterface
 
         $notifierResult = new NotifierResult();
         $notifierResult->setSubscriptionId($asyncEvent->getSubscriptionId());
+        $notifierResult->setAsyncEventData($body);
 
         try {
             $response = $this->client->post(
@@ -84,15 +85,12 @@ class HttpNotifier implements NotifierInterface
                 && $response->getStatusCode() < 300
             );
 
-            $notifierResult->setResponseData(
-                $this->json->serialize(
-                    $response->getBody()->getContents()
-                )
-            );
+            $notifierResult->setResponseData($response->getBody()->getContents());
+
         } catch (RequestException $exception) {
 
             /**
-             * Catch a RequestException so we cover even the network layer exceptions which might sometimes
+             * Catch a RequestException, so we cover even the network layer exceptions which might sometimes
              * not have a response.
              */
             $notifierResult->setSuccess(false);
@@ -102,11 +100,7 @@ class HttpNotifier implements NotifierInterface
                 $responseContent = $response->getBody()->getContents();
                 $exceptionMessage = !empty($responseContent) ? $responseContent : $response->getReasonPhrase();
 
-                $notifierResult->setResponseData(
-                    $this->json->serialize(
-                        $exceptionMessage
-                    )
-                );
+                $notifierResult->setResponseData($exceptionMessage);
             } else {
                 $notifierResult->setResponseData(
                     $exception->getMessage()

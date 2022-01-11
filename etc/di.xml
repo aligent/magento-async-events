@@ -26,6 +26,7 @@
                     Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection
                 </item>
                 <item name="async_events_logs_listing_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
+                <item name="async_events_logs_trace_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
             </argument>
         </arguments>
     </type>

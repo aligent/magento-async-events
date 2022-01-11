@@ -1,0 +1,119 @@
+<?php
+
+/**
+ * @var Info $block
+ */
+use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
+
+?>
+
+<section class="admin__page-section order-view-account-information">
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-information">
+            <div class="admin__page-section-item-title">
+                <span class="title">Async Event Delivery Information</span>
+            </div>
+
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-information-table">
+                    <tbody>
+                    <?= $block->getChildHtml() ?>
+                    <tr class="">
+                        <th><?= 'uuid' ?></th>
+                        <td><?= $block->getUuid() ?></td>
+                    </tr>
+                    <tr>
+                        <th style="font-weight: bold"><?= 'Status' ?></th>
+                        <td style="font-weight: bold"><?= $block->getStatus() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= 'First attempt time' ?></th>
+                        <td><?= $block->getFirstAttempt() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= 'Last attempt time' ?></th>
+                        <td><?= $block->getLastAttempt() ?></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item order-account-information">
+            <div class="admin__page-section-item-title">
+                <span class="title">Subscription Information</span>
+            </div>
+
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-account-information-table">
+                    <?php $block->getLogs() ?>
+                    <tr>
+                        <th>Asynchronous Event Name</th>
+                        <td>
+                            <?= $block->getAsynchronousEventName() ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Current Status</th>
+                        <td>
+                            <?= $block->getCurrentStatus() ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Recipient</th>
+                        <td>
+                            <?= $block->getRecipient() ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Subscribed At</th>
+                        <td>
+                            <?= $block->getSubscribedAt() ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="fieldset-wrapper">
+    <div class="fieldset-wrapper-title">
+        <span class="title"><?= 'Traces' ?></span>
+    </div>
+    <div class="admin__table-wrapper">
+        <table class="admin__table-primary">
+            <thead>
+            <tr>
+                <th><?= __('Log Id') ?></th>
+                <th><?= __('Delivery Time') ?></th>
+                <th><?= __('uuid') ?></th>
+                <th><?= __('Response') ?></th>
+                <th><?= __('Status') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($block->getLogs() as $item): ?>
+                <tr>
+                    <td style="padding: 1rem">
+                        <?= $item['log_id'] ?>
+                    </td>
+                    <td style="padding: 1rem">
+                        <?= $item['created'] ?>
+                    </td>
+                    <td style="padding: 1rem">
+                        <?= $item['uuid'] ?>
+                    </td>
+                    <td style="padding: 1rem">
+                        <?= $item['response_data'] ?>
+                    </td>
+                    <td style="padding: 1rem" class="col-severity">
+                        <?= $item['success'] ? '<span class="grid-severity-notice"><span>Success</span></span>' : '<span class="grid-severity-critical"><span>Failed</span></span>' ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+

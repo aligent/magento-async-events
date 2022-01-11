@@ -2,8 +2,12 @@
 
 namespace Aligent\AsyncEvents\Model\ResourceModel;
 
-class AsyncEventLog extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class AsyncEventLog extends AbstractDb
 {
+
+    protected $_serializableFields = ['serialized_data' => [[],[]]];
 
     protected function _construct()
     {

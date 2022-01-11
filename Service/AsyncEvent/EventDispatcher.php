@@ -5,11 +5,12 @@ namespace Aligent\AsyncEvents\Service\AsyncEvent;
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Helper\NotifierResult;
 use Aligent\AsyncEvents\Model\AsyncEvent;
+use Aligent\AsyncEvents\Model\AsyncEventLog;
 use Aligent\AsyncEvents\Model\AsyncEventLogFactory;
 use Aligent\AsyncEvents\Model\AsyncEventLogRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\DataObject\IdentityGeneratorInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
-use Ramsey\Uuid\Uuid;
 
 class EventDispatcher
 {
@@ -44,11 +45,17 @@ class EventDispatcher
     private $retryManager;
 
     /**
+     * @var IdentityGeneratorInterface
+     */
+    private $identityService;
+
+    /**
      * @param AsyncEventRepositoryInterface $asyncEventRepository
      * @param AsyncEventLogRepository $asyncEventLogRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param NotifierFactoryInterface $notifierFactory
      * @param AsyncEventLogFactory $asyncEventLogFactory
+     * @param IdentityGeneratorInterface $identityService
      * @param RetryManager $retryManager
      */
     public function __construct(
@@ -57,6 +64,7 @@ class EventDispatcher
         SearchCriteriaBuilder         $searchCriteriaBuilder,
         NotifierFactoryInterface      $notifierFactory,
         AsyncEventLogFactory          $asyncEventLogFactory,
+        IdentityGeneratorInterface    $identityService,
         RetryManager                  $retryManager
     ) {
         $this->asyncEventRepository = $asyncEventRepository;
@@ -65,6 +73,7 @@ class EventDispatcher
         $this->asyncEventLogRepository = $asyncEventLogRepository;
         $this->asyncEventLogFactory = $asyncEventLogFactory;
         $this->retryManager = $retryManager;
+        $this->identityService = $identityService;
     }
 
     /**
@@ -90,7 +99,7 @@ class EventDispatcher
                 'data' => $output
             ]);
 
-            $uuid = Uuid::uuid4()->toString();
+            $uuid = $this->identityService->generateId();
             $response->setUuid($uuid);
 
             $this->log($response);
@@ -107,11 +116,13 @@ class EventDispatcher
      */
     private function log(NotifierResult $response)
     {
+        /** @var AsyncEventLog $asyncEventLog */
         $asyncEventLog = $this->asyncEventLogFactory->create();
         $asyncEventLog->setSuccess($response->getSuccess());
         $asyncEventLog->setSubscriptionId($response->getSubscriptionId());
         $asyncEventLog->setResponseData($response->getResponseData());
         $asyncEventLog->setUuid($response->getUuid());
+        $asyncEventLog->setSerializedData($response->getAsyncEventData());
 
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);

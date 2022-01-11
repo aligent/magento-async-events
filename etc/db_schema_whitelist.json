@@ -21,7 +21,8 @@
             "success": true,
             "response_data": true,
             "created": true,
-            "uuid": true
+            "uuid": true,
+            "serialized_data": true
         },
         "constraint": {
             "FK_5DC4CE95673D2497179D07B60DE79F61": true,
