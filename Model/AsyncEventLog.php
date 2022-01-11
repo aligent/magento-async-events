@@ -82,12 +82,12 @@ class AsyncEventLog extends AbstractModel
         $this->setData('uuid', $uuid);
     }
 
-    public function getSerializedData()
+    public function getSerializedData(): array
     {
         return $this->getData('serialized_data');
     }
 
-    public function setSerializedData($serializedData)
+    public function setSerializedData(array $serializedData)
     {
         $this->setData('serialized_data', $serializedData);
     }

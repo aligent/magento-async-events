@@ -42,7 +42,6 @@ class Details
     /**
      * @param string $uuid
      * @return array
-     * @throws NoSuchEntityException
      */
     public function getDetails(string $uuid): array
     {
@@ -50,22 +49,24 @@ class Details
             return $this->traceCache[$uuid];
         }
 
+        /** @var Collection $collection */
         $collection = $this->collectionFactory->create();
         $collection->addFilter('uuid', $uuid);
 
         $traces = $collection->toArray();
 
-        if ($traces['totalRecords'] === 0) {
-            return [];
-        }
-
         $asyncEventId = $collection->getFirstItem()->getData('subscription_id');
-        $asyncEvent = $this->asyncEventRepository->get($asyncEventId)->getData();
 
-        $this->traceCache[$uuid] = [
-            'traces' => $traces['items'],
-            'async_event' => $asyncEvent
-        ];
+        try {
+            $asyncEvent = $this->asyncEventRepository->get($asyncEventId)->getData();
+            $this->traceCache[$uuid] = [
+                'traces' => $traces['items'],
+                'async_event' => $asyncEvent
+            ];
+
+        } catch (NoSuchEntityException $exception) {
+            // Do nothing because an uuid cannot exist without its subscription
+        }
 
         return $this->traceCache[$uuid];
     }
@@ -73,7 +74,6 @@ class Details
     /**
      * @param string $uuid
      * @return array
-     * @throws NoSuchEntityException
      */
     public function getLogs(string $uuid): array
     {
@@ -85,7 +85,6 @@ class Details
     /**
      * @param string $uuid
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getStatus(string $uuid): string
     {
@@ -123,7 +122,6 @@ class Details
     /**
      * @param string $uuid
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getFirstAttempt(string $uuid): string
     {
@@ -138,7 +136,6 @@ class Details
     /**
      * @param string $uuid
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getLastAttempt(string $uuid): string
     {
@@ -153,7 +150,6 @@ class Details
     /**
      * @param string $uuid
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getAsynchronousEventName(string $uuid): string
     {
@@ -167,7 +163,6 @@ class Details
     /**
      * @param string $uuid
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getCurrentStatus(string $uuid): string
     {
@@ -181,7 +176,6 @@ class Details
     /**
      * @param string $uuid
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getRecipient(string $uuid): string
     {
@@ -195,7 +189,6 @@ class Details
     /**
      * @param string $uuid
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getSubscribedAt(string $uuid): string
     {
