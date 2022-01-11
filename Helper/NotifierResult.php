@@ -23,6 +23,9 @@ class NotifierResult
      */
     private $uuid;
 
+    /**
+     * @var array
+     */
     private $data;
 
     public function getSuccess()
@@ -69,12 +72,19 @@ class NotifierResult
         return $this;
     }
 
-    public function setAsyncEventData($eventData)
+    /**
+     * @param array $eventData
+     * @return void
+     */
+    public function setAsyncEventData(array $eventData)
     {
         $this->data = $eventData;
     }
 
-    public function getAsyncEventData()
+    /**
+     * @return array
+     */
+    public function getAsyncEventData(): array
     {
         return $this->data;
     }
