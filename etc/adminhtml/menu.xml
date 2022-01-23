@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Aligent_AsyncEvents::integrations" title="Asynchronous Events" translate="title" module="Aligent_AsyncEvents"
-             parent="Magento_Backend::content" sortOrder="50" dependsOnModule="Aligent_AsyncEvents"
+             parent="Magento_Backend::stores" sortOrder="50" dependsOnModule="Aligent_AsyncEvents"
              resource="Aligent_AsyncEvents::manage"/>
 
         <add id="Aligent_AsyncEvents::index" title="Subscribers" translate="title" module="Aligent_AsyncEvents"
