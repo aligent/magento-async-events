@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid;
 
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface as FetchStrategy;

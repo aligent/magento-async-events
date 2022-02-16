@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Aligent Consulting
  * Copyright (c) Aligent Consulting (https://www.aligent.com.au)

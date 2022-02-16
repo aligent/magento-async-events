@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
