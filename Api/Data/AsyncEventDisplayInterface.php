@@ -5,9 +5,9 @@ namespace Aligent\AsyncEvents\Api\Data;
 interface AsyncEventDisplayInterface
 {
     /**
-     * @return int|null
+     * @return int
      */
-    public function getSubscriptionId();
+    public function getSubscriptionId(): int;
 
     /**
      * @return string
