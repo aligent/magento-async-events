@@ -57,7 +57,7 @@ class RetryManager
     /**
      * @var SerializerInterface
      */
-    private  $serializer;
+    private $serializer;
 
     /**
      * @param ConfigPool $configPool
@@ -94,7 +94,12 @@ class RetryManager
      */
     public function init(int $subscriptionId, $data, string $uuid)
     {
-        $this->assertDelayQueue(1, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, QueueMetadataInterface::RETRY_INIT_ROUTING_KEY);
+        $this->assertDelayQueue(
+            1,
+            QueueMetadataInterface::RETRY_INIT_ROUTING_KEY,
+            QueueMetadataInterface::RETRY_INIT_ROUTING_KEY
+        );
+
         $this->publisher->publish(QueueMetadataInterface::RETRY_INIT_ROUTING_KEY, [
             self::SUBSCRIPTION_ID => $subscriptionId,
             self::DEATH_COUNT => 1,
@@ -140,7 +145,7 @@ class RetryManager
     }
 
     /**
-     * Asserts the delay queue and binds it to the failover exchange.
+     * Asserts the delay queue and binds it to the fail-over exchange.
      *
      * In RabbitMQ creating a queue is idempotent.
      * https://www.rabbitmq.com/tutorials/tutorial-one-php.html
@@ -180,7 +185,11 @@ class RetryManager
             'disabled' => false
         ]);
 
-        $this->bindingInstaller->install($config->getChannel(), $bindingConfig, QueueMetadataInterface::FAILOVER_EXCHANGE);
+        $this->bindingInstaller->install(
+            $config->getChannel(),
+            $bindingConfig,
+            QueueMetadataInterface::FAILOVER_EXCHANGE
+        );
     }
 
     /**

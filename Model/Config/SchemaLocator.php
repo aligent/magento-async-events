@@ -14,7 +14,6 @@ use Magento\Framework\Module\Dir;
 
 class SchemaLocator implements SchemaLocatorInterface
 {
-
     /**
      * Path to corresponding XSD file with validation rules for merged configs
      *
@@ -40,17 +39,17 @@ class SchemaLocator implements SchemaLocatorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getSchema()
+    public function getSchema(): string
     {
         return $this->_schema;
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getPerFileSchema()
+    public function getPerFileSchema(): string
     {
         return $this->_schemaFile;
     }

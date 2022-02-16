@@ -10,7 +10,7 @@ use Aligent\AsyncEvents\Helper\NotifierResult;
 class ExampleNotifier implements NotifierInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function notify(AsyncEventInterface $asyncEvent, array $data): NotifierResult
     {

@@ -132,5 +132,4 @@ class EventDispatcher
             // Do nothing because a log entry can never already exist
         }
     }
-
 }

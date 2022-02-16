@@ -20,6 +20,9 @@ class Collection extends AbstractCollection
      */
     protected $_idFieldName = 'log_id';
 
+    /**
+     * @inheritDoc
+     */
     protected function _construct()
     {
         $this->_init(

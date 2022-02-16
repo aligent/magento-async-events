@@ -62,7 +62,7 @@ class AsyncEventsTrace extends AbstractDataProvider
     /**
      * @inheritDoc
      */
-    public function getData()
+    public function getData(): array
     {
         $uuid = $this->request->getParam($this->requestFieldName);
         $details = $this->traceDetails->getDetails($uuid);
