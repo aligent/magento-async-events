@@ -19,6 +19,9 @@ class AsyncEventLogRepository
      */
     private $asyncEventLogResource;
 
+    /**
+     * @param AsyncEventLogResource $asyncEventLog
+     */
     public function __construct(
         AsyncEventLogResource $asyncEventLog
     ) {

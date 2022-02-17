@@ -7,6 +7,8 @@ namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Model\AsyncEvent;
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Collection;
+use Exception;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\CollectionFactory;
 use Magento\Backend\App\Action;
@@ -30,6 +32,12 @@ class MassDisable extends Action implements HttpPostActionInterface
      */
     private $asyncEventRepository;
 
+    /**
+     * @param Context $context
+     * @param Filter $filter
+     * @param CollectionFactory $collectionFactory
+     * @param AsyncEventRepositoryInterface $asyncEventRepository
+     */
     public function __construct(
         Context $context,
         Filter $filter,
@@ -43,7 +51,8 @@ class MassDisable extends Action implements HttpPostActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
+     * @throws LocalizedException
      */
     public function execute()
     {
@@ -57,6 +66,10 @@ class MassDisable extends Action implements HttpPostActionInterface
         return $resultRedirect;
     }
 
+    /**
+     * @param Collection $asyncEventCollection
+     * @return void
+     */
     private function disableAsyncEvents(Collection $asyncEventCollection)
     {
         $disabled = 0;
@@ -71,7 +84,7 @@ class MassDisable extends Action implements HttpPostActionInterface
                     $this->asyncEventRepository->save($asyncEvent, false);
                     $alreadyDisabled--;
                     $disabled++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->messageManager->addErrorMessage($e->getMessage());
                 }
             }

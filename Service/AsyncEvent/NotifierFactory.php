@@ -6,9 +6,6 @@ namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
 use InvalidArgumentException;
 
-/**
- * Class NotifierFactory
- */
 class NotifierFactory implements NotifierFactoryInterface
 {
     /**
@@ -17,8 +14,6 @@ class NotifierFactory implements NotifierFactoryInterface
     private $notifierClasses;
 
     /**
-     * NotifierFactory constructor.
-     *
      * @param array $notifierClasses
      */
     public function __construct(array $notifierClasses = [])
@@ -27,7 +22,7 @@ class NotifierFactory implements NotifierFactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function create(string $type): NotifierInterface
     {

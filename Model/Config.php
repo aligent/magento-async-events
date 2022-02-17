@@ -26,7 +26,11 @@ class Config
         $this->_dataStorage = $dataStorage;
     }
 
-    public function get($key)
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function get(string $key): array
     {
         return $this->_dataStorage->get($key, []);
     }

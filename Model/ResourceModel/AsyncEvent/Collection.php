@@ -16,6 +16,9 @@ class Collection extends AbstractCollection
      */
     protected $_idFieldName = 'subscription_id';
 
+    /**
+     * @inheritDoc
+     */
     protected function _construct()
     {
         $this->_init(

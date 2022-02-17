@@ -15,13 +15,16 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
      */
     protected $_eventPrefix = 'async_event_subscriber';
 
+    /**
+     * @inheritDoc
+     */
     protected function _construct()
     {
         $this->_init(ResourceModel\AsyncEvent::class);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSubscriptionId(): int
     {
@@ -29,7 +32,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setSubscriptionId(int $id)
     {
@@ -37,7 +40,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getEventName(): string
     {
@@ -45,7 +48,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setEventName(string $eventName)
     {
@@ -53,7 +56,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getRecipientUrl(): string
     {
@@ -61,7 +64,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setRecipientUrl(string $recipientURL)
     {
@@ -69,7 +72,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getVerificationToken(): string
     {
@@ -77,7 +80,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setVerificationToken(string $verificationToken)
     {
@@ -85,7 +88,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getStatus(): bool
     {
@@ -93,7 +96,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setStatus(bool $status)
     {
@@ -101,7 +104,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSubscribedAt(): string
     {
@@ -109,7 +112,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setSubscribedAt(string $subscribedAt)
     {
@@ -117,7 +120,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getMetadata(): string
     {
@@ -125,7 +128,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setMetadata(string $metadata)
     {

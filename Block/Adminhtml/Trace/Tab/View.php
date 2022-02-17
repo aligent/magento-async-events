@@ -10,42 +10,63 @@ declare(strict_types=1);
 namespace Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab;
 
 use Magento\Backend\Block\Template;
+use Magento\Framework\Phrase;
 use Magento\Ui\Component\Layout\Tabs\TabInterface;
 
 class View extends Template implements TabInterface
 {
-
-    public function getTabLabel()
+    /**
+     * @return Phrase
+     */
+    public function getTabLabel(): Phrase
     {
         return __('Overview');
     }
 
-    public function getTabTitle()
+    /**
+     * @return Phrase
+     */
+    public function getTabTitle(): Phrase
     {
         return __('Overview');
     }
 
-    public function getTabClass()
+    /**
+     * @return string
+     */
+    public function getTabClass(): string
     {
         return '';
     }
 
-    public function getTabUrl()
+    /**
+     * @return string
+     */
+    public function getTabUrl(): string
     {
         return '';
     }
 
-    public function isAjaxLoaded()
+    /**
+     * @return bool
+     */
+    public function isAjaxLoaded(): bool
     {
         return false;
     }
 
-    public function canShowTab()
+    /**
+     * @return bool
+     */
+    public function canShowTab(): bool
     {
         return true;
     }
 
-    public function isHidden()
+    /**
+     * @return bool
+     */
+    public function isHidden(): bool
     {
         return false;
     }

@@ -12,11 +12,11 @@ namespace Aligent\AsyncEvents\Controller\Adminhtml\Logs;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 class Index extends Action implements HttpGetActionInterface
 {
-
     const MENU_ID = 'Aligent_AsyncEvents::logs';
 
     /**
@@ -37,7 +37,10 @@ class Index extends Action implements HttpGetActionInterface
         $this->resultPageFactory = $resultPageFactory;
     }
 
-    public function execute()
+    /**
+     * @return Page
+     */
+    public function execute(): Page
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);
