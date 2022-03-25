@@ -53,7 +53,7 @@ class Details
         $asyncEventId = $collection->getFirstItem()->getData('subscription_id');
 
         try {
-            $asyncEvent = $this->asyncEventRepository->get($asyncEventId)->getData();
+            $asyncEvent = $this->asyncEventRepository->get((int) $asyncEventId)->getData();
             $this->traceCache[$uuid] = [
                 'traces' => $traces['items'],
                 'async_event' => $asyncEvent
