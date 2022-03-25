@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 
 use Magento\Backend\App\Action;
@@ -17,8 +20,6 @@ class Index extends Action implements HttpGetActionInterface
     protected $resultPageFactory;
 
     /**
-     * Index constructor.
-     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
@@ -27,16 +28,13 @@ class Index extends Action implements HttpGetActionInterface
         PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
-
         $this->resultPageFactory = $resultPageFactory;
     }
 
     /**
-     * Load the page defined in view/adminhtml/layout/async_events_events_index.xml
-     *
      * @return Page
      */
-    public function execute()
+    public function execute(): Page
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);

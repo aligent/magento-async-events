@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model;
@@ -26,7 +21,11 @@ class Config
         $this->_dataStorage = $dataStorage;
     }
 
-    public function get($key)
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function get(string $key): array
     {
         return $this->_dataStorage->get($key, []);
     }

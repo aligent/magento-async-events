@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog;
@@ -20,6 +15,9 @@ class Collection extends AbstractCollection
      */
     protected $_idFieldName = 'log_id';
 
+    /**
+     * @inheritDoc
+     */
     protected function _construct()
     {
         $this->_init(

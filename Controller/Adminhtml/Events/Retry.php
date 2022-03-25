@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
@@ -19,7 +14,6 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Retry extends Action implements HttpPostActionInterface
 {
-
     /**
      * @var PageFactory
      */
@@ -35,6 +29,12 @@ class Retry extends Action implements HttpPostActionInterface
      */
     private $serializer;
 
+    /**
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param RetryManager $retryManager
+     * @param SerializerInterface $serializer
+     */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
@@ -53,7 +53,7 @@ class Retry extends Action implements HttpPostActionInterface
 
         $this->retryManager->init(
             (int) $data['subscription_id'],
-            $this->serializer->unserialize($data['serialized_data'])['data'] ,
+            $this->serializer->unserialize($data['serialized_data'])['data'],
             $data['uuid']
         );
 

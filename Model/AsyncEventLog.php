@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Model;
 
 use Magento\Framework\Model\AbstractModel;
@@ -12,6 +14,9 @@ class AsyncEventLog extends AbstractModel
      */
     protected $_eventPrefix = 'async_event_subscriber_log';
 
+    /**
+     * @inheritDoc
+     */
     protected function _construct()
     {
         $this->_init(ResourceModel\AsyncEventLog::class);

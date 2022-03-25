@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Ui\DataProvider;
@@ -62,7 +57,7 @@ class AsyncEventsTrace extends AbstractDataProvider
     /**
      * @inheritDoc
      */
-    public function getData()
+    public function getData(): array
     {
         $uuid = $this->request->getParam($this->requestFieldName);
         $details = $this->traceDetails->getDetails($uuid);

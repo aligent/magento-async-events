@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model;
@@ -24,37 +19,37 @@ class RetryHandler
     /**
      * @var SearchCriteriaBuilder
      */
-    private  $searchCriteriaBuilder;
+    private $searchCriteriaBuilder;
 
     /**
      * @var AsyncEventRepositoryInterface
      */
-    private  $asyncEventRepository;
+    private $asyncEventRepository;
 
     /**
      * @var NotifierFactoryInterface
      */
-    private  $notifierFactory;
+    private $notifierFactory;
 
     /**
      * @var AsyncEventLogFactory
      */
-    private  $asyncEventLogFactory;
+    private $asyncEventLogFactory;
 
     /**
      * @var AsyncEventLogRepository
      */
-    private  $asyncEventLogRepository;
+    private $asyncEventLogRepository;
 
     /**
      * @var RetryManager
      */
-    private  $retryManager;
+    private $retryManager;
 
     /**
      * @var SerializerInterface
      */
-    private  $serializer;
+    private $serializer;
 
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder

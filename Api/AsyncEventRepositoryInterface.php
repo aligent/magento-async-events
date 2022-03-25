@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Api;
 
 use Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface;
@@ -10,11 +12,11 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 interface AsyncEventRepositoryInterface
 {
     /**
-     * @param string $subscriptionId
+     * @param int $subscriptionId
      * @return \Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function get(string $subscriptionId): AsyncEventDisplayInterface;
+    public function get(int $subscriptionId): AsyncEventDisplayInterface;
 
     /**
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria

@@ -1,10 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
-/**
- * Abstract Factory for Notifiers
- */
 interface NotifierFactoryInterface
 {
     /**

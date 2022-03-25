@@ -11,7 +11,6 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class AsyncEventActions extends Column
 {
-
     const URL_PATH_TRACE = 'async_events/logs/trace';
 
     /**
@@ -19,6 +18,13 @@ class AsyncEventActions extends Column
      */
     private $urlBuilder;
 
+    /**
+     * @param ContextInterface $context
+     * @param UrlInterface $urlBuilder
+     * @param UiComponentFactory $uiComponentFactory
+     * @param array $components
+     * @param array $data
+     */
     public function __construct(
         ContextInterface $context,
         UrlInterface $urlBuilder,
@@ -30,7 +36,11 @@ class AsyncEventActions extends Column
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
-    public function prepareDataSource(array $dataSource)
+    /**
+     * @param array $dataSource
+     * @return array
+     */
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
@@ -49,6 +59,7 @@ class AsyncEventActions extends Column
                 }
             }
         }
+
         return $dataSource;
     }
 }

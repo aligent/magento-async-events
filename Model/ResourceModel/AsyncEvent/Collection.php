@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent;
 
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent as AsyncEventResource;
@@ -14,6 +16,9 @@ class Collection extends AbstractCollection
      */
     protected $_idFieldName = 'subscription_id';
 
+    /**
+     * @inheritDoc
+     */
     protected function _construct()
     {
         $this->_init(

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View;
@@ -20,8 +15,16 @@ class Info extends Template
      */
     private $details;
 
+    /**
+     * @var string
+     */
     private $uuid;
 
+    /**
+     * @param Context $context
+     * @param Details $details
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         Details $details,
@@ -32,47 +35,74 @@ class Info extends Template
         $this->uuid = $this->getRequest()->getParam('uuid');
     }
 
-    public function getUuid()
+    /**
+     * @return string
+     */
+    public function getUuid(): string
     {
         return $this->uuid;
     }
 
-    public function getLogs()
+    /**
+     * @return array
+     */
+    public function getLogs(): array
     {
         return $this->details->getLogs($this->uuid);
     }
 
-    public function getStatus()
+    /**
+     * @return string
+     */
+    public function getStatus(): string
     {
         return $this->details->getStatus($this->uuid);
     }
 
-    public function getFirstAttempt()
+    /**
+     * @return string
+     */
+    public function getFirstAttempt(): string
     {
         return $this->details->getFirstAttempt($this->uuid);
     }
 
-    public function getLastAttempt()
+    /**
+     * @return string
+     */
+    public function getLastAttempt(): string
     {
         return $this->details->getLastAttempt($this->uuid);
     }
 
-    public function getAsynchronousEventName()
+    /**
+     * @return string
+     */
+    public function getAsynchronousEventName(): string
     {
         return $this->details->getAsynchronousEventName($this->uuid);
     }
 
-    public function getCurrentStatus()
+    /**
+     * @return string
+     */
+    public function getCurrentStatus(): string
     {
         return $this->details->getCurrentStatus($this->uuid);
     }
 
-    public function getRecipient()
+    /**
+     * @return string
+     */
+    public function getRecipient(): string
     {
         return $this->details->getRecipient($this->uuid);
     }
 
-    public function getSubscribedAt()
+    /**
+     * @return string
+     */
+    public function getSubscribedAt(): string
     {
         return $this->details->getSubscribedAt($this->uuid);
     }

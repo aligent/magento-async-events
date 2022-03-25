@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Model;
 
 use Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface;
@@ -25,17 +27,17 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     /**
      * @var AsyncEventFactory
      */
-    private  $asyncEventFactory;
+    private $asyncEventFactory;
 
     /**
      * @var AsyncEventResource
      */
-    private  $asyncEventResource;
+    private $asyncEventResource;
 
     /**
      * @var AsyncEventConfig
      */
-    private  $asyncEventConfig;
+    private $asyncEventConfig;
 
     /**
      * @var SearchResultsFactory
@@ -93,9 +95,9 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function get(string $subscriptionId): AsyncEventDisplayInterface
+    public function get(int $subscriptionId): AsyncEventDisplayInterface
     {
         $asyncEvent = $this->asyncEventFactory->create();
         $this->asyncEventResource->load($asyncEvent, $subscriptionId);
@@ -108,7 +110,7 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getList(SearchCriteriaInterface $searchCriteria): AsyncEventSearchResultsInterface
     {
@@ -129,7 +131,7 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function save(AsyncEventInterface $asyncEvent, bool $checkResources = true): AsyncEventDisplayInterface
     {
@@ -184,5 +186,4 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
             }
         }
     }
-
 }

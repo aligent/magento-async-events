@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
 use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
@@ -10,12 +12,7 @@ use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
 /**
- * Class HttpNotifier
- *
- * This notifier just serves as a bare minimum and example implementation reference. You would want to create your own
- * factory and then derive your own implementations. However, if this just serves your purpose well, then you might as
- * well as use this instead.
- *
+ * Example HTTP notifier
  */
 class HttpNotifier implements NotifierInterface
 {
@@ -39,6 +36,11 @@ class HttpNotifier implements NotifierInterface
      */
     private $encryptor;
 
+    /**
+     * @param Client $client
+     * @param Json $json
+     * @param EncryptorInterface $encryptor
+     */
     public function __construct(
         Client $client,
         Json $json,
@@ -50,7 +52,7 @@ class HttpNotifier implements NotifierInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function notify(AsyncEventInterface $asyncEvent, array $data): NotifierResult
     {
@@ -88,7 +90,6 @@ class HttpNotifier implements NotifierInterface
             $notifierResult->setResponseData($response->getBody()->getContents());
 
         } catch (RequestException $exception) {
-
             /**
              * Catch a RequestException, so we cover even the network layer exceptions which might sometimes
              * not have a response.

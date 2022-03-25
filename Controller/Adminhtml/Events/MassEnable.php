@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Controller\Adminhtml\Events;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
@@ -10,11 +12,12 @@ use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 
 class MassEnable extends Action implements HttpPostActionInterface
 {
-
     /**
      * @var CollectionFactory
      */
@@ -30,6 +33,12 @@ class MassEnable extends Action implements HttpPostActionInterface
      */
     private $asyncEventRepository;
 
+    /**
+     * @param Context $context
+     * @param Filter $filter
+     * @param CollectionFactory $collectionFactory
+     * @param AsyncEventRepositoryInterface $asyncEventRepository
+     */
     public function __construct(
         Context $context,
         Filter $filter,
@@ -42,7 +51,11 @@ class MassEnable extends Action implements HttpPostActionInterface
         $this->asyncEventRepository = $asyncEventRepository;
     }
 
-    public function execute()
+    /**
+     * @return Redirect
+     * @throws LocalizedException
+     */
+    public function execute(): Redirect
     {
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('async_events/events/index');
@@ -54,6 +67,10 @@ class MassEnable extends Action implements HttpPostActionInterface
         return $resultRedirect;
     }
 
+    /**
+     * @param Collection $asyncEventCollection
+     * @return void
+     */
     private function enableAsyncEvents(Collection $asyncEventCollection)
     {
         $enabled = 0;

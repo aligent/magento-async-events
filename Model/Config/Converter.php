@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model\Config;
@@ -15,7 +10,10 @@ use Magento\Framework\Config\ConverterInterface;
 
 class Converter implements ConverterInterface
 {
-
+    /**
+     * @param $source
+     * @return array
+     */
     public function convert($source): array
     {
         $output = [];
@@ -36,12 +34,17 @@ class Converter implements ConverterInterface
                     $eventResources = $this->convertResourcesConfig($child);
                 }
             }
+            // phpcs:ignore
             $output[mb_strtolower($eventName)] = array_merge($eventService, $eventResources);
         }
 
         return $output;
     }
 
+    /**
+     * @param DOMNode $observerConfig
+     * @return array
+     */
     private function convertServiceConfig(DomNode $observerConfig): array
     {
         $output = [];
@@ -82,6 +85,10 @@ class Converter implements ConverterInterface
         return $output;
     }
 
+    /**
+     * @param DOMNode $resourcesConfig
+     * @return array[]
+     */
     private function convertResourcesConfig(DOMNode $resourcesConfig): array
     {
         $resources = [];

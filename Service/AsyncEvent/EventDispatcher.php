@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
@@ -130,5 +132,4 @@ class EventDispatcher
             // Do nothing because a log entry can never already exist
         }
     }
-
 }

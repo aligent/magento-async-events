@@ -108,7 +108,9 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
                         <?= $item['response_data'] ?>
                     </td>
                     <td style="padding: 1rem" class="col-severity">
-                        <?= $item['success'] ? '<span class="grid-severity-notice"><span>Success</span></span>' : '<span class="grid-severity-critical"><span>Failed</span></span>' ?>
+                        <?= $item['success'] ?
+                            '<span class="grid-severity-notice"><span>Success</span></span>' :
+                            '<span class="grid-severity-critical"><span>Failed</span></span>' ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
