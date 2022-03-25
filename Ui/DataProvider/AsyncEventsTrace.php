@@ -61,10 +61,18 @@ class AsyncEventsTrace extends AbstractDataProvider
     {
         $uuid = $this->request->getParam($this->requestFieldName);
         $details = $this->traceDetails->getDetails($uuid);
+        $trace = current($details['traces']);
+
+        /**
+         * Prettify JSON by decoding and re-encoding with the JSON_PRETTY_PRINT flag
+         */
+        $prettyPrint = json_decode($trace['serialized_data'], true);
+        $prettyPrint = json_encode($prettyPrint, JSON_PRETTY_PRINT);
+        $trace['serialized_data'] = $prettyPrint;
 
         return [
             $uuid => [
-                'general' => current($details['traces'])
+                'general' => $trace
             ]
         ];
     }
