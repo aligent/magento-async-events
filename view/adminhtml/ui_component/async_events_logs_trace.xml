@@ -61,6 +61,7 @@
                 </item>
             </argument>
             <settings>
+                <elementTmpl>Aligent_AsyncEvents/content/json</elementTmpl>
                 <dataType>text</dataType>
                 <label translate="true">Serialized Data</label>
             </settings>
