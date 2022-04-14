@@ -82,12 +82,11 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
         <span class="title"><?= 'Traces' ?></span>
     </div>
     <div class="admin__table-wrapper">
-        <table class="admin__table-primary">
+        <table class="admin__table-primary" style="table-layout: fixed;">
             <thead>
             <tr>
                 <th><?= __('Log Id') ?></th>
                 <th><?= __('Delivery Time') ?></th>
-                <th><?= __('uuid') ?></th>
                 <th><?= __('Response') ?></th>
                 <th><?= __('Status') ?></th>
             </tr>
@@ -95,19 +94,16 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
             <tbody>
             <?php foreach ($block->getLogs() as $item): ?>
                 <tr>
-                    <td style="padding: 1rem">
+                    <td>
                         <?= $item['log_id'] ?>
                     </td>
-                    <td style="padding: 1rem">
+                    <td>
                         <?= $item['created'] ?>
                     </td>
-                    <td style="padding: 1rem">
-                        <?= $item['uuid'] ?>
-                    </td>
-                    <td style="padding: 1rem">
+                    <td style="word-wrap: break-word;">
                         <?= $item['response_data'] ?>
                     </td>
-                    <td style="padding: 1rem" class="col-severity">
+                    <td class="col-severity">
                         <?= $item['success'] ?
                             '<span class="grid-severity-notice"><span>Success</span></span>' :
                             '<span class="grid-severity-critical"><span>Failed</span></span>' ?>
