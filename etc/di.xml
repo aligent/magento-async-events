@@ -12,10 +12,18 @@
     <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface"
                 type="Aligent\AsyncEvents\Model\AsyncEventSearchResults" />
 
+    <!-- UI Component DataProviders -->
     <type name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">async_event_subscriber</argument>
             <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent</argument>
+        </arguments>
+    </type>
+
+    <type name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">async_event_subscriber_log</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog</argument>
         </arguments>
     </type>
 
@@ -25,13 +33,13 @@
                 <item name="async_events_events_listing_data_source" xsi:type="string">
                     Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection
                 </item>
-                <item name="async_events_logs_listing_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
-                <item name="async_events_logs_trace_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection</item>
+                <item name="async_events_logs_listing_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog\Grid\Collection</item>
+                <item name="async_events_logs_trace_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLogs\Grid\Collection</item>
             </argument>
         </arguments>
     </type>
 
-    <virtualType name="Aligent\AsyncEvents\Model\ResourceModel\WebhookLogs\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <virtualType name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLogs\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">async_event_subscriber_log</argument>
             <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog</argument>
