@@ -38,7 +38,7 @@ class Index extends Action implements HttpGetActionInterface
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);
-        $resultPage->getConfig()->getTitle()->prepend(__('Asynchronous Events'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Asynchronous Event Subscribers'));
 
         return $resultPage;
     }
