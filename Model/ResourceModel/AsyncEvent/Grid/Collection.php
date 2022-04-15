@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult;
 class Collection extends SearchResult
 {
     /**
-     * Override parent method to select manually add all the fields because we do not want to expose the
+     * Override parent method to manually add all the fields because we do not want to expose the
      * `verification_token` field even if encrypted.
      *
      * @return $this
