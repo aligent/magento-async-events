@@ -39,7 +39,7 @@ class Index extends Action implements HttpGetActionInterface
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(self::MENU_ID);
-        $resultPage->getConfig()->getTitle()->prepend(__('Event Logs'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Asynchronous Event Logs'));
 
         return $resultPage;
     }

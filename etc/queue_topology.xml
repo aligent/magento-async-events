@@ -5,7 +5,7 @@
     </exchange>
 
     <exchange name="event.failover" type="topic" connection="amqp">
-        <binding id="WebhookFailoverRetry" topic="event.retry" destinationType="queue" destination="event.failover.retry"/>
-        <binding id="WebhookKillerBinding" topic="event.retry.kill" destinationType="queue" destination="event.failover.deadletter"/>
+        <binding id="AsyncEventFailoverRetry" topic="event.retry" destinationType="queue" destination="event.failover.retry"/>
+        <binding id="AsyncEventKillerBinding" topic="event.retry.kill" destinationType="queue" destination="event.failover.deadletter"/>
     </exchange>
 </config>

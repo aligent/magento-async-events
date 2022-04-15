@@ -59,10 +59,10 @@
             </settings>
         </column>
 
-        <column name="subscription_id" sortOrder="30">
+        <column name="event_name" sortOrder="30">
             <settings>
                 <filter>text</filter>
-                <label translate="true">Subscription</label>
+                <label translate="true">Asynchronous Event</label>
             </settings>
         </column>
 
@@ -79,7 +79,6 @@
 
         <column name="response_data" sortOrder="50">
             <settings>
-                <filter>text</filter>
                 <label translate="true">Response</label>
             </settings>
         </column>
