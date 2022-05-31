@@ -54,7 +54,16 @@ class RetryHandler
      */
     private $scopeConfig;
 
-
+    /**
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param AsyncEventRepositoryInterface $asyncEventRepository
+     * @param NotifierFactoryInterface $notifierFactory
+     * @param AsyncEventLogFactory $asyncEventLogFactory
+     * @param AsyncEventLogRepository $asyncEventLogRepository
+     * @param RetryManager $retryManager
+     * @param SerializerInterface $serializer
+     * @param ScopeConfigInterface $scopeConfig
+     */
     public function __construct(
         SearchCriteriaBuilder         $searchCriteriaBuilder,
         AsyncEventRepositoryInterface $asyncEventRepository,
