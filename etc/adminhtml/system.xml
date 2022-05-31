@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="system" translate="label" type="text" sortOrder="900">
+            <tab>advanced</tab>
+            <resource>Aligent_AsyncEvents::manage</resource>
+            <group id="async_events" translate="label" type="text" sortOrder="1000">
+                <label>Async Events</label>
+                <field id="retry" translate="label" type="text" sortOrder="10">
+                    <label>Retry Count</label>
+                    <validate>integer validate-not-negative-number</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
