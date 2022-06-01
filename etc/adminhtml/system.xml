@@ -7,8 +7,8 @@
             <resource>Aligent_AsyncEvents::manage</resource>
             <group id="async_events" translate="label" type="text" sortOrder="1000" showInDefault="1">
                 <label>Async Events</label>
-                <field id="retry" translate="label" type="text" sortOrder="10" showInDefault="1">
-                    <label>Retry Count</label>
+                <field id="death_count" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Death Count</label>
                     <validate>integer validate-not-negative-number</validate>
                 </field>
             </group>

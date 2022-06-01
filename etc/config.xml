@@ -4,7 +4,7 @@
     <default>
         <system>
             <async_events>
-                <retry>5</retry>
+                <death_count>5</death_count>
             </async_events>
         </system>
     </default>

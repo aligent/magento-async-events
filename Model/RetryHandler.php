@@ -96,7 +96,7 @@ class RetryHandler
 
         $subscriptionId = (int) $subscriptionId;
         $deathCount = (int) $deathCount;
-        $retryLimit = (int) $this->scopeConfig->getValue('system/async_events/retry');
+        $retryLimit = (int) $this->scopeConfig->getValue('system/async_events/death_count');
 
         $data = $this->serializer->unserialize($data);
 
