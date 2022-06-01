@@ -9,13 +9,12 @@ use Aligent\AsyncEvents\Helper\NotifierResult;
 use Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactoryInterface;
 use Aligent\AsyncEvents\Service\AsyncEvent\RetryManager;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Serialize\SerializerInterface;
 
 class RetryHandler
 {
-    const RETRY_LIMIT = 5;
-
     /**
      * @var SearchCriteriaBuilder
      */
@@ -50,6 +49,10 @@ class RetryHandler
      * @var SerializerInterface
      */
     private $serializer;
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
 
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -59,6 +62,7 @@ class RetryHandler
      * @param AsyncEventLogRepository $asyncEventLogRepository
      * @param RetryManager $retryManager
      * @param SerializerInterface $serializer
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         SearchCriteriaBuilder         $searchCriteriaBuilder,
@@ -67,7 +71,8 @@ class RetryHandler
         AsyncEventLogFactory          $asyncEventLogFactory,
         AsyncEventLogRepository       $asyncEventLogRepository,
         RetryManager                  $retryManager,
-        SerializerInterface           $serializer
+        SerializerInterface           $serializer,
+        ScopeConfigInterface          $scopeConfig
     ) {
         $this->asyncEventRepository = $asyncEventRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -76,6 +81,7 @@ class RetryHandler
         $this->asyncEventLogRepository = $asyncEventLogRepository;
         $this->retryManager = $retryManager;
         $this->serializer = $serializer;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -90,6 +96,7 @@ class RetryHandler
 
         $subscriptionId = (int) $subscriptionId;
         $deathCount = (int) $deathCount;
+        $maxDeaths = (int) $this->scopeConfig->getValue('system/async_events/max_deaths');
 
         $data = $this->serializer->unserialize($data);
 
@@ -110,7 +117,7 @@ class RetryHandler
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                if ($deathCount < self::RETRY_LIMIT) {
+                if ($deathCount < $maxDeaths) {
                     $this->retryManager->place($deathCount + 1, $subscriptionId, $data, $uuid);
                 } else {
                     $this->retryManager->kill($subscriptionId, $data);
