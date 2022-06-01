@@ -96,7 +96,7 @@ class RetryHandler
 
         $subscriptionId = (int) $subscriptionId;
         $deathCount = (int) $deathCount;
-        $retryLimit = (int) $this->scopeConfig->getValue('system/async_events/death_count');
+        $maxDeaths = (int) $this->scopeConfig->getValue('system/async_events/max_deaths');
 
         $data = $this->serializer->unserialize($data);
 
@@ -117,7 +117,7 @@ class RetryHandler
             $this->log($response);
 
             if (!$response->getSuccess()) {
-                if ($deathCount < $retryLimit) {
+                if ($deathCount < $maxDeaths) {
                     $this->retryManager->place($deathCount + 1, $subscriptionId, $data, $uuid);
                 } else {
                     $this->retryManager->kill($subscriptionId, $data);

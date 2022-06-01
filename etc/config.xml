@@ -4,7 +4,7 @@
     <default>
         <system>
             <async_events>
-                <death_count>5</death_count>
+                <max_deaths>5</max_deaths>
             </async_events>
         </system>
     </default>
