@@ -4,74 +4,72 @@ declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Helper;
 
-class NotifierResult
+use Magento\Framework\DataObject;
+
+class NotifierResult extends DataObject
 {
-    private $_success;
+    const SUCCESS = 'success';
 
     /**
      * Refers back to the actual event entity id that is associated,
      * not the subscription name id like customer_created, customer_updated
      * and so on
      */
-    private $_subscriptionId;
+    const SUBSCRIPTION_ID = 'subscription_id';
 
     /**
      * Ideally this is a json encoded string
      */
-    private $_responseData;
+    const RESPONSE_DATA = 'response_data';
 
     /**
      * @var string
      */
-    private $uuid;
+    const UUID = 'uuid';
 
     /**
      * @var array
      */
-    private $data;
+    const DATA = 'data';
 
     public function getSuccess()
     {
-        return $this->_success;
+        return $this->getData(self::SUCCESS);
     }
 
     public function setSuccess($success)
     {
-        $this->_success = $success;
-        return $this;
+        $this->setData(self::SUCCESS, $success);
     }
 
     public function getSubscriptionId()
     {
-        return $this->_subscriptionId;
+        return $this->getData(self::SUBSCRIPTION_ID);
     }
 
     public function setSubscriptionId($subscriptionId)
     {
-        $this->_subscriptionId = $subscriptionId;
-        return $this;
+        $this->setData(self::SUBSCRIPTION_ID, $subscriptionId);
     }
 
     public function getResponseData()
     {
-        return $this->_responseData;
+        return $this->getData(self::RESPONSE_DATA);
     }
 
     public function setResponseData($responseData)
     {
-        $this->_responseData = $responseData;
-        return $this;
+        $this->setData(self::RESPONSE_DATA, $responseData);
     }
 
     public function getUuid(): string
     {
-        return $this->uuid;
+        return $this->getData(self::UUID);
     }
 
     public function setUuid(string $uuid)
     {
-        $this->uuid = $uuid;
-        return $this;
+        $this->setData(self::UUID, $uuid);
     }
 
     /**
@@ -80,7 +78,7 @@ class NotifierResult
      */
     public function setAsyncEventData(array $eventData)
     {
-        $this->data = $eventData;
+        $this->setData(self::DATA, $eventData);
     }
 
     /**
@@ -88,6 +86,6 @@ class NotifierResult
      */
     public function getAsyncEventData(): array
     {
-        return $this->data;
+        return $this->getData(self::DATA);
     }
 }
