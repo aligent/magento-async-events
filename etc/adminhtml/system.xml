@@ -20,8 +20,8 @@
                     <depends>
                         <field id="system/async_events/subscriber_log_cleanup_cron">1</field>
                     </depends>
-                    <label>Oldest Subscriber Log (days)</label>
-                    <comment>Specify how old subscriber logs can get in days. Any logs older will be deleted by the cleanup cron.</comment>
+                    <label>Asynchronous Event Log Lifetime (Days)</label>
+                    <comment>Any logs older will be deleted by the cleanup cron.</comment>
                     <validate>integer validate-not-negative-number</validate>
                 </field>
             </group>
