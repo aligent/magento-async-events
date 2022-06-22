@@ -11,6 +11,19 @@
                     <label>Maximum Deaths</label>
                     <validate>integer validate-not-negative-number</validate>
                 </field>
+                <field id="subscriber_log_cleanup_cron" translate="label" type="select" sortOrder="20" showInDefault="1">
+                    <label>Subscriber Log Cleanup</label>
+                    <comment>Enable or disable the subscriber log cleanup cron. </comment>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+                <field id="subscriber_log_cron_delete_period" translate="label" type="text" sortOrder="25" showInDefault="1">
+                    <depends>
+                        <field id="system/async_events/subscriber_log_cleanup_cron">1</field>
+                    </depends>
+                    <label>Asynchronous Event Log Lifetime (Days)</label>
+                    <comment>Any logs older will be deleted by the cleanup cron.</comment>
+                    <validate>integer validate-not-negative-number</validate>
+                </field>
             </group>
         </section>
     </system>

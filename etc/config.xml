@@ -5,6 +5,8 @@
         <system>
             <async_events>
                 <max_deaths>5</max_deaths>
+                <subscriber_log_cleanup_cron>0</subscriber_log_cleanup_cron>
+                <subscriber_log_cron_delete_period>30</subscriber_log_cron_delete_period>
             </async_events>
         </system>
     </default>
