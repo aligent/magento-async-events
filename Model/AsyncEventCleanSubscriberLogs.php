@@ -37,11 +37,15 @@ class AsyncEventCleanSubscriberLogs
         // check if cron is enabled or disabled in system configuration
         $shouldRunCron = $this->scopeConfig->getValue('system/async_events/subscriber_log_cleanup_cron');
 
-        if($shouldRunCron){
-            $connection = $this->resourceConnection->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
+        if ($shouldRunCron) {
+            $connection = $this->resourceConnection->getConnection(
+                ResourceConnection::DEFAULT_CONNECTION
+            );
 
             // retrieve amount of days for oldest log from system config
-            $timePeriodInDays = (string)$this->scopeConfig->getValue('system/async_events/subscriber_log_cron_delete_period');
+            $timePeriodInDays = (string)$this->scopeConfig->getValue(
+                'system/async_events/subscriber_log_cron_delete_period'
+            );
 
             // creates a date that is x amount of days in the past and checks if the log record is older than that
             $now = $this->dateTime->formatDate(time());
@@ -50,7 +54,7 @@ class AsyncEventCleanSubscriberLogs
             // deletes all logs older than period date
             $connection->delete("async_event_subscriber_log", ["created < ?" => $periodDate]);
 
-            $this->resourceConnection->closeConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
+            $this->resourceConnection->closeConnection(ResourceConnection::DEFAULT_CONNECTION);
         }
     }
 }
