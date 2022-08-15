@@ -93,7 +93,7 @@
     <type name="Aligent\AsyncEvents\Model\Indexer\AsyncEventSubscriber">
         <arguments>
             <argument name="dimensionProvider" xsi:type="object" shared="false">
-                Magento\Store\Model\StoreDimensionProvider
+                \Aligent\AsyncEvents\Model\Indexer\AsyncEventDimensionProvider
             </argument>
         </arguments>
     </type>
@@ -102,7 +102,7 @@
         <arguments>
             <argument name="dataMappers" xsi:type="array">
                 <item name="async_event_subscriber_log" xsi:type="string">
-                    Aligent\AsyncEvents\Model\Adapter\BatchDataMapper\AsyncEventLogMapper
+                    \Aligent\AsyncEvents\Model\Adapter\BatchDataMapper\AsyncEventLogMapper
                 </item>
             </argument>
         </arguments>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aligent\AsyncEvents\Model\Indexer;
 
 use Aligent\AsyncEvents\Model\Indexer\DataProvider\AsyncEventSubscriberLogs;
+use Aligent\AsyncEvents\Model\Resolver\StaticScope;
 use ArrayIterator;
 use Magento\CatalogSearch\Model\Indexer\IndexerHandlerFactory;
 use Magento\Framework\App\DeploymentConfig;
@@ -14,6 +15,7 @@ use Magento\Framework\Indexer\DimensionalIndexerInterface;
 use Magento\Framework\Indexer\DimensionProviderInterface;
 use Magento\Framework\Indexer\SaveHandler\IndexerInterface;
 use Magento\Framework\Mview\ActionInterface as MviewActionInterface;
+use Magento\Store\Model\StoreDimensionProvider;
 use Psr\Log\LoggerInterface;
 use Traversable;
 
@@ -74,10 +76,16 @@ class AsyncEventSubscriber implements
     private $asyncEventSubscriberLogsDataProvider;
 
     /**
+     * @var StaticScope
+     */
+    private $staticScope;
+
+    /**
      * @param LoggerInterface $logger
      * @param DimensionProviderInterface $dimensionProvider
      * @param IndexerHandlerFactory $indexerHandlerFactory
      * @param AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider
+     * @param StaticScope $staticScope
      * @param array $data
      * @param int|null $batchSize
      * @param DeploymentConfig|null $deploymentConfig
@@ -87,6 +95,7 @@ class AsyncEventSubscriber implements
         DimensionProviderInterface $dimensionProvider,
         IndexerHandlerFactory $indexerHandlerFactory,
         AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider,
+        StaticScope $staticScope,
         array $data,
         int $batchSize = null,
         DeploymentConfig $deploymentConfig = null
@@ -98,6 +107,7 @@ class AsyncEventSubscriber implements
         $this->data = $data;
         $this->batchSize = $batchSize ?? self::BATCH_SIZE;
         $this->deploymentConfig = $deploymentConfig ?: ObjectManager::getInstance()->get(DeploymentConfig::class);
+        $this->staticScope = $staticScope;
     }
 
     public function executeFull()
@@ -128,6 +138,7 @@ class AsyncEventSubscriber implements
         $saveHandler = $this->indexerHandlerFactory->create(
             [
                 'data' => $this->data,
+                'scopeResolver' => $this->staticScope
             ]
         );
 
@@ -154,12 +165,16 @@ class AsyncEventSubscriber implements
         array $asyncEventLogIds
     ) {
         $this->logger->debug(__('processBatch ' . json_encode($asyncEventLogIds)));
+        $asyncEvent = $dimensions[0]->getValue();
 
         if ($saveHandler->isAvailable($dimensions)) {
             $saveHandler->deleteIndex($dimensions, new ArrayIterator($asyncEventLogIds));
             $saveHandler->saveIndex(
                 $dimensions,
-                $this->asyncEventSubscriberLogsDataProvider->getAsyncEventLogs($asyncEventLogIds)
+                $this->asyncEventSubscriberLogsDataProvider->getAsyncEventLogs(
+                    $asyncEventLogIds,
+                    $asyncEvent
+                )
             );
         }
     }

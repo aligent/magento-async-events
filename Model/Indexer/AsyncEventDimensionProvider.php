@@ -49,11 +49,11 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
     public function getIterator(): Traversable
     {
         foreach ($this->getAsyncEvents() as $asyncEvent) {
-            yield $this->dimensionFactory->create(self::DIMENSION_NAME, $asyncEvent);
+            yield [$this->dimensionFactory->create(self::DIMENSION_NAME, $asyncEvent)];
         }
     }
 
-    private function getAsyncEvents(): array
+    public function getAsyncEvents(): array
     {
         if ($this->asyncEventDataIterator === null) {
             $asyncEvents = $this->asyncEventCollectionFactory->create()
