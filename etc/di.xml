@@ -89,7 +89,7 @@
         </arguments>
     </type>
 
-    <!-- Indexer  -->
+    <!-- Elasticsearch Indexing  -->
     <type name="Aligent\AsyncEvents\Model\Indexer\AsyncEventSubscriber">
         <arguments>
             <argument name="dimensionProvider" xsi:type="object" shared="false">

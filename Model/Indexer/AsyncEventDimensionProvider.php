@@ -38,6 +38,10 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
      */
     private $dimensionFactory;
 
+    /**
+     * @param AsyncEventCollectionFactory $asyncEventCollectionFactory
+     * @param DimensionFactory $dimensionFactory
+     */
     public function __construct(
         AsyncEventCollectionFactory $asyncEventCollectionFactory,
         DimensionFactory $dimensionFactory
@@ -46,6 +50,9 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
         $this->dimensionFactory = $dimensionFactory;
     }
 
+    /**
+     * @return Traversable
+     */
     public function getIterator(): Traversable
     {
         foreach ($this->getAsyncEvents() as $asyncEvent) {
@@ -53,6 +60,9 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
         }
     }
 
+    /**
+     * @return array
+     */
     public function getAsyncEvents(): array
     {
         if ($this->asyncEventDataIterator === null) {

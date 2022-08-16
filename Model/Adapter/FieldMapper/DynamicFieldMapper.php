@@ -13,12 +13,18 @@ use Magento\Elasticsearch\Model\Adapter\FieldMapperInterface;
 
 class DynamicFieldMapper implements FieldMapperInterface
 {
-    public function getFieldName($attributeCode, $context = [])
+    /**
+     * @inheritDoc
+     */
+    public function getFieldName($attributeCode, $context = []): string
     {
         return $attributeCode;
     }
 
-    public function getAllAttributesTypes($context = [])
+    /**
+     * @inheritDoc
+     */
+    public function getAllAttributesTypes($context = []): array
     {
         return [
             "created" => [

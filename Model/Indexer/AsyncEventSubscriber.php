@@ -15,7 +15,6 @@ use Magento\Framework\Indexer\DimensionalIndexerInterface;
 use Magento\Framework\Indexer\DimensionProviderInterface;
 use Magento\Framework\Indexer\SaveHandler\IndexerInterface;
 use Magento\Framework\Mview\ActionInterface as MviewActionInterface;
-use Psr\Log\LoggerInterface;
 use Traversable;
 
 class AsyncEventSubscriber implements
@@ -41,11 +40,6 @@ class AsyncEventSubscriber implements
     const DEPLOYMENT_CONFIG_INDEXER_BATCHES = 'indexer/batch_size/';
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @var DimensionProviderInterface
      */
     private $dimensionProvider;
@@ -54,6 +48,16 @@ class AsyncEventSubscriber implements
      * @var IndexerHandlerFactory
      */
     private $indexerHandlerFactory;
+
+    /**
+     * @var AsyncEventSubscriberLogs
+     */
+    private $asyncEventSubscriberLogsDataProvider;
+
+    /**
+     * @var AsyncEvent
+     */
+    private $asyncEventScopeResolver;
 
     /**
      * @var array index structure
@@ -69,18 +73,8 @@ class AsyncEventSubscriber implements
      * @var DeploymentConfig|null
      */
     private $deploymentConfig;
-    /**
-     * @var AsyncEventSubscriberLogs
-     */
-    private $asyncEventSubscriberLogsDataProvider;
 
     /**
-     * @var AsyncEvent
-     */
-    private $asyncEventScopeResolver;
-
-    /**
-     * @param LoggerInterface $logger
      * @param DimensionProviderInterface $dimensionProvider
      * @param IndexerHandlerFactory $indexerHandlerFactory
      * @param AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider
@@ -90,7 +84,6 @@ class AsyncEventSubscriber implements
      * @param DeploymentConfig|null $deploymentConfig
      */
     public function __construct(
-        LoggerInterface $logger,
         DimensionProviderInterface $dimensionProvider,
         IndexerHandlerFactory $indexerHandlerFactory,
         AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider,
@@ -99,7 +92,6 @@ class AsyncEventSubscriber implements
         int $batchSize = null,
         DeploymentConfig $deploymentConfig = null
     ) {
-        $this->logger = $logger;
         $this->dimensionProvider = $dimensionProvider;
         $this->indexerHandlerFactory = $indexerHandlerFactory;
         $this->asyncEventSubscriberLogsDataProvider = $asyncEventSubscriberLogsDataProvider;
@@ -109,21 +101,35 @@ class AsyncEventSubscriber implements
         $this->asyncEventScopeResolver = $asyncEventScopeResolver;
     }
 
+    /**
+     * Full indexing can be implemented if required
+     *
+     * @inheritDoc
+     */
     public function executeFull()
     {
-        $this->logger->debug(__('Full reindex'));
+        $this->execute([]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function executeList(array $ids)
     {
         $this->execute($ids);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function executeRow($id)
     {
-        $this->logger->debug(__('executeRow', [json_encode($id)]));
+        $this->execute([$id]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function execute($ids)
     {
         foreach ($this->dimensionProvider->getIterator() as $dimension) {
@@ -131,9 +137,13 @@ class AsyncEventSubscriber implements
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function executeByDimensions(array $dimensions, Traversable $entityIds)
     {
         // TODO: Config check for indexing enable
+
         $saveHandler = $this->indexerHandlerFactory->create(
             [
                 'data' => $this->data,
@@ -158,12 +168,17 @@ class AsyncEventSubscriber implements
         }
     }
 
+    /**
+     * @param IndexerInterface $saveHandler
+     * @param array $dimensions
+     * @param array $asyncEventLogIds
+     * @return void
+     */
     private function processBatch(
         IndexerInterface $saveHandler,
         array $dimensions,
         array $asyncEventLogIds
     ) {
-        $this->logger->debug(__('processBatch ' . json_encode($asyncEventLogIds)));
         $asyncEvent = $dimensions[0]->getValue();
 
         if ($saveHandler->isAvailable($dimensions)) {

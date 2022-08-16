@@ -26,6 +26,10 @@ class AsyncEventLogMapper implements BatchDataMapperInterface
      */
     private $serializer;
 
+    /**
+     * @param Builder $builder
+     * @param SerializerInterface $serializer
+     */
     public function __construct(
         Builder $builder,
         SerializerInterface $serializer
@@ -34,7 +38,13 @@ class AsyncEventLogMapper implements BatchDataMapperInterface
         $this->serializer = $serializer;
     }
 
-    public function map(array $documentData, $storeId, array $context = [])
+    /**
+     * @param array $documentData
+     * @param $storeId
+     * @param array $context
+     * @return array
+     */
+    public function map(array $documentData, $storeId, array $context = []): array
     {
         $documents = [];
 
