@@ -25,7 +25,8 @@
     <type name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">async_event_subscriber_log</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog
+            <argument name="resourceModel" xsi:type="string">
+                Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog
             </argument>
         </arguments>
     </type>
@@ -89,7 +90,7 @@
         </arguments>
     </type>
 
-    <!-- Elasticsearch Indexing  -->
+    <!-- Elasticsearch Indexing -->
     <type name="Aligent\AsyncEvents\Model\Indexer\AsyncEventSubscriber">
         <arguments>
             <argument name="dimensionProvider" xsi:type="object" shared="false">
@@ -101,7 +102,7 @@
     <type name="Magento\Elasticsearch\Model\Adapter\BatchDataMapper\DataMapperFactory">
         <arguments>
             <argument name="dataMappers" xsi:type="array">
-                <item name="async_event_subscriber_log" xsi:type="string">
+                <item name="async_event" xsi:type="string">
                     \Aligent\AsyncEvents\Model\Adapter\BatchDataMapper\AsyncEventLogMapper
                 </item>
             </argument>
@@ -111,7 +112,7 @@
     <type name="Magento\Elasticsearch\Model\Adapter\FieldMapper\FieldMapperResolver">
         <arguments>
             <argument name="fieldMappers" xsi:type="array">
-                <item name="async_event_subscriber_log" xsi:type="string">
+                <item name="async_event" xsi:type="string">
                     \Aligent\AsyncEvents\Model\Adapter\FieldMapper\DynamicFieldMapper
                 </item>
             </argument>
