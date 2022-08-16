@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Aligent\AsyncEvents\Model\Indexer;
 
 use Aligent\AsyncEvents\Model\Indexer\DataProvider\AsyncEventSubscriberLogs;
-use Aligent\AsyncEvents\Model\Resolver\StaticScope;
+use Aligent\AsyncEvents\Model\Resolver\AsyncEvent;
 use ArrayIterator;
 use Magento\CatalogSearch\Model\Indexer\IndexerHandlerFactory;
 use Magento\Framework\App\DeploymentConfig;
@@ -15,7 +15,6 @@ use Magento\Framework\Indexer\DimensionalIndexerInterface;
 use Magento\Framework\Indexer\DimensionProviderInterface;
 use Magento\Framework\Indexer\SaveHandler\IndexerInterface;
 use Magento\Framework\Mview\ActionInterface as MviewActionInterface;
-use Magento\Store\Model\StoreDimensionProvider;
 use Psr\Log\LoggerInterface;
 use Traversable;
 
@@ -76,16 +75,16 @@ class AsyncEventSubscriber implements
     private $asyncEventSubscriberLogsDataProvider;
 
     /**
-     * @var StaticScope
+     * @var AsyncEvent
      */
-    private $staticScope;
+    private $asyncEventScopeResolver;
 
     /**
      * @param LoggerInterface $logger
      * @param DimensionProviderInterface $dimensionProvider
      * @param IndexerHandlerFactory $indexerHandlerFactory
      * @param AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider
-     * @param StaticScope $staticScope
+     * @param AsyncEvent $asyncEventScopeResolver
      * @param array $data
      * @param int|null $batchSize
      * @param DeploymentConfig|null $deploymentConfig
@@ -95,7 +94,7 @@ class AsyncEventSubscriber implements
         DimensionProviderInterface $dimensionProvider,
         IndexerHandlerFactory $indexerHandlerFactory,
         AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider,
-        StaticScope $staticScope,
+        AsyncEvent $asyncEventScopeResolver,
         array $data,
         int $batchSize = null,
         DeploymentConfig $deploymentConfig = null
@@ -107,7 +106,7 @@ class AsyncEventSubscriber implements
         $this->data = $data;
         $this->batchSize = $batchSize ?? self::BATCH_SIZE;
         $this->deploymentConfig = $deploymentConfig ?: ObjectManager::getInstance()->get(DeploymentConfig::class);
-        $this->staticScope = $staticScope;
+        $this->asyncEventScopeResolver = $asyncEventScopeResolver;
     }
 
     public function executeFull()
@@ -138,7 +137,7 @@ class AsyncEventSubscriber implements
         $saveHandler = $this->indexerHandlerFactory->create(
             [
                 'data' => $this->data,
-                'scopeResolver' => $this->staticScope
+                'scopeResolver' => $this->asyncEventScopeResolver
             ]
         );
 

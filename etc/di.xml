@@ -117,4 +117,9 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\BatchDataMapperInterface">
+        <plugin name="add_entity_type_context"
+                type="Aligent\AsyncEvents\Plugin\AddEntityTypeContext"/>
+    </type>
 </config>
