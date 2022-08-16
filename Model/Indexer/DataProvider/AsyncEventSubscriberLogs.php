@@ -41,7 +41,8 @@ class AsyncEventSubscriberLogs
         $logCollection->getSelect()
             ->join(
                 ['ae' => 'async_event_subscriber'],
-                "ae.subscription_id = main_table.subscription_id"
+                'ae.subscription_id = main_table.subscription_id',
+                ['event_name']
             )
             ->where('ae.event_name = ?', $asyncEvent);
 
