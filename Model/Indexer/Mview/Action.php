@@ -32,7 +32,7 @@ class Action implements ActionInterface
      */
     public function execute($ids)
     {
-        $indexer = $this->indexerFactory->create()->load('async_event_subscriber_log');
+        $indexer = $this->indexerFactory->create()->load('async_event');
         $indexer->reindexList($ids);
     }
 }

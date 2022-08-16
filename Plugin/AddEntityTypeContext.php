@@ -37,7 +37,7 @@ class AddEntityTypeContext
         array $context = []
     ): array {
         if (is_string($storeId)) {
-            $context['entityType'] = 'async_event_subscriber_log';
+            $context['entityType'] = 'async_event';
         }
 
         return [$documentData, $storeId, $context];
