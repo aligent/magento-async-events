@@ -9,33 +9,15 @@ use Magento\Framework\Stdlib\DateTime;
 class AsyncEventCleanSubscriberLogs
 {
     /**
-     * @var ResourceConnection
-     */
-    private $resourceConnection;
-
-    /**
-     * @var DateTime
-     */
-    private $dateTime;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * @param ResourceConnection $resourceConnection
-     * @param DateTime $dateTime
      * @param Config $config
+     * @param DateTime $dateTime
      */
     public function __construct(
-        ResourceConnection   $resourceConnection,
-        DateTime             $dateTime,
-        Config $config
+        private readonly ResourceConnection $resourceConnection,
+        private readonly Config $config,
+        private readonly DateTime $dateTime
     ) {
-        $this->resourceConnection = $resourceConnection;
-        $this->dateTime = $dateTime;
-        $this->config = $config;
     }
 
     /**
@@ -43,7 +25,7 @@ class AsyncEventCleanSubscriberLogs
      *
      * @return void
      */
-    public function cleanSubscriberLogs()
+    public function cleanSubscriberLogs(): void
     {
         // check if cron is enabled or disabled in system configuration
         $shouldRunCron = $this->config->isCleanUpCronEnabled();

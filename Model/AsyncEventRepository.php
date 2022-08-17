@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model;
 
+use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface;
 use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
 use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface;
-use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
+use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterfaceFactory as SearchResultsFactory;
 use Aligent\AsyncEvents\Model\Config as AsyncEventConfig;
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent as AsyncEventResource;
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\CollectionFactory as AsyncEventCollectionFactory;
-use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterfaceFactory as SearchResultsFactory;
-
 use DateTime;
+use DateTimeInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\AuthorizationInterface;
@@ -25,46 +25,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class AsyncEventRepository implements AsyncEventRepositoryInterface
 {
     /**
-     * @var AsyncEventFactory
-     */
-    private $asyncEventFactory;
-
-    /**
-     * @var AsyncEventResource
-     */
-    private $asyncEventResource;
-
-    /**
-     * @var AsyncEventConfig
-     */
-    private $asyncEventConfig;
-
-    /**
-     * @var SearchResultsFactory
-     */
-    private $searchResultsFactory;
-
-    /**
-     * @var AsyncEventCollectionFactory
-     */
-    private $asyncEventCollectionFactory;
-
-    /**
-     * @var CollectionProcessorInterface
-     */
-    private $collectionProcessor;
-
-    /**
-     * @var EncryptorInterface
-     */
-    private $encryptor;
-
-    /**
-     * @var AuthorizationInterface
-     */
-    private $authorization;
-
-    /**
      * @param AsyncEventFactory $asyncEventFactory
      * @param AsyncEventResource $asyncEventResource
      * @param AsyncEventConfig $asyncEventConfig
@@ -75,38 +35,15 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
      * @param AuthorizationInterface $authorization
      */
     public function __construct(
-        AsyncEventFactory            $asyncEventFactory,
-        AsyncEventResource           $asyncEventResource,
-        AsyncEventConfig             $asyncEventConfig,
-        SearchResultsFactory         $searchResultsFactory,
-        AsyncEventCollectionFactory  $asyncEventCollectionFactory,
-        CollectionProcessorInterface $collectionProcessor,
-        EncryptorInterface           $encryptor,
-        AuthorizationInterface       $authorization
+        private readonly AsyncEventFactory $asyncEventFactory,
+        private readonly AsyncEventResource $asyncEventResource,
+        private readonly AsyncEventConfig $asyncEventConfig,
+        private readonly SearchResultsFactory $searchResultsFactory,
+        private readonly AsyncEventCollectionFactory $asyncEventCollectionFactory,
+        private readonly CollectionProcessorInterface $collectionProcessor,
+        private readonly EncryptorInterface $encryptor,
+        private readonly AuthorizationInterface $authorization
     ) {
-        $this->asyncEventFactory = $asyncEventFactory;
-        $this->asyncEventResource = $asyncEventResource;
-        $this->asyncEventConfig = $asyncEventConfig;
-        $this->searchResultsFactory = $searchResultsFactory;
-        $this->asyncEventCollectionFactory = $asyncEventCollectionFactory;
-        $this->collectionProcessor = $collectionProcessor;
-        $this->encryptor = $encryptor;
-        $this->authorization = $authorization;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function get(int $subscriptionId): AsyncEventDisplayInterface
-    {
-        $asyncEvent = $this->asyncEventFactory->create();
-        $this->asyncEventResource->load($asyncEvent, $subscriptionId);
-
-        if (!$asyncEvent->getId()) {
-            throw new NoSuchEntityException(__('Async event with subscription ID %1 does not exist', $subscriptionId));
-        }
-
-        return $asyncEvent;
     }
 
     /**
@@ -141,7 +78,7 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
 
         if (!$asyncEvent->getSubscriptionId()) {
             $asyncEvent->setStatus(true);
-            $asyncEvent->setSubscribedAt((new DateTime())->format(DateTime::ATOM));
+            $asyncEvent->setSubscribedAt((new DateTime())->format(DateTimeInterface::ATOM));
             $secretVerificationToken = $this->encryptor->encrypt($asyncEvent->getVerificationToken());
             $asyncEvent->setVerificationToken($secretVerificationToken);
 
@@ -167,11 +104,16 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
     }
 
     /**
+     * Validate ACL resource permissions
+     *
+     * Check that the current user has all the permissions listed as required in the config definition in order
+     * to create an asynchronous event subscription
+     *
      * @param AsyncEventInterface $asyncEvent
      * @return void
      * @throws AuthorizationException
      */
-    private function validateResources(AsyncEventInterface $asyncEvent)
+    private function validateResources(AsyncEventInterface $asyncEvent): void
     {
         $configData = $this->asyncEventConfig->get($asyncEvent->getEventName());
         $resources = $configData['resources'] ?? [];
@@ -185,5 +127,22 @@ class AsyncEventRepository implements AsyncEventRepositoryInterface
                 );
             }
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get(int $subscriptionId): AsyncEventDisplayInterface
+    {
+        $asyncEvent = $this->asyncEventFactory->create();
+        $this->asyncEventResource->load($asyncEvent, $subscriptionId);
+
+        if (!$asyncEvent->getId()) {
+            throw new NoSuchEntityException(
+                __('Async event with subscription ID %1 does not exist', $subscriptionId)
+            );
+        }
+
+        return $asyncEvent;
     }
 }

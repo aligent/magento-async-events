@@ -11,12 +11,7 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class AsyncEventActions extends Column
 {
-    const URL_PATH_TRACE = 'async_events/logs/trace';
-
-    /**
-     * @var UrlInterface
-     */
-    private $urlBuilder;
+    private const URL_PATH_TRACE = 'async_events/logs/trace';
 
     /**
      * @param ContextInterface $context
@@ -27,16 +22,17 @@ class AsyncEventActions extends Column
      */
     public function __construct(
         ContextInterface $context,
-        UrlInterface $urlBuilder,
+        private readonly UrlInterface $urlBuilder,
         UiComponentFactory $uiComponentFactory,
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder = $urlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
     /**
+     * Prepare the data source for action column
+     *
      * @param array $dataSource
      * @return array
      */

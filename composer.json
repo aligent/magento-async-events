@@ -3,7 +3,7 @@
   "description": "An event-driven flexible async events module that allows you to process any event asynchronously.\n",
   "type": "magento2-module",
   "require": {
-    "php":  ">=7.0",
+    "php":  ">=8.1",
     "magento/framework": "*"
   },
   "repositories": [
@@ -14,7 +14,7 @@
   ],
   "require-dev": {
     "squizlabs/php_codesniffer": "~3.5",
-    "magento/magento-coding-standard": "^6.0"
+    "magento/magento-coding-standard": "*"
   },
     "license": [
     "GPL-3.0-only"

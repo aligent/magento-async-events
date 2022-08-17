@@ -9,6 +9,8 @@ use Magento\Ui\Component\Listing\Columns\Column;
 class Status extends Column
 {
     /**
+     * Prepare the data for the status column with HTML formatting
+     *
      * @param array $dataSource
      * @return array
      */

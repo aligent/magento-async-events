@@ -22,36 +22,20 @@ use PhpAmqpLib\Wire\AMQPTable;
 class AmqpPublisher implements PublisherInterface
 {
     /**
-     * @var Config
-     */
-    private $amqpConfig;
-
-    /**
-     * @var EnvelopeFactory
-     */
-    private $envelopeFactory;
-
-    /**
-     * @var Json
-     */
-    private $json;
-
-    /**
      * @param Config $amqpConfig
      * @param EnvelopeFactory $envelopeFactory
      * @param Json $json
      */
     public function __construct(
-        Config $amqpConfig,
-        EnvelopeFactory $envelopeFactory,
-        Json $json
+        private readonly Config $amqpConfig,
+        private readonly EnvelopeFactory $envelopeFactory,
+        private readonly Json $json
     ) {
-        $this->amqpConfig = $amqpConfig;
-        $this->envelopeFactory = $envelopeFactory;
-        $this->json = $json;
     }
 
     /**
+     * Publish an AMQP message to RabbitMQ
+     *
      * @param string $topicName
      * @param mixed $data
      * @return null
@@ -69,7 +53,7 @@ class AmqpPublisher implements PublisherInterface
                     'message_id' => md5(uniqid($topicName)),
                     'application_headers' => new AMQPTable([
                         // Since we have to conform to the interface, there is no nice way of passing this information
-                        // when calling this method unless we allow temporal coupling or etc.
+                        // when calling this method unless we allow temporal coupling
                         'x-retry-count' => $data[RetryManager::DEATH_COUNT]
                     ])
                 ]

@@ -8,6 +8,7 @@ use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
 use Aligent\AsyncEvents\Model\AsyncEvent;
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Collection;
 use Exception;
+use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 use Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\CollectionFactory;
@@ -18,21 +19,6 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 class MassDisable extends Action implements HttpPostActionInterface
 {
     /**
-     * @var CollectionFactory
-     */
-    protected $collectionFactory;
-
-    /**
-     * @var Filter
-     */
-    private $filter;
-
-    /**
-     * @var AsyncEventRepositoryInterface
-     */
-    private $asyncEventRepository;
-
-    /**
      * @param Context $context
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
@@ -40,21 +26,19 @@ class MassDisable extends Action implements HttpPostActionInterface
      */
     public function __construct(
         Context $context,
-        Filter $filter,
-        CollectionFactory $collectionFactory,
-        AsyncEventRepositoryInterface $asyncEventRepository
+        private readonly Filter $filter,
+        private readonly CollectionFactory $collectionFactory,
+        private readonly AsyncEventRepositoryInterface $asyncEventRepository
     ) {
         parent::__construct($context);
-        $this->collectionFactory = $collectionFactory;
-        $this->filter = $filter;
-        $this->asyncEventRepository = $asyncEventRepository;
     }
 
     /**
-     * @inheritDoc
+     * Execute page load
+     *
      * @throws LocalizedException
      */
-    public function execute()
+    public function execute(): Redirect
     {
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('async_events/events/index');
@@ -67,10 +51,12 @@ class MassDisable extends Action implements HttpPostActionInterface
     }
 
     /**
+     * Disable a list of asynchronous events
+     *
      * @param Collection $asyncEventCollection
      * @return void
      */
-    private function disableAsyncEvents(Collection $asyncEventCollection)
+    private function disableAsyncEvents(Collection $asyncEventCollection): void
     {
         $disabled = 0;
         $alreadyDisabled = 0;

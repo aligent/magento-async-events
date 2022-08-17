@@ -15,21 +15,8 @@ use Magento\Framework\View\Result\PageFactory;
 class Retry extends Action implements HttpPostActionInterface
 {
     /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
-     * @var RetryManager
-     */
-    private $retryManager;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
+     * Retry Constructor
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param RetryManager $retryManager
@@ -37,17 +24,19 @@ class Retry extends Action implements HttpPostActionInterface
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        RetryManager $retryManager,
-        SerializerInterface $serializer
+        private readonly PageFactory $resultPageFactory,
+        private readonly RetryManager $retryManager,
+        private readonly SerializerInterface $serializer
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->retryManager = $retryManager;
-        $this->serializer = $serializer;
     }
 
-    public function execute()
+    /**
+     * Execute page load
+     *
+     * @return void
+     */
+    public function execute(): void
     {
         $data = $this->getRequest()->getPostValue()['general'];
 

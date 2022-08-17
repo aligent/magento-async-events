@@ -8,7 +8,6 @@ use Magento\Framework\Model\AbstractModel;
 
 class AsyncEventLog extends AbstractModel
 {
-
     /**
      * @var string
      */
@@ -22,77 +21,149 @@ class AsyncEventLog extends AbstractModel
         $this->_init(ResourceModel\AsyncEventLog::class);
     }
 
-    public function getLogId()
+    /**
+     * Getter for log id
+     *
+     * @return int
+     */
+    public function getLogId(): int
     {
-        $this->getData('log_id');
+        return (int) $this->getData('log_id');
     }
 
-    public function setLogId($logId)
+    /**
+     * Setter for log id
+     *
+     * @param int $logId
+     * @return void
+     */
+    public function setLogId(int $logId): void
     {
         $this->setData('log_id', $logId);
-        return $this;
     }
 
-    public function getSubscriptionId()
+    /**
+     * Getter for subscription id
+     *
+     * @return int
+     */
+    public function getSubscriptionId(): int
     {
-        $this->getData('subscription_id');
+        return (int) $this->getData('subscription_id');
     }
 
-    public function setSubscriptionId($subscriptionId)
+    /**
+     * Setter for subscription id
+     *
+     * @param int $subscriptionId
+     * @return void
+     */
+    public function setSubscriptionId(int $subscriptionId): void
     {
         $this->setData('subscription_id', $subscriptionId);
-        return $this;
     }
 
-    public function getSuccess()
+    /**
+     * Getter for success
+     *
+     * @return bool
+     */
+    public function getSuccess(): bool
     {
-        $this->getData('success');
+        return (bool) $this->getData('success');
     }
 
-    public function setSuccess($success)
+    /**
+     * Setter for success
+     *
+     * @param bool $success
+     * @return void
+     */
+    public function setSuccess(bool $success): void
     {
         $this->setData('success', $success);
-        return $this;
     }
 
-    public function getCreated()
+    /**
+     * Getter for created
+     *
+     * @return string
+     */
+    public function getCreated(): string
     {
-        $this->getData('created');
+        return (string) $this->getData('created');
     }
 
-    public function setCreated($created)
+    /**
+     * Setter for created
+     *
+     * @param string $created
+     * @return void
+     */
+    public function setCreated(string $created): void
     {
         $this->setData('created', $created);
-        return $this;
     }
 
-    public function getResponseData()
+    /**
+     * Getter for response data
+     *
+     * @return string
+     */
+    public function getResponseData(): string
     {
-        $this->getData('response_data');
+        return (string) $this->getData('response_data');
     }
 
-    public function setResponseData($responseData)
+    /**
+     * Setter for response data
+     *
+     * @param string $responseData
+     * @return void
+     */
+    public function setResponseData(string $responseData): void
     {
         $this->setData('response_data', $responseData);
-        return $this;
     }
 
+    /**
+     * Getter for UUID
+     *
+     * @return string
+     */
     public function getUuid(): string
     {
         return (string) $this->getData('uuid');
     }
 
-    public function setUuid(string $uuid)
+    /**
+     * Setter for UUID
+     *
+     * @param string $uuid
+     * @return void
+     */
+    public function setUuid(string $uuid): void
     {
         $this->setData('uuid', $uuid);
     }
 
+    /**
+     * Getter for serialised data
+     *
+     * @return array
+     */
     public function getSerializedData(): array
     {
         return $this->getData('serialized_data');
     }
 
-    public function setSerializedData(array $serializedData)
+    /**
+     * Setter for serialised data
+     *
+     * @param array $serializedData
+     * @return void
+     */
+    public function setSerializedData(array $serializedData): void
     {
         $this->setData('serialized_data', $serializedData);
     }

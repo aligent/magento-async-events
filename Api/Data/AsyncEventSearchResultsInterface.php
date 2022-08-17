@@ -9,12 +9,16 @@ use Magento\Framework\Api\SearchResultsInterface;
 interface AsyncEventSearchResultsInterface extends SearchResultsInterface
 {
     /**
-     * @return \Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface[]
+     * Getter for items
+     *
+     * @return AsyncEventDisplayInterface[]
      */
     public function getItems();
 
     /**
-     * @param \Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface[] $items
+     * Setter for items
+     *
+     * @param AsyncEventDisplayInterface[] $items
      * @return $this
      */
     public function setItems(array $items);

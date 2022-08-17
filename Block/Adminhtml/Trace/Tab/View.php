@@ -11,6 +11,8 @@ use Magento\Ui\Component\Layout\Tabs\TabInterface;
 class View extends Template implements TabInterface
 {
     /**
+     * Getter for tab label
+     *
      * @return Phrase
      */
     public function getTabLabel(): Phrase
@@ -19,6 +21,8 @@ class View extends Template implements TabInterface
     }
 
     /**
+     * Getter for tab title
+     *
      * @return Phrase
      */
     public function getTabTitle(): Phrase
@@ -27,6 +31,8 @@ class View extends Template implements TabInterface
     }
 
     /**
+     * Getter for tab class
+     *
      * @return string
      */
     public function getTabClass(): string
@@ -35,6 +41,8 @@ class View extends Template implements TabInterface
     }
 
     /**
+     * Getter for tab url
+     *
      * @return string
      */
     public function getTabUrl(): string
@@ -43,6 +51,8 @@ class View extends Template implements TabInterface
     }
 
     /**
+     * Getter for is ajax loaded
+     *
      * @return bool
      */
     public function isAjaxLoaded(): bool
@@ -51,6 +61,8 @@ class View extends Template implements TabInterface
     }
 
     /**
+     * Getter for can show tab
+     *
      * @return bool
      */
     public function canShowTab(): bool
@@ -59,6 +71,8 @@ class View extends Template implements TabInterface
     }
 
     /**
+     * Getter for is hidden
+     *
      * @return bool
      */
     public function isHidden(): bool

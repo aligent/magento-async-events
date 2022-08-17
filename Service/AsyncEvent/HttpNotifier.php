@@ -19,22 +19,7 @@ class HttpNotifier implements NotifierInterface
     /**
      * Hash algorithm. Changing this in future will be a breaking change
      */
-    const HASHING_ALGORITHM = 'sha256';
-
-    /**
-     * @var Client
-     */
-    private $client;
-
-    /**
-     * @var Json
-     */
-    private $json;
-
-    /**
-     * @var EncryptorInterface
-     */
-    private $encryptor;
+    private const HASHING_ALGORITHM = 'sha256';
 
     /**
      * @param Client $client
@@ -42,13 +27,10 @@ class HttpNotifier implements NotifierInterface
      * @param EncryptorInterface $encryptor
      */
     public function __construct(
-        Client $client,
-        Json $json,
-        EncryptorInterface $encryptor
+        private readonly Client $client,
+        private readonly Json $json,
+        private readonly EncryptorInterface $encryptor
     ) {
-        $this->client = $client;
-        $this->json = $json;
-        $this->encryptor = $encryptor;
     }
 
     /**

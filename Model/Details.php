@@ -14,27 +14,21 @@ class Details
     /**
      * @var array
      */
-    private $traceCache = [];
+    private array $traceCache = [];
 
     /**
-     * @var AsyncEventRepositoryInterface
+     * @param AsyncEventLogCollectionFactory $collectionFactory
+     * @param AsyncEventRepositoryInterface $asyncEventRepository
      */
-    private $asyncEventRepository;
-
-    /**
-     * @var AsyncEventLogCollectionFactory
-     */
-    private $collectionFactory;
-
     public function __construct(
-        AsyncEventLogCollectionFactory $collectionFactory,
-        AsyncEventRepositoryInterface  $asyncEventRepository
+        private readonly AsyncEventLogCollectionFactory $collectionFactory,
+        private readonly AsyncEventRepositoryInterface $asyncEventRepository
     ) {
-        $this->asyncEventRepository = $asyncEventRepository;
-        $this->collectionFactory = $collectionFactory;
     }
 
     /**
+     * Get details of an asynchronous event by UUID
+     *
      * @param string $uuid
      * @return array
      */
@@ -59,14 +53,17 @@ class Details
                 'async_event' => $asyncEvent
             ];
 
-        } catch (NoSuchEntityException $exception) {
+        } catch (NoSuchEntityException) {
             // Do nothing because an uuid cannot exist without its subscription
+            return [];
         }
 
         return $this->traceCache[$uuid];
     }
 
     /**
+     * Get log traces of an asynchronous event by UUID
+     *
      * @param string $uuid
      * @return array
      */
@@ -78,6 +75,8 @@ class Details
     }
 
     /**
+     * Get the delivery status of an asynchronous event batch
+     *
      * @param string $uuid
      * @return string
      */
@@ -115,6 +114,8 @@ class Details
     }
 
     /**
+     * Get the first attempt of an asynchronous event dispatch batch
+     *
      * @param string $uuid
      * @return string
      */
@@ -129,6 +130,8 @@ class Details
     }
 
     /**
+     * Get the last attempt of an asynchronous event dispatch batch
+     *
      * @param string $uuid
      * @return string
      */
@@ -143,6 +146,8 @@ class Details
     }
 
     /**
+     * Get the name of the asynchronous event
+     *
      * @param string $uuid
      * @return string
      */
@@ -156,6 +161,8 @@ class Details
     }
 
     /**
+     * Get the current status of the asynchronous event subscriber
+     *
      * @param string $uuid
      * @return string
      */
@@ -169,6 +176,8 @@ class Details
     }
 
     /**
+     * Get the recipient of the asynchronous event subscriber
+     *
      * @param string $uuid
      * @return string
      */
@@ -182,6 +191,8 @@ class Details
     }
 
     /**
+     * Get the date of the subscriber created a subscription
+     *
      * @param string $uuid
      * @return string
      */

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">async_events_events_listing.async_events_events_listing_data_source</item>
+            <item name="provider" xsi:type="string">
+                async_events_events_listing.async_events_events_listing_data_source
+            </item>
         </item>
     </argument>
     <settings>
@@ -19,7 +22,8 @@
             <updateUrl path="mui/index/render"/>
         </settings>
         <aclResource>Aligent_AsyncEvents::manage</aclResource>
-        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="async_events_events_listing_data_source">
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider"
+                      name="async_events_events_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>subscription_id</primaryFieldName>
@@ -32,7 +36,7 @@
         <columnsControls name="columns_controls"/>
         <exportButton name="export_button"/>
         <filterSearch name="fulltext"/>
-        <filters name="listing_filters" />
+        <filters name="listing_filters"/>
         <massaction name="listing_massaction">
             <action name="disable">
                 <settings>
@@ -63,7 +67,9 @@
         <settings>
             <childDefaults>
                 <param name="fieldAction" xsi:type="array">
-                    <item name="provider" xsi:type="string">async_events_events_listing.async_events_events_listing_data_source</item>
+                    <item name="provider" xsi:type="string">
+                        async_events_events_listing.async_events_events_listing_data_source
+                    </item>
                     <item name="target" xsi:type="string">applyAction</item>
                     <item name="params" xsi:type="array">
                         <item name="0" xsi:type="string">view</item>
@@ -101,13 +107,15 @@
                 <label translate="true">Status</label>
             </settings>
         </column>
-        <column name="subscribed_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+        <column name="subscribed_at" class="Magento\Ui\Component\Listing\Columns\Date"
+                component="Magento_Ui/js/grid/columns/date">
             <settings>
                 <filter>dateRange</filter>
                 <label translate="true">Subscribed At</label>
             </settings>
         </column>
-        <column name="modified" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+        <column name="modified" class="Magento\Ui\Component\Listing\Columns\Date"
+                component="Magento_Ui/js/grid/columns/date">
             <settings>
                 <filter>dateRange</filter>
                 <label translate="true">Modified</label>

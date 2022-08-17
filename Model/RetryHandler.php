@@ -10,52 +10,11 @@ use Aligent\AsyncEvents\Helper\NotifierResult;
 use Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactoryInterface;
 use Aligent\AsyncEvents\Service\AsyncEvent\RetryManager;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Serialize\SerializerInterface;
 
 class RetryHandler
 {
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var AsyncEventRepositoryInterface
-     */
-    private $asyncEventRepository;
-
-    /**
-     * @var NotifierFactoryInterface
-     */
-    private $notifierFactory;
-
-    /**
-     * @var AsyncEventLogFactory
-     */
-    private $asyncEventLogFactory;
-
-    /**
-     * @var AsyncEventLogRepository
-     */
-    private $asyncEventLogRepository;
-
-    /**
-     * @var RetryManager
-     */
-    private $retryManager;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param AsyncEventRepositoryInterface $asyncEventRepository
@@ -67,29 +26,23 @@ class RetryHandler
      * @param Config $config
      */
     public function __construct(
-        SearchCriteriaBuilder         $searchCriteriaBuilder,
-        AsyncEventRepositoryInterface $asyncEventRepository,
-        NotifierFactoryInterface      $notifierFactory,
-        AsyncEventLogFactory          $asyncEventLogFactory,
-        AsyncEventLogRepository       $asyncEventLogRepository,
-        RetryManager                  $retryManager,
-        SerializerInterface           $serializer,
-        Config $config
+        private readonly SearchCriteriaBuilder         $searchCriteriaBuilder,
+        private readonly AsyncEventRepositoryInterface $asyncEventRepository,
+        private readonly NotifierFactoryInterface      $notifierFactory,
+        private readonly AsyncEventLogFactory          $asyncEventLogFactory,
+        private readonly AsyncEventLogRepository       $asyncEventLogRepository,
+        private readonly RetryManager                  $retryManager,
+        private readonly SerializerInterface           $serializer,
+        private readonly Config                        $config
     ) {
-        $this->asyncEventRepository = $asyncEventRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->notifierFactory = $notifierFactory;
-        $this->asyncEventLogFactory = $asyncEventLogFactory;
-        $this->asyncEventLogRepository = $asyncEventLogRepository;
-        $this->retryManager = $retryManager;
-        $this->serializer = $serializer;
-        $this->config = $config;
     }
 
     /**
+     * Process a retry message
+     *
      * @param array $message
      */
-    public function process(array $message)
+    public function process(array $message): void
     {
         $subscriptionId = $message[RetryManager::SUBSCRIPTION_ID];
         $deathCount = $message[RetryManager::DEATH_COUNT];
@@ -129,10 +82,12 @@ class RetryHandler
     }
 
     /**
+     * Log a retry, this is what allows us to find a trace of an asynchronous event dispatch
+     *
      * @param NotifierResult $response
      * @return void
      */
-    private function log(NotifierResult $response)
+    private function log(NotifierResult $response): void
     {
         /** @var AsyncEventLog $asyncEventLog */
         $asyncEventLog = $this->asyncEventLogFactory->create();
@@ -144,8 +99,8 @@ class RetryHandler
 
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);
-        } catch (AlreadyExistsException $exception) {
-            // Do nothing because a log entry can never already exist
+        } catch (AlreadyExistsException) {
+            return;
         }
     }
 }

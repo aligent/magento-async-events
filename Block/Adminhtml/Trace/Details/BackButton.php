@@ -9,23 +9,21 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 class BackButton implements ButtonProviderInterface
 {
-
     /**
-     * URL builder
+     * BackButton Constructor
      *
-     * @var UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
      * @param UrlInterface $urlBuilder
      */
     public function __construct(
-        UrlInterface $urlBuilder
+        private readonly UrlInterface $urlBuilder
     ) {
-        $this->urlBuilder = $urlBuilder;
     }
 
+    /**
+     * Get button data with options
+     *
+     * @return array
+     */
     public function getButtonData(): array
     {
         return [

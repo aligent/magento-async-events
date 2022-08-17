@@ -7,12 +7,13 @@ namespace Aligent\AsyncEvents\Model\Config;
 use DOMNode;
 use InvalidArgumentException;
 use Magento\Framework\Config\ConverterInterface;
+use ReflectionClass;
+use ReflectionException;
 
 class Converter implements ConverterInterface
 {
     /**
-     * @param $source
-     * @return array
+     * @inheritDoc
      */
     public function convert($source): array
     {
@@ -42,6 +43,8 @@ class Converter implements ConverterInterface
     }
 
     /**
+     * Convert service config
+     *
      * @param DOMNode $observerConfig
      * @return array
      */
@@ -61,15 +64,15 @@ class Converter implements ConverterInterface
 
         // check that the specified class/method exists and is public
         try {
-            $serviceClass = new \ReflectionClass($classAttribute->nodeValue);
-        } catch (\ReflectionException $e) {
+            $serviceClass = new ReflectionClass($classAttribute->nodeValue);
+        } catch (ReflectionException) {
             throw new InvalidArgumentException(
                 sprintf('Class %s does not exist', $classAttribute->nodeValue)
             );
         }
         try {
             $serviceMethod = $serviceClass->getMethod($methodAttribute->nodeValue);
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Method %s does not exist is class %s',
@@ -86,6 +89,8 @@ class Converter implements ConverterInterface
     }
 
     /**
+     * Convert ACL resources config
+     *
      * @param DOMNode $resourcesConfig
      * @return array[]
      */

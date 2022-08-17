@@ -9,7 +9,7 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 class AsyncEventLog extends AbstractDb
 {
     /**
-     * @inheritDoc
+     * @var array
      */
     protected $_serializableFields = ['serialized_data' => [[],[]]];
 

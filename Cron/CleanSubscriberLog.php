@@ -3,31 +3,31 @@
 namespace Aligent\AsyncEvents\Cron;
 
 use Aligent\AsyncEvents\Model\AsyncEventCleanSubscriberLogs;
+use Exception;
 use Psr\Log\LoggerInterface;
 
 class CleanSubscriberLog
 {
-    private $logger;
-    private $cleanSubscriberLogs;
-
     /**
      * @param LoggerInterface $logger
      * @param AsyncEventCleanSubscriberLogs $cleanSubscriberLogs
      */
-    public function __construct(LoggerInterface $logger, AsyncEventCleanSubscriberLogs $cleanSubscriberLogs)
-    {
-        $this->logger = $logger;
-        $this->cleanSubscriberLogs = $cleanSubscriberLogs;
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly AsyncEventCleanSubscriberLogs $cleanSubscriberLogs
+    ) {
     }
 
     /**
+     * Execute page load
+     *
      * @return void
      */
-    public function execute()
+    public function execute(): void
     {
         try {
             $this->cleanSubscriberLogs->cleanSubscriberLogs();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error("Could not clean subscriber logs", ["Exception" => $e]);
         }
     }

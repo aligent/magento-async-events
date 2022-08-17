@@ -9,6 +9,8 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class ReplayButton implements ButtonProviderInterface
 {
     /**
+     * Get button data with options
+     *
      * @return array
      */
     public function getButtonData(): array

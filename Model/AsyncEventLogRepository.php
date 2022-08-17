@@ -10,24 +10,21 @@ use Magento\Framework\Exception\AlreadyExistsException;
 class AsyncEventLogRepository
 {
     /**
-     * @var AsyncEventLogResource
-     */
-    private $asyncEventLogResource;
-
-    /**
-     * @param AsyncEventLogResource $asyncEventLog
+     * @param AsyncEventLogResource $asyncEventLogResource
      */
     public function __construct(
-        AsyncEventLogResource $asyncEventLog
+        private readonly AsyncEventLogResource $asyncEventLogResource
     ) {
-        $this->asyncEventLogResource = $asyncEventLog;
     }
 
     /**
+     * Save an asynchronous event log
+     *
      * @param AsyncEventLog $asyncEvent
+     * @return void
      * @throws AlreadyExistsException
      */
-    public function save(AsyncEventLog $asyncEvent)
+    public function save(AsyncEventLog $asyncEvent): void
     {
         $this->asyncEventLogResource->save($asyncEvent);
     }

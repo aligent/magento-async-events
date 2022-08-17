@@ -12,12 +12,7 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Index extends Action implements HttpGetActionInterface
 {
-    const MENU_ID = 'Aligent_AsyncEvents::logs';
-
-    /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
+    private const MENU_ID = 'Aligent_AsyncEvents::logs';
 
     /**
      * @param Context $context
@@ -25,14 +20,14 @@ class Index extends Action implements HttpGetActionInterface
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory
+        private readonly PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
-
-        $this->resultPageFactory = $resultPageFactory;
     }
 
     /**
+     * Execute page load
+     *
      * @return Page
      */
     public function execute(): Page

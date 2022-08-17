@@ -17,41 +17,6 @@ use Magento\Framework\Exception\AlreadyExistsException;
 class EventDispatcher
 {
     /**
-     * @var AsyncEventRepositoryInterface
-     */
-    private $asyncEventRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var NotifierFactoryInterface
-     */
-    private $notifierFactory;
-
-    /**
-     * @var AsyncEventLogRepository
-     */
-    private $asyncEventLogRepository;
-
-    /**
-     * @var AsyncEventLogFactory
-     */
-    private $asyncEventLogFactory;
-
-    /**
-     * @var RetryManager
-     */
-    private $retryManager;
-
-    /**
-     * @var IdentityGeneratorInterface
-     */
-    private $identityService;
-
-    /**
      * @param AsyncEventRepositoryInterface $asyncEventRepository
      * @param AsyncEventLogRepository $asyncEventLogRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -61,28 +26,23 @@ class EventDispatcher
      * @param RetryManager $retryManager
      */
     public function __construct(
-        AsyncEventRepositoryInterface $asyncEventRepository,
-        AsyncEventLogRepository       $asyncEventLogRepository,
-        SearchCriteriaBuilder         $searchCriteriaBuilder,
-        NotifierFactoryInterface      $notifierFactory,
-        AsyncEventLogFactory          $asyncEventLogFactory,
-        IdentityGeneratorInterface    $identityService,
-        RetryManager                  $retryManager
+        private readonly AsyncEventRepositoryInterface $asyncEventRepository,
+        private readonly AsyncEventLogRepository $asyncEventLogRepository,
+        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+        private readonly NotifierFactoryInterface $notifierFactory,
+        private readonly AsyncEventLogFactory $asyncEventLogFactory,
+        private readonly IdentityGeneratorInterface $identityService,
+        private readonly RetryManager $retryManager
     ) {
-        $this->asyncEventRepository = $asyncEventRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->notifierFactory = $notifierFactory;
-        $this->asyncEventLogRepository = $asyncEventLogRepository;
-        $this->asyncEventLogFactory = $asyncEventLogFactory;
-        $this->retryManager = $retryManager;
-        $this->identityService = $identityService;
     }
 
     /**
+     * Dispatch an asynchronous event to all subscribers
+     *
      * @param string $eventName
      * @param mixed $output
      */
-    public function dispatch(string $eventName, $output)
+    public function dispatch(string $eventName, mixed $output): void
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('status', 1)
@@ -97,9 +57,12 @@ class EventDispatcher
 
             $notifier = $this->notifierFactory->create($handler);
 
-            $response = $notifier->notify($asyncEvent, [
-                'data' => $output
-            ]);
+            $response = $notifier->notify(
+                $asyncEvent,
+                [
+                    'data' => $output
+                ]
+            );
 
             $uuid = $this->identityService->generateId();
             $response->setUuid($uuid);
@@ -113,10 +76,12 @@ class EventDispatcher
     }
 
     /**
+     * Log the initial asynchronous event dispatch
+     *
      * @param NotifierResult $response
      * @return void
      */
-    private function log(NotifierResult $response)
+    private function log(NotifierResult $response): void
     {
         /** @var AsyncEventLog $asyncEventLog */
         $asyncEventLog = $this->asyncEventLogFactory->create();
@@ -128,8 +93,9 @@ class EventDispatcher
 
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);
-        } catch (AlreadyExistsException $exception) {
+        } catch (AlreadyExistsException) {
             // Do nothing because a log entry can never already exist
+            return;
         }
     }
 }
