@@ -36,7 +36,7 @@ class AddEntityTypeContext
         $storeId,
         array $context = []
     ): array {
-        if (is_string($storeId)) {
+        if (!is_numeric($storeId) && is_string($storeId)) {
             $context['entityType'] = 'async_event';
         }
 
