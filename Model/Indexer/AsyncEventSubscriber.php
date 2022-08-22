@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model\Indexer;
 
+use Aligent\AsyncEvents\Helper\Config;
 use Aligent\AsyncEvents\Model\Indexer\DataProvider\AsyncEventSubscriberLogs;
 use Aligent\AsyncEvents\Model\Resolver\AsyncEvent;
 use ArrayIterator;
@@ -60,6 +61,11 @@ class AsyncEventSubscriber implements
     private $asyncEventScopeResolver;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @var array index structure
      */
     protected $data;
@@ -79,6 +85,7 @@ class AsyncEventSubscriber implements
      * @param IndexerHandlerFactory $indexerHandlerFactory
      * @param AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider
      * @param AsyncEvent $asyncEventScopeResolver
+     * @param Config $config
      * @param array $data
      * @param int|null $batchSize
      * @param DeploymentConfig|null $deploymentConfig
@@ -88,6 +95,7 @@ class AsyncEventSubscriber implements
         IndexerHandlerFactory $indexerHandlerFactory,
         AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider,
         AsyncEvent $asyncEventScopeResolver,
+        Config $config,
         array $data,
         int $batchSize = null,
         DeploymentConfig $deploymentConfig = null
@@ -95,6 +103,7 @@ class AsyncEventSubscriber implements
         $this->dimensionProvider = $dimensionProvider;
         $this->indexerHandlerFactory = $indexerHandlerFactory;
         $this->asyncEventSubscriberLogsDataProvider = $asyncEventSubscriberLogsDataProvider;
+        $this->config = $config;
         $this->data = $data;
         $this->batchSize = $batchSize ?? self::BATCH_SIZE;
         $this->deploymentConfig = $deploymentConfig ?: ObjectManager::getInstance()->get(DeploymentConfig::class);
@@ -142,7 +151,9 @@ class AsyncEventSubscriber implements
      */
     public function executeByDimensions(array $dimensions, Traversable $entityIds)
     {
-        // TODO: Config check for indexing enable
+        if (!$this->config->isIndexingEnabled()) {
+            return;
+        }
 
         $saveHandler = $this->indexerHandlerFactory->create(
             [
