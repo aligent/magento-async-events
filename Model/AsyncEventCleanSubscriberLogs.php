@@ -2,29 +2,40 @@
 
 namespace Aligent\AsyncEvents\Model;
 
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use Aligent\AsyncEvents\Helper\Config;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime;
 
 class AsyncEventCleanSubscriberLogs
 {
+    /**
+     * @var ResourceConnection
+     */
     private $resourceConnection;
-    private $scopeConfig;
+
+    /**
+     * @var DateTime
+     */
     private $dateTime;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @param ResourceConnection $resourceConnection
-     * @param ScopeConfigInterface $scopeConfig
      * @param DateTime $dateTime
+     * @param Config $config
      */
     public function __construct(
         ResourceConnection   $resourceConnection,
-        ScopeConfigInterface $scopeConfig,
-        DateTime             $dateTime
+        DateTime             $dateTime,
+        Config $config
     ) {
         $this->resourceConnection = $resourceConnection;
-        $this->scopeConfig = $scopeConfig;
         $this->dateTime = $dateTime;
+        $this->config = $config;
     }
 
     /**
@@ -35,17 +46,13 @@ class AsyncEventCleanSubscriberLogs
     public function cleanSubscriberLogs()
     {
         // check if cron is enabled or disabled in system configuration
-        $shouldRunCron = $this->scopeConfig->getValue('system/async_events/subscriber_log_cleanup_cron');
+        $shouldRunCron = $this->config->isCleanUpCronEnabled();
 
         if ($shouldRunCron) {
-            $connection = $this->resourceConnection->getConnection(
-                ResourceConnection::DEFAULT_CONNECTION
-            );
+            $connection = $this->resourceConnection->getConnection();
 
             // retrieve amount of days for oldest log from system config
-            $timePeriodInDays = (string)$this->scopeConfig->getValue(
-                'system/async_events/subscriber_log_cron_delete_period'
-            );
+            $timePeriodInDays = $this->config->getCleanUpCronDeletePeriod();
 
             // creates a date that is x amount of days in the past and checks if the log record is older than that
             $now = $this->dateTime->formatDate(time());
@@ -54,7 +61,7 @@ class AsyncEventCleanSubscriberLogs
             // deletes all logs older than period date
             $connection->delete("async_event_subscriber_log", ["created < ?" => $periodDate]);
 
-            $this->resourceConnection->closeConnection(ResourceConnection::DEFAULT_CONNECTION);
+            $this->resourceConnection->closeConnection();
         }
     }
 }

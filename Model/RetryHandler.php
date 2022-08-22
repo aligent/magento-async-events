@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aligent\AsyncEvents\Model;
 
 use Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface;
+use Aligent\AsyncEvents\Helper\Config;
 use Aligent\AsyncEvents\Helper\NotifierResult;
 use Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactoryInterface;
 use Aligent\AsyncEvents\Service\AsyncEvent\RetryManager;
@@ -49,10 +50,11 @@ class RetryHandler
      * @var SerializerInterface
      */
     private $serializer;
+
     /**
-     * @var ScopeConfigInterface
+     * @var Config
      */
-    private $scopeConfig;
+    private $config;
 
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -62,7 +64,7 @@ class RetryHandler
      * @param AsyncEventLogRepository $asyncEventLogRepository
      * @param RetryManager $retryManager
      * @param SerializerInterface $serializer
-     * @param ScopeConfigInterface $scopeConfig
+     * @param Config $config
      */
     public function __construct(
         SearchCriteriaBuilder         $searchCriteriaBuilder,
@@ -72,7 +74,7 @@ class RetryHandler
         AsyncEventLogRepository       $asyncEventLogRepository,
         RetryManager                  $retryManager,
         SerializerInterface           $serializer,
-        ScopeConfigInterface          $scopeConfig
+        Config $config
     ) {
         $this->asyncEventRepository = $asyncEventRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -81,7 +83,7 @@ class RetryHandler
         $this->asyncEventLogRepository = $asyncEventLogRepository;
         $this->retryManager = $retryManager;
         $this->serializer = $serializer;
-        $this->scopeConfig = $scopeConfig;
+        $this->config = $config;
     }
 
     /**
@@ -96,7 +98,7 @@ class RetryHandler
 
         $subscriptionId = (int) $subscriptionId;
         $deathCount = (int) $deathCount;
-        $maxDeaths = (int) $this->scopeConfig->getValue('system/async_events/max_deaths');
+        $maxDeaths = $this->config->getMaximumDeaths();
 
         $data = $this->serializer->unserialize($data);
 
