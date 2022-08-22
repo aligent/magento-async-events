@@ -27,6 +27,18 @@ class DynamicFieldMapper implements FieldMapperInterface
     public function getAllAttributesTypes($context = []): array
     {
         return [
+            "log_id" => [
+                "type" => "long",
+            ],
+            "uuid" => [
+                "type" => "keyword",
+            ],
+            "event_name" => [
+                "type" => "keyword",
+            ],
+            "success" => [
+                "type" => "boolean",
+            ],
             "created" => [
                 "type" => "date",
                 "format" => "yyyy-MM-dd HH:mm:ss"

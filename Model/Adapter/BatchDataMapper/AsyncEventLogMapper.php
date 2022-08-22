@@ -52,7 +52,7 @@ class AsyncEventLogMapper implements BatchDataMapperInterface
             $this->builder->addField('log_id', $indexData['log_id']);
             $this->builder->addField('uuid', $indexData['uuid']);
             $this->builder->addField('event_name', $indexData['event_name']);
-            $this->builder->addField('success', $indexData['success']);
+            $this->builder->addField('success', (bool) $indexData['success']);
             $this->builder->addField('created', $indexData['created']);
 
             $this->builder->addField(
