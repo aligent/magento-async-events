@@ -1,29 +1,33 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface"
-                type="Aligent\AsyncEvents\Model\AsyncEventRepository" />
+                type="Aligent\AsyncEvents\Model\AsyncEventRepository"/>
 
     <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventInterface"
-                type="Aligent\AsyncEvents\Model\AsyncEvent" />
+                type="Aligent\AsyncEvents\Model\AsyncEvent"/>
 
     <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface"
-                type="Aligent\AsyncEvents\Model\AsyncEvent" />
+                type="Aligent\AsyncEvents\Model\AsyncEvent"/>
 
     <preference for="Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface"
-                type="Aligent\AsyncEvents\Model\AsyncEventSearchResults" />
+                type="Aligent\AsyncEvents\Model\AsyncEventSearchResults"/>
 
     <!-- UI Component DataProviders -->
     <type name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">async_event_subscriber</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent
+            </argument>
         </arguments>
     </type>
 
     <type name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog\Grid\Collection">
         <arguments>
             <argument name="mainTable" xsi:type="string">async_event_subscriber_log</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog
+            </argument>
         </arguments>
     </type>
 
@@ -33,22 +37,28 @@
                 <item name="async_events_events_listing_data_source" xsi:type="string">
                     Aligent\AsyncEvents\Model\ResourceModel\AsyncEvent\Grid\Collection
                 </item>
-                <item name="async_events_logs_listing_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog\Grid\Collection</item>
-                <item name="async_events_logs_trace_data_source" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLogs\Grid\Collection</item>
+                <item name="async_events_logs_listing_data_source" xsi:type="string">
+                    Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog\Grid\Collection
+                </item>
+                <item name="async_events_logs_trace_data_source" xsi:type="string">
+                    Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLogs\Grid\Collection
+                </item>
             </argument>
         </arguments>
     </type>
 
-    <virtualType name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLogs\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <virtualType name="Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLogs\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">async_event_subscriber_log</argument>
-            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog</argument>
+            <argument name="resourceModel" xsi:type="string">Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog
+            </argument>
         </arguments>
     </virtualType>
 
-   <!-- NotifierFactory and Notifier setup -->
+    <!-- NotifierFactory and Notifier setup -->
     <preference for="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactoryInterface"
-                type="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactory" />
+                type="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactory"/>
 
     <type name="Aligent\AsyncEvents\Service\AsyncEvent\NotifierFactory">
         <arguments>
@@ -78,5 +88,39 @@
         <arguments>
             <argument name="dataStorage" xsi:type="object">asyncEventDataStorage</argument>
         </arguments>
+    </type>
+
+    <!-- Elasticsearch Indexing -->
+    <type name="Aligent\AsyncEvents\Model\Indexer\AsyncEventSubscriber">
+        <arguments>
+            <argument name="dimensionProvider" xsi:type="object" shared="false">
+                \Aligent\AsyncEvents\Model\Indexer\AsyncEventDimensionProvider
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\BatchDataMapper\DataMapperFactory">
+        <arguments>
+            <argument name="dataMappers" xsi:type="array">
+                <item name="async_event" xsi:type="string">
+                    \Aligent\AsyncEvents\Model\Adapter\BatchDataMapper\AsyncEventLogMapper
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\FieldMapper\FieldMapperResolver">
+        <arguments>
+            <argument name="fieldMappers" xsi:type="array">
+                <item name="async_event" xsi:type="string">
+                    \Aligent\AsyncEvents\Model\Adapter\FieldMapper\DynamicFieldMapper
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\BatchDataMapperInterface">
+        <plugin name="add_entity_type_context"
+                type="Aligent\AsyncEvents\Plugin\AddEntityTypeContext"/>
     </type>
 </config>
