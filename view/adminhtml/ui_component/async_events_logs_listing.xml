@@ -33,6 +33,7 @@
         <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
         <filters name="listing_filters"/>
+        <filterSearch name="log_id" class="\Aligent\AsyncEvents\Model\Indexer\LuceneSearch"/>
         <exportButton name="export_button"/>
         <paging name="listing_paging"/>
     </listingToolbar>
