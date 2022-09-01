@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model\Indexer;
@@ -25,6 +20,15 @@ class LuceneSearch extends Search
      */
     private $connectionManager;
 
+    /**
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
+     * @param FilterBuilder $filterBuilder
+     * @param FilterModifier $filterModifier
+     * @param ConnectionManager $connectionManager
+     * @param array $components
+     * @param array $data
+     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
@@ -55,21 +59,18 @@ class LuceneSearch extends Search
             );
 
             $rawDocuments = $rawResponse['hits']['hits'] ?? [];
-            $asyncEventIds = [];
-
-            foreach ($rawDocuments as $document) {
-                $asyncEventIds[] = $document['_id'];
-            }
+            $asyncEventIds = array_column($rawDocuments, '_id');
 
             if (!empty($asyncEventIds)) {
                 $filter = $this->filterBuilder->setConditionType('in')
-                    ->setField('log_id')
+                    ->setField($this->getName())
                     ->setValue($asyncEventIds)
                     ->create();
 
                 $this->getContext()->getDataProvider()->addFilter($filter);
             }
         } catch (Exception $exception) {
+            // Fallback to default filter search
             parent::prepare();
         }
     }
