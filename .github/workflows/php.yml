@@ -14,4 +14,4 @@ jobs:
         env:
           STANDARDS: "Magento2"
           SKIP_DEPENDENCIES: "true"
-          BITBUCKET_PR_DESTINATION_BRANCH: '2.x'
+          BITBUCKET_PR_DESTINATION_BRANCH: "2.x"
