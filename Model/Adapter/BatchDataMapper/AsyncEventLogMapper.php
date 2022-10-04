@@ -17,30 +17,20 @@ class AsyncEventLogMapper implements BatchDataMapperInterface
 {
 
     /**
-     * @var Builder
-     */
-    private $builder;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * @param Builder $builder
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        Builder $builder,
-        SerializerInterface $serializer
+        private readonly Builder $builder,
+        private readonly SerializerInterface $serializer
     ) {
-        $this->builder = $builder;
-        $this->serializer = $serializer;
     }
 
     /**
+     * Map database entities into elasticsearch documents
+     *
      * @param array $documentData
-     * @param $storeId
+     * @param int|string $storeId
      * @param array $context
      * @return array
      */

@@ -14,10 +14,13 @@ use Magento\Elasticsearch\Model\Adapter\BatchDataMapperInterface;
 class AddEntityTypeContext
 {
     /**
+     * Add async event entity type context
+     *
      * The reason this plugin exists is that the callee of map does not provide a nice way to provide a context value
      * AND the default is hardcoded as 'product'
      *
      * This could be the only callee
+     *
      * @see vendor/magento/module-elasticsearch/Model/Adapter/Elasticsearch.php:191
      *
      * The below always resolves to product (\Magento\Elasticsearch\Model\Adapter\BatchDataMapper\ProductDataMapper)

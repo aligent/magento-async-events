@@ -14,12 +14,6 @@ use Magento\Ui\Component\Filters\Type\Search;
 
 class LuceneSearch extends Search
 {
-
-    /**
-     * @var ConnectionManager
-     */
-    private $connectionManager;
-
     /**
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -34,18 +28,23 @@ class LuceneSearch extends Search
         UiComponentFactory $uiComponentFactory,
         FilterBuilder $filterBuilder,
         FilterModifier $filterModifier,
-        ConnectionManager $connectionManager,
+        private readonly ConnectionManager $connectionManager,
         array $components = [],
         array $data = []
     ) {
         parent::__construct($context, $uiComponentFactory, $filterBuilder, $filterModifier, $components, $data);
-        $this->connectionManager = $connectionManager;
     }
 
     /**
+     * Prepare the query
+     *
+     * This function just simply opens a connection to Elasticsearch and delegates the lucene compatible search
+     * string to Elasticsearch. If an exception occurs fallback to the default database fulltext search
+     * on the log_id column.
+     *
      * @return void
      */
-    public function prepare()
+    public function prepare(): void
     {
         $client = $this->connectionManager->getConnection();
         $value = $this->getContext()->getRequestParam('search');
@@ -69,7 +68,7 @@ class LuceneSearch extends Search
 
                 $this->getContext()->getDataProvider()->addFilter($filter);
             }
-        } catch (Exception $exception) {
+        } catch (Exception) {
             // Fallback to default filter search
             parent::prepare();
         }
