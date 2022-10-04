@@ -54,7 +54,7 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
      * Get unique async events
      *
      * The source of truth for this data is the `async_events.xml` configuration file. However, if some events are
-     * configured but do not have any subscribers, it might be useless to create empty indices in Elasticsearch so we
+     * configured but do not have any subscribers, it might be useless to create empty indices in Elasticsearch, so we
      * get it from the database by unique name.
      *
      * @return array
