@@ -14,7 +14,7 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Trace extends Action implements HttpGetActionInterface
 {
-    private const MENU_ID = 'Aligent_AsyncEvents::logs';
+    public const MENU_ID = 'Aligent_AsyncEvents::logs';
 
     /**
      * @param Context $context
