@@ -137,7 +137,7 @@ class AsyncEventSubscriber implements
         IndexerInterface $saveHandler,
         array $dimensions,
         array $asyncEventLogIds
-    ) {
+    ): void {
         $asyncEvent = $dimensions[0]->getValue();
 
         if ($saveHandler->isAvailable($dimensions)) {

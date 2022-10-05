@@ -29,7 +29,7 @@ class AsyncEventSubscriberLogs
      * @param string $asyncEvent
      * @return Collection
      */
-    public function getAsyncEventLogs(array $logIds, string $asyncEvent)
+    public function getAsyncEventLogs(array $logIds, string $asyncEvent): Collection
     {
         $logCollection = $this->collectionFactory->create();
         $logCollection->addFieldToFilter('log_id', ['in' => $logIds]);

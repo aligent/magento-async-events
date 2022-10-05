@@ -37,6 +37,7 @@ class MassDisable extends Action implements HttpPostActionInterface
      * Execute page load
      *
      * @throws LocalizedException
+     * @return Redirect
      */
     public function execute(): Redirect
     {

@@ -41,6 +41,7 @@ class RetryHandler
      * Process a retry message
      *
      * @param array $message
+     * @return void
      */
     public function process(array $message): void
     {

@@ -41,6 +41,7 @@ class EventDispatcher
      *
      * @param string $eventName
      * @param mixed $output
+     * @return void
      */
     public function dispatch(string $eventName, mixed $output): void
     {
@@ -94,7 +95,6 @@ class EventDispatcher
         try {
             $this->asyncEventLogRepository->save($asyncEventLog);
         } catch (AlreadyExistsException) {
-            // Do nothing because a log entry can never already exist
             return;
         }
     }

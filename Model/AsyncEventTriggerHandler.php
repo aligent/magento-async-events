@@ -39,6 +39,7 @@ class AsyncEventTriggerHandler
      * Process an asynchronous event dispatch
      *
      * @param array $queueMessage
+     * @return void
      */
     public function process(array $queueMessage): void
     {
