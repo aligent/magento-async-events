@@ -14,22 +14,7 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Trace extends Action implements HttpGetActionInterface
 {
-    const MENU_ID = 'Aligent_AsyncEvents::logs';
-
-    /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
-     * @var AsyncEventLog
-     */
-    private $asyncEventLogResource;
-
-    /**
-     * @var AsyncEventLogFactory
-     */
-    private $asyncEventLogFactory;
+    public const MENU_ID = 'Aligent_AsyncEvents::logs';
 
     /**
      * @param Context $context
@@ -39,18 +24,16 @@ class Trace extends Action implements HttpGetActionInterface
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        AsyncEventLog $asyncEventLogResource,
-        AsyncEventLogFactory $asyncEventLogFactory
+        private readonly PageFactory $resultPageFactory,
+        private readonly AsyncEventLog $asyncEventLogResource,
+        private readonly AsyncEventLogFactory $asyncEventLogFactory
     ) {
         parent::__construct($context);
-
-        $this->resultPageFactory = $resultPageFactory;
-        $this->asyncEventLogResource = $asyncEventLogResource;
-        $this->asyncEventLogFactory = $asyncEventLogFactory;
     }
 
     /**
+     * Execute page load
+     *
      * @return Page
      */
     public function execute(): Page

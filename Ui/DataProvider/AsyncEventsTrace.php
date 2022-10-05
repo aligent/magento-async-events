@@ -19,16 +19,6 @@ class AsyncEventsTrace extends AbstractDataProvider
     protected $collection;
 
     /**
-     * @var Details
-     */
-    private $traceDetails;
-
-    /**
-     * @var RequestInterface
-     */
-    private $request;
-
-    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -43,14 +33,12 @@ class AsyncEventsTrace extends AbstractDataProvider
         $primaryFieldName,
         $requestFieldName,
         AsyncEventLogCollectionFactory $collectionFactory,
-        Details $traceDetails,
-        RequestInterface $request,
+        private readonly Details $traceDetails,
+        private readonly RequestInterface $request,
         array $meta = [],
         array $data = []
     ) {
         $this->collection = $collectionFactory->create();
-        $this->traceDetails = $traceDetails;
-        $this->request = $request;
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 

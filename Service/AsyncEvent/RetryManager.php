@@ -14,45 +14,10 @@ use Magento\Framework\Serialize\SerializerInterface;
 
 class RetryManager
 {
-    const DEATH_COUNT = 'death_count';
-    const SUBSCRIPTION_ID = 'subscription_id';
-    const CONTENT = 'content';
-    const UUID = 'uuid';
-
-    /**
-     * @var ConfigPool
-     */
-    private $configPool;
-
-    /**
-     * @var QueueInstaller
-     */
-    private $queueInstaller;
-
-    /**
-     * @var BindingInstallerInterface
-     */
-    private $bindingInstaller;
-
-    /**
-     * @var AmqpPublisher
-     */
-    private $publisher;
-
-    /**
-     * @var QueueConfigItemFactory
-     */
-    private $queueConfigItemFactory;
-
-    /**
-     * @var BindingFactory
-     */
-    private $bindingFactory;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
+    public const DEATH_COUNT = 'death_count';
+    public const SUBSCRIPTION_ID = 'subscription_id';
+    public const CONTENT = 'content';
+    public const UUID = 'uuid';
 
     /**
      * @param ConfigPool $configPool
@@ -64,30 +29,25 @@ class RetryManager
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        ConfigPool $configPool,
-        QueueInstaller $queueInstaller,
-        BindingInstallerInterface $bindingInstaller,
-        AmqpPublisher $publisher,
-        QueueConfigItemFactory $queueConfigItemFactory,
-        BindingFactory $bindingFactory,
-        SerializerInterface $serializer
+        private readonly ConfigPool $configPool,
+        private readonly QueueInstaller $queueInstaller,
+        private readonly BindingInstallerInterface $bindingInstaller,
+        private readonly AmqpPublisher $publisher,
+        private readonly QueueConfigItemFactory $queueConfigItemFactory,
+        private readonly BindingFactory $bindingFactory,
+        private readonly SerializerInterface $serializer
     ) {
-        $this->queueInstaller = $queueInstaller;
-        $this->bindingInstaller = $bindingInstaller;
-        $this->configPool = $configPool;
-        $this->publisher = $publisher;
-        $this->queueConfigItemFactory = $queueConfigItemFactory;
-        $this->bindingFactory = $bindingFactory;
-        $this->serializer = $serializer;
     }
 
     /**
+     * Start the chain for retrying an asynchronous event that has failed
+     *
      * @param int $subscriptionId
-     * @param $data
-     * @param string
+     * @param mixed $data
+     * @param string $uuid
      * @return void
      */
-    public function init(int $subscriptionId, $data, string $uuid)
+    public function init(int $subscriptionId, mixed $data, string $uuid): void
     {
         $this->assertDelayQueue(
             1,
@@ -104,13 +64,15 @@ class RetryManager
     }
 
     /**
+     * Place an asynchronous event to be retried for the nth time
+     *
      * @param int $deathCount
      * @param int $subscriptionId
-     * @param $data
+     * @param mixed $data
      * @param string $uuid
      * @return void
      */
-    public function place(int $deathCount, int $subscriptionId, $data, string $uuid)
+    public function place(int $deathCount, int $subscriptionId, mixed $data, string $uuid): void
     {
         $backoff = $this->calculateBackoff($deathCount);
         $queueName = 'event.delay.' . $backoff;
@@ -126,17 +88,22 @@ class RetryManager
     }
 
     /**
+     * Kill the asynchronous event and send it to the DEAD LETTERS department
+     *
      * @param int $subscriptionId
-     * @param $data
+     * @param mixed $data
      * @return void
      */
-    public function kill(int $subscriptionId, $data)
+    public function kill(int $subscriptionId, mixed $data): void
     {
-        $this->publisher->publish(QueueMetadataInterface::DEAD_LETTER_KILL_KEY, [
-            self::SUBSCRIPTION_ID => $subscriptionId,
-            self::DEATH_COUNT => 0,
-            self::CONTENT => $this->serializer->serialize($data)
-        ]);
+        $this->publisher->publish(
+            QueueMetadataInterface::DEAD_LETTER_KILL_KEY,
+            [
+                self::SUBSCRIPTION_ID => $subscriptionId,
+                self::DEATH_COUNT => 0,
+                self::CONTENT => $this->serializer->serialize($data)
+            ]
+        );
     }
 
     /**
@@ -150,7 +117,7 @@ class RetryManager
      * @param string $retryRoutingKey
      * @return void
      */
-    private function assertDelayQueue(int $backoff, string $queueName, string $retryRoutingKey)
+    private function assertDelayQueue(int $backoff, string $queueName, string $retryRoutingKey): void
     {
         $config = $this->configPool->get('amqp');
 

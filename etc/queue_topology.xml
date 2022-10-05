@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
     <exchange name="magento" type="topic" connection="amqp">
         <binding id="event.trigger" topic="event.trigger" destinationType="queue" destination="event.trigger"/>
     </exchange>
 
     <exchange name="event.failover" type="topic" connection="amqp">
-        <binding id="AsyncEventFailoverRetry" topic="event.retry" destinationType="queue" destination="event.failover.retry"/>
-        <binding id="AsyncEventKillerBinding" topic="event.retry.kill" destinationType="queue" destination="event.failover.deadletter"/>
+        <binding id="AsyncEventFailoverRetry" topic="event.retry" destinationType="queue"
+                 destination="event.failover.retry"/>
+        <binding id="AsyncEventKillerBinding" topic="event.retry.kill" destinationType="queue"
+                 destination="event.failover.deadletter"/>
     </exchange>
 </config>

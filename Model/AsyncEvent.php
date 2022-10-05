@@ -34,7 +34,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @inheritDoc
      */
-    public function setSubscriptionId(int $id)
+    public function setSubscriptionId(int $id): void
     {
         $this->setData('subscription_id', $id);
     }
@@ -50,7 +50,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @inheritDoc
      */
-    public function setEventName(string $eventName)
+    public function setEventName(string $eventName): void
     {
         $this->setData('event_name', $eventName);
     }
@@ -66,7 +66,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @inheritDoc
      */
-    public function setRecipientUrl(string $recipientURL)
+    public function setRecipientUrl(string $recipientURL): void
     {
         $this->setData('recipient_url', $recipientURL);
     }
@@ -82,7 +82,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @inheritDoc
      */
-    public function setVerificationToken(string $verificationToken)
+    public function setVerificationToken(string $verificationToken): void
     {
         $this->setData('verification_token', $verificationToken);
     }
@@ -98,7 +98,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @inheritDoc
      */
-    public function setStatus(bool $status)
+    public function setStatus(bool $status): void
     {
         $this->setData('status', $status);
     }
@@ -114,7 +114,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @inheritDoc
      */
-    public function setSubscribedAt(string $subscribedAt)
+    public function setSubscribedAt(string $subscribedAt): void
     {
         $this->setData('subscribed_at', $subscribedAt);
     }
@@ -130,7 +130,7 @@ class AsyncEvent extends AbstractExtensibleModel implements AsyncEventInterface,
     /**
      * @inheritDoc
      */
-    public function setMetadata(string $metadata)
+    public function setMetadata(string $metadata): void
     {
         $this->setData('metadata', $metadata);
     }

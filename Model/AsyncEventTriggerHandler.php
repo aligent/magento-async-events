@@ -16,41 +16,6 @@ use Psr\Log\LoggerInterface;
 class AsyncEventTriggerHandler
 {
     /**
-     * @var EventDispatcher
-     */
-    private $dispatcher;
-
-    /**
-     * @var Json
-     */
-    private $json;
-
-    /**
-     * @var ServiceOutputProcessor
-     */
-    private $outputProcessor;
-
-    /**
-     * @var AsyncEventConfig
-     */
-    private $asyncEventConfig;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    private $objectManager;
-
-    /**
-     * @var ServiceInputProcessor
-     */
-    private $inputProcessor;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @param EventDispatcher $dispatcher
      * @param ServiceOutputProcessor $outputProcessor
      * @param ObjectManagerInterface $objectManager
@@ -60,27 +25,23 @@ class AsyncEventTriggerHandler
      * @param LoggerInterface $logger
      */
     public function __construct(
-        EventDispatcher        $dispatcher,
-        ServiceOutputProcessor $outputProcessor,
-        ObjectManagerInterface $objectManager,
-        AsyncEventConfig       $asyncEventConfig,
-        ServiceInputProcessor  $inputProcessor,
-        Json                   $json,
-        LoggerInterface        $logger
+        private readonly EventDispatcher $dispatcher,
+        private readonly ServiceOutputProcessor $outputProcessor,
+        private readonly ObjectManagerInterface $objectManager,
+        private readonly AsyncEventConfig $asyncEventConfig,
+        private readonly ServiceInputProcessor $inputProcessor,
+        private readonly Json $json,
+        private readonly LoggerInterface $logger
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->json = $json;
-        $this->outputProcessor = $outputProcessor;
-        $this->asyncEventConfig = $asyncEventConfig;
-        $this->objectManager = $objectManager;
-        $this->inputProcessor = $inputProcessor;
-        $this->logger = $logger;
     }
 
     /**
+     * Process an asynchronous event dispatch
+     *
      * @param array $queueMessage
+     * @return void
      */
-    public function process(array $queueMessage)
+    public function process(array $queueMessage): void
     {
         try {
             // In every publish the data is an array of strings, the first string is the hook name itself, the second
@@ -95,6 +56,7 @@ class AsyncEventTriggerHandler
             $service = $this->objectManager->create($serviceClassName);
             $inputParams = $this->inputProcessor->process($serviceClassName, $serviceMethodName, $output);
 
+            // phpcs:ignore Magento2.Functions.DiscouragedFunction
             $outputData = call_user_func_array([$service, $serviceMethodName], $inputParams);
 
             $outputData = $this->outputProcessor->process(

@@ -32,16 +32,18 @@ class AsyncEventScope extends DataObject implements ScopeInterface
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->getName();
     }
 
     /**
-     * @param $id
+     * Setter for id
+     *
+     * @param string $id
      * @return void
      */
-    public function setId($id)
+    public function setId(string $id): void
     {
         $this->setName($id);
     }
@@ -55,10 +57,12 @@ class AsyncEventScope extends DataObject implements ScopeInterface
     }
 
     /**
+     * Setter for code
+     *
      * @param string $code
      * @return void
      */
-    public function setCode(string $code)
+    public function setCode(string $code): void
     {
         $this->setData('code', $code);
     }
@@ -80,6 +84,8 @@ class AsyncEventScope extends DataObject implements ScopeInterface
     }
 
     /**
+     * Getter for name
+     *
      * @return string
      */
     public function getName(): string
@@ -88,10 +94,12 @@ class AsyncEventScope extends DataObject implements ScopeInterface
     }
 
     /**
-     * @param $name
+     * Setter for name
+     *
+     * @param string $name
      * @return void
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->setData('name', $name);
     }

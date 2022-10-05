@@ -26,54 +26,24 @@ class AsyncEventSubscriber implements
     /**
      * Indexer ID in configuration
      */
-    const INDEXER_ID = 'asynchronous_event_subscriber_log';
+    private const INDEXER_ID = 'asynchronous_event_subscriber_log';
 
     /**
      * Default batch size
      */
-    const BATCH_SIZE = 100;
+    private const BATCH_SIZE = 100;
 
     /**
      * Deployment config path
      *
      * @var string
      */
-    const DEPLOYMENT_CONFIG_INDEXER_BATCHES = 'indexer/batch_size/';
-
-    /**
-     * @var DimensionProviderInterface
-     */
-    private $dimensionProvider;
-
-    /**
-     * @var IndexerHandlerFactory
-     */
-    private $indexerHandlerFactory;
-
-    /**
-     * @var AsyncEventSubscriberLogs
-     */
-    private $asyncEventSubscriberLogsDataProvider;
-
-    /**
-     * @var AsyncEvent
-     */
-    private $asyncEventScopeResolver;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var array index structure
-     */
-    protected $data;
+    private const DEPLOYMENT_CONFIG_INDEXER_BATCHES = 'indexer/batch_size/';
 
     /**
      * @var int
      */
-    private $batchSize;
+    private int $batchSize;
 
     /**
      * @var DeploymentConfig|null
@@ -91,49 +61,25 @@ class AsyncEventSubscriber implements
      * @param DeploymentConfig|null $deploymentConfig
      */
     public function __construct(
-        DimensionProviderInterface $dimensionProvider,
-        IndexerHandlerFactory $indexerHandlerFactory,
-        AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider,
-        AsyncEvent $asyncEventScopeResolver,
-        Config $config,
-        array $data,
+        private readonly DimensionProviderInterface $dimensionProvider,
+        private readonly IndexerHandlerFactory $indexerHandlerFactory,
+        private readonly AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider,
+        private readonly AsyncEvent $asyncEventScopeResolver,
+        private readonly Config $config,
+        private readonly array $data,
         int $batchSize = null,
         DeploymentConfig $deploymentConfig = null
     ) {
-        $this->dimensionProvider = $dimensionProvider;
-        $this->indexerHandlerFactory = $indexerHandlerFactory;
-        $this->asyncEventSubscriberLogsDataProvider = $asyncEventSubscriberLogsDataProvider;
-        $this->config = $config;
-        $this->data = $data;
         $this->batchSize = $batchSize ?? self::BATCH_SIZE;
         $this->deploymentConfig = $deploymentConfig ?: ObjectManager::getInstance()->get(DeploymentConfig::class);
-        $this->asyncEventScopeResolver = $asyncEventScopeResolver;
     }
 
     /**
-     * Full indexing can be implemented if required
-     *
      * @inheritDoc
      */
     public function executeFull()
     {
         $this->execute([]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function executeList(array $ids)
-    {
-        $this->execute($ids);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function executeRow($id)
-    {
-        $this->execute([$id]);
     }
 
     /**
@@ -180,6 +126,8 @@ class AsyncEventSubscriber implements
     }
 
     /**
+     * Process a batch of async event log entities to be indexed into Elasticsearch
+     *
      * @param IndexerInterface $saveHandler
      * @param array $dimensions
      * @param array $asyncEventLogIds
@@ -189,7 +137,7 @@ class AsyncEventSubscriber implements
         IndexerInterface $saveHandler,
         array $dimensions,
         array $asyncEventLogIds
-    ) {
+    ): void {
         $asyncEvent = $dimensions[0]->getValue();
 
         if ($saveHandler->isAvailable($dimensions)) {
@@ -202,5 +150,21 @@ class AsyncEventSubscriber implements
                 )
             );
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function executeList(array $ids)
+    {
+        $this->execute($ids);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function executeRow($id)
+    {
+        $this->execute([$id]);
     }
 }

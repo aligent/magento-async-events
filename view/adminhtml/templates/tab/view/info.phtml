@@ -1,9 +1,12 @@
 <?php
 
+use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
+use Magento\Framework\Escaper;
+
 /**
  * @var Info $block
+ * @var Escaper $escaper
  */
-use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
 
 ?>
 
@@ -20,19 +23,19 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
                     <?= $block->getChildHtml() ?>
                     <tr class="">
                         <th><?= 'uuid' ?></th>
-                        <td><?= $block->getUuid() ?></td>
+                        <td><?= $escaper->escapeHtml($block->getUuid()) ?></td>
                     </tr>
                     <tr>
                         <th style="font-weight: bold"><?= 'Status' ?></th>
-                        <td style="font-weight: bold"><?= $block->getStatus() ?></td>
+                        <td style="font-weight: bold"><?= $escaper->escapeHtml($block->getStatus()) ?></td>
                     </tr>
                     <tr>
                         <th><?= 'First attempt time' ?></th>
-                        <td><?= $block->getFirstAttempt() ?></td>
+                        <td><?= $escaper->escapeHtml($block->getFirstAttempt()) ?></td>
                     </tr>
                     <tr>
                         <th><?= 'Last attempt time' ?></th>
-                        <td><?= $block->getLastAttempt() ?></td>
+                        <td><?= $escaper->escapeHtml($block->getLastAttempt()) ?></td>
                     </tr>
                     </tbody>
                 </table>
@@ -46,29 +49,28 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
 
             <div class="admin__page-section-item-content">
                 <table class="admin__table-secondary order-account-information-table">
-                    <?php $block->getLogs() ?>
                     <tr>
                         <th>Asynchronous Event Name</th>
                         <td>
-                            <?= $block->getAsynchronousEventName() ?>
+                            <?= $escaper->escapeHtml($block->getAsynchronousEventName()) ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Current Status</th>
                         <td>
-                            <?= $block->getCurrentStatus() ?>
+                            <?= $escaper->escapeHtml($block->getCurrentStatus()) ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Recipient</th>
                         <td>
-                            <?= $block->getRecipient() ?>
+                            <?= $escaper->escapeHtml($block->getRecipient()) ?>
                         </td>
                     </tr>
                     <tr>
                         <th>Subscribed At</th>
                         <td>
-                            <?= $block->getSubscribedAt() ?>
+                            <?= $escaper->escapeHtml($block->getSubscribedAt()) ?>
                         </td>
                     </tr>
                 </table>
@@ -85,23 +87,23 @@ use Aligent\AsyncEvents\Block\Adminhtml\Trace\Tab\View\Info;
         <table class="admin__table-primary" style="table-layout: fixed;">
             <thead>
             <tr>
-                <th><?= __('Log Id') ?></th>
-                <th><?= __('Delivery Time') ?></th>
-                <th><?= __('Response') ?></th>
-                <th><?= __('Status') ?></th>
+                <th><?= $escaper->escapeHtml(__('Log Id')) ?></th>
+                <th><?= $escaper->escapeHtml(__('Delivery Time')) ?></th>
+                <th><?= $escaper->escapeHtml(__('Response')) ?></th>
+                <th><?= $escaper->escapeHtml(__('Status')) ?></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($block->getLogs() as $item): ?>
                 <tr>
                     <td>
-                        <?= $item['log_id'] ?>
+                        <?= $escaper->escapeHtml($item['log_id']) ?>
                     </td>
                     <td>
-                        <?= $item['created'] ?>
+                        <?= $escaper->escapeHtml($item['created']) ?>
                     </td>
                     <td style="word-wrap: break-word;">
-                        <?= $item['response_data'] ?>
+                        <?= $escaper->escapeHtml($item['response_data']) ?>
                     </td>
                     <td class="col-severity">
                         <?= $item['success'] ?

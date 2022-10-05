@@ -8,84 +8,114 @@ use Magento\Framework\DataObject;
 
 class NotifierResult extends DataObject
 {
-    const SUCCESS = 'success';
+    private const SUCCESS = 'success';
+    private const SUBSCRIPTION_ID = 'subscription_id';
+    private const RESPONSE_DATA = 'response_data';
+    private const UUID = 'uuid';
+    private const DATA = 'data';
 
     /**
-     * Refers back to the actual event entity id that is associated,
-     * not the subscription name id like customer_created, customer_updated
-     * and so on
+     * Getter for success
+     *
+     * @return bool
      */
-    const SUBSCRIPTION_ID = 'subscription_id';
-
-    /**
-     * Ideally this is a json encoded string
-     */
-    const RESPONSE_DATA = 'response_data';
-
-    /**
-     * @var string
-     */
-    const UUID = 'uuid';
-
-    /**
-     * @var array
-     */
-    const DATA = 'data';
-
-    public function getSuccess()
+    public function getSuccess(): bool
     {
-        return $this->getData(self::SUCCESS);
+        return (bool) $this->getData(self::SUCCESS);
     }
 
-    public function setSuccess($success)
+    /**
+     * Setter for success
+     *
+     * @param bool $success
+     * @return void
+     */
+    public function setSuccess(bool $success): void
     {
         $this->setData(self::SUCCESS, $success);
     }
 
-    public function getSubscriptionId()
+    /**
+     * Getter for subscription id
+     *
+     * @return int
+     */
+    public function getSubscriptionId(): int
     {
-        return $this->getData(self::SUBSCRIPTION_ID);
+        return (int) $this->getData(self::SUBSCRIPTION_ID);
     }
 
-    public function setSubscriptionId($subscriptionId)
+    /**
+     * Setter for subscription id
+     *
+     * @param int $subscriptionId
+     * @return void
+     */
+    public function setSubscriptionId(int $subscriptionId): void
     {
         $this->setData(self::SUBSCRIPTION_ID, $subscriptionId);
     }
 
-    public function getResponseData()
+    /**
+     * Getter for response data
+     *
+     * @return string
+     */
+    public function getResponseData(): string
     {
-        return $this->getData(self::RESPONSE_DATA);
+        return (string) $this->getData(self::RESPONSE_DATA);
     }
 
-    public function setResponseData($responseData)
+    /**
+     * Setter for response data
+     *
+     * @param string $responseData
+     * @return void
+     */
+    public function setResponseData(string $responseData): void
     {
         $this->setData(self::RESPONSE_DATA, $responseData);
     }
 
+    /**
+     * Getter for UUID
+     *
+     * @return string
+     */
     public function getUuid(): string
     {
-        return $this->getData(self::UUID);
+        return (string) $this->getData(self::UUID);
     }
 
-    public function setUuid(string $uuid)
+    /**
+     * Setter for UUID
+     *
+     * @param string $uuid
+     * @return void
+     */
+    public function setUuid(string $uuid): void
     {
         $this->setData(self::UUID, $uuid);
     }
 
     /**
-     * @param array $eventData
-     * @return void
-     */
-    public function setAsyncEventData(array $eventData)
-    {
-        $this->setData(self::DATA, $eventData);
-    }
-
-    /**
+     * Getter for async event data
+     *
      * @return array
      */
     public function getAsyncEventData(): array
     {
         return $this->getData(self::DATA);
+    }
+
+    /**
+     * Setter for async event data
+     *
+     * @param array $eventData
+     * @return void
+     */
+    public function setAsyncEventData(array $eventData): void
+    {
+        $this->setData(self::DATA, $eventData);
     }
 }

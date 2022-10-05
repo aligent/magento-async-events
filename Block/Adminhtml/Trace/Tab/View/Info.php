@@ -11,14 +11,9 @@ use Magento\Backend\Block\Template\Context;
 class Info extends Template
 {
     /**
-     * @var Details
-     */
-    private $details;
-
-    /**
      * @var string
      */
-    private $uuid;
+    private string $uuid;
 
     /**
      * @param Context $context
@@ -27,15 +22,16 @@ class Info extends Template
      */
     public function __construct(
         Context $context,
-        Details $details,
+        private readonly Details $details,
         array $data = []
     ) {
-        $this->details = $details;
         parent::__construct($context, $data);
-        $this->uuid = $this->getRequest()->getParam('uuid');
+        $this->uuid = $this->getRequest()->getParam('uuid', '');
     }
 
     /**
+     * Getter for uuid
+     *
      * @return string
      */
     public function getUuid(): string
@@ -44,6 +40,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for logs
+     *
      * @return array
      */
     public function getLogs(): array
@@ -52,6 +50,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for status
+     *
      * @return string
      */
     public function getStatus(): string
@@ -60,6 +60,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for first attempt
+     *
      * @return string
      */
     public function getFirstAttempt(): string
@@ -68,6 +70,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for last attempt
+     *
      * @return string
      */
     public function getLastAttempt(): string
@@ -76,6 +80,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for asynchronous event name
+     *
      * @return string
      */
     public function getAsynchronousEventName(): string
@@ -84,6 +90,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for current status
+     *
      * @return string
      */
     public function getCurrentStatus(): string
@@ -92,6 +100,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for recipient
+     *
      * @return string
      */
     public function getRecipient(): string
@@ -100,6 +110,8 @@ class Info extends Template
     }
 
     /**
+     * Getter for subscribed at
+     *
      * @return string
      */
     public function getSubscribedAt(): string

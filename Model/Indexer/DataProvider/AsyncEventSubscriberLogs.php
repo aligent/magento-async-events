@@ -15,25 +15,21 @@ use Aligent\AsyncEvents\Model\ResourceModel\AsyncEventLog\CollectionFactory as A
 class AsyncEventSubscriberLogs
 {
     /**
-     * @var AsyncEventLogCollectionFactory
-     */
-    private $collectionFactory;
-
-    /**
      * @param AsyncEventLogCollectionFactory $collectionFactory
      */
     public function __construct(
-        AsyncEventLogCollectionFactory $collectionFactory
+        private readonly AsyncEventLogCollectionFactory $collectionFactory
     ) {
-        $this->collectionFactory = $collectionFactory;
     }
 
     /**
+     * Get async event logs by log ids
+     *
      * @param array $logIds
      * @param string $asyncEvent
      * @return Collection
      */
-    public function getAsyncEventLogs(array $logIds, string $asyncEvent)
+    public function getAsyncEventLogs(array $logIds, string $asyncEvent): Collection
     {
         $logCollection = $this->collectionFactory->create();
         $logCollection->addFieldToFilter('log_id', ['in' => $logIds]);

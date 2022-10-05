@@ -14,14 +14,14 @@ class SchemaLocator implements SchemaLocatorInterface
      *
      * @var string
      */
-    private $_schema;
+    private string $_schema;
 
     /**
      * Path to corresponding XSD file with validation rules for individual configs
      *
      * @var string
      */
-    private $_schemaFile;
+    private string $_schemaFile;
 
     /**
      * @param \Magento\Framework\Module\Dir\Reader $moduleReader
@@ -34,6 +34,8 @@ class SchemaLocator implements SchemaLocatorInterface
     }
 
     /**
+     * Getter for merged schema
+     *
      * @return string
      */
     public function getSchema(): string
@@ -42,6 +44,8 @@ class SchemaLocator implements SchemaLocatorInterface
     }
 
     /**
+     * Getter for per file schema
+     *
      * @return string
      */
     public function getPerFileSchema(): string

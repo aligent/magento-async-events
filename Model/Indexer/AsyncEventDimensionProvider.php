@@ -21,7 +21,7 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
      * Name for asynchronous event dimension for multidimensional indexer
      * 'ae' - stands for 'asynchronous_event'
      */
-    const DIMENSION_NAME = 'ae';
+    private const DIMENSION_NAME = 'ae';
 
     /**
      * @var SplFixedArray
@@ -29,28 +29,18 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
     private $asyncEventDataIterator;
 
     /**
-     * @var AsyncEventCollectionFactory
-     */
-    private $asyncEventCollectionFactory;
-
-    /**
-     * @var DimensionFactory
-     */
-    private $dimensionFactory;
-
-    /**
      * @param AsyncEventCollectionFactory $asyncEventCollectionFactory
      * @param DimensionFactory $dimensionFactory
      */
     public function __construct(
-        AsyncEventCollectionFactory $asyncEventCollectionFactory,
-        DimensionFactory $dimensionFactory
+        private readonly AsyncEventCollectionFactory $asyncEventCollectionFactory,
+        private readonly DimensionFactory $dimensionFactory
     ) {
-        $this->asyncEventCollectionFactory = $asyncEventCollectionFactory;
-        $this->dimensionFactory = $dimensionFactory;
     }
 
     /**
+     * Get dimension iterator
+     *
      * @return Traversable
      */
     public function getIterator(): Traversable
@@ -61,6 +51,12 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
     }
 
     /**
+     * Get unique async events
+     *
+     * The source of truth for this data is the `async_events.xml` configuration file. However, if some events are
+     * configured but do not have any subscribers, it might be useless to create empty indices in Elasticsearch, so we
+     * get it from the database by unique name.
+     *
      * @return array
      */
     public function getAsyncEvents(): array

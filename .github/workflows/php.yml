@@ -11,9 +11,9 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Code Standards Test
-        uses: docker://aligent/code-standards-pipe-php:7.4
-        env:
-          STANDARDS: "Magento2"
-          SKIP_DEPENDENCIES: "true"
-          BITBUCKET_PR_DESTINATION_BRANCH: "2.x"
+#      - name: Code Standards Test
+#        uses: docker://aligent/code-standards-pipe-php:8.1
+#        env:
+#          STANDARDS: "Magento2"
+#          SKIP_DEPENDENCIES: "true"
+#          BITBUCKET_PR_DESTINATION_BRANCH: "3.x"

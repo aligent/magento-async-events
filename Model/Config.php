@@ -9,24 +9,20 @@ use Magento\Framework\Config\DataInterface;
 class Config
 {
     /**
-     * @var DataInterface
-     */
-    protected $_dataStorage;
-
-    /**
      * @param DataInterface $dataStorage
      */
-    public function __construct(DataInterface $dataStorage)
+    public function __construct(private readonly DataInterface $dataStorage)
     {
-        $this->_dataStorage = $dataStorage;
     }
 
     /**
+     * Getter for getting config value
+     *
      * @param string $key
      * @return array
      */
     public function get(string $key): array
     {
-        return $this->_dataStorage->get($key, []);
+        return $this->dataStorage->get($key, []);
     }
 }

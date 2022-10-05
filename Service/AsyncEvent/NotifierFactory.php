@@ -4,32 +4,28 @@ declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Service\AsyncEvent;
 
-use InvalidArgumentException;
+use Magento\Framework\Exception\LocalizedException;
 
 class NotifierFactory implements NotifierFactoryInterface
 {
     /**
-     * @var array
-     */
-    private $notifierClasses;
-
-    /**
      * @param array $notifierClasses
      */
-    public function __construct(array $notifierClasses = [])
+    public function __construct(private readonly array $notifierClasses = [])
     {
-        $this->notifierClasses = $notifierClasses;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws LocalizedException
      */
     public function create(string $type): NotifierInterface
     {
         $notifier = $this->notifierClasses[$type] ?? null;
 
         if (!$notifier instanceof NotifierInterface) {
-            throw new InvalidArgumentException(__("Cannot instantiate a notifier for $notifier"));
+            throw new LocalizedException(__("Cannot instantiate a notifier for $notifier"));
         }
 
         return $notifier;

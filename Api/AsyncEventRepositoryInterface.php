@@ -8,30 +8,40 @@ use Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface;
 use Aligent\AsyncEvents\Api\Data\AsyncEventInterface;
 use Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\AuthorizationException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 interface AsyncEventRepositoryInterface
 {
     /**
+     * Get a single asynchronous event by id
+     *
      * @param int $subscriptionId
-     * @return \Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return AsyncEventDisplayInterface
+     * @throws NoSuchEntityException
      */
     public function get(int $subscriptionId): AsyncEventDisplayInterface;
 
     /**
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Aligent\AsyncEvents\Api\Data\AsyncEventSearchResultsInterface
+     * Get a list of asynchronous events by search criteria
+     *
+     * @param SearchCriteriaInterface $searchCriteria
+     * @return AsyncEventSearchResultsInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria): AsyncEventSearchResultsInterface;
 
     /**
-     * @param \Aligent\AsyncEvents\Api\Data\AsyncEventInterface $asyncEvent
+     * Save an asynchronous event
+     *
+     * @param AsyncEventInterface $asyncEvent
      * @param bool $checkResources
-     * @return \Aligent\AsyncEvents\Api\Data\AsyncEventDisplayInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
-     * @throws \Magento\Framework\Exception\AuthorizationException
+     * @return AsyncEventDisplayInterface
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
+     * @throws AlreadyExistsException
+     * @throws AuthorizationException
      */
     public function save(AsyncEventInterface $asyncEvent, bool $checkResources = true): AsyncEventDisplayInterface;
 }

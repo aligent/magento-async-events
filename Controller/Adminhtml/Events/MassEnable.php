@@ -19,21 +19,6 @@ use Magento\Ui\Component\MassAction\Filter;
 class MassEnable extends Action implements HttpPostActionInterface
 {
     /**
-     * @var CollectionFactory
-     */
-    protected $collectionFactory;
-
-    /**
-     * @var Filter
-     */
-    private $filter;
-
-    /**
-     * @var AsyncEventRepositoryInterface
-     */
-    private $asyncEventRepository;
-
-    /**
      * @param Context $context
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
@@ -41,17 +26,16 @@ class MassEnable extends Action implements HttpPostActionInterface
      */
     public function __construct(
         Context $context,
-        Filter $filter,
-        CollectionFactory $collectionFactory,
-        AsyncEventRepositoryInterface $asyncEventRepository
+        private readonly Filter $filter,
+        private readonly CollectionFactory $collectionFactory,
+        private readonly AsyncEventRepositoryInterface $asyncEventRepository
     ) {
         parent::__construct($context);
-        $this->filter = $filter;
-        $this->collectionFactory = $collectionFactory;
-        $this->asyncEventRepository = $asyncEventRepository;
     }
 
     /**
+     * Execute page load
+     *
      * @return Redirect
      * @throws LocalizedException
      */
@@ -68,10 +52,12 @@ class MassEnable extends Action implements HttpPostActionInterface
     }
 
     /**
+     * Enable a list of asynchronous events
+     *
      * @param Collection $asyncEventCollection
      * @return void
      */
-    private function enableAsyncEvents(Collection $asyncEventCollection)
+    private function enableAsyncEvents(Collection $asyncEventCollection): void
     {
         $enabled = 0;
         $alreadyEnabled = 0;
