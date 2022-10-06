@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aligent\AsyncEvents\Model\Indexer;
 
 use Exception;
+use Magento\Elasticsearch\Model\Config;
 use Magento\Elasticsearch\SearchAdapter\ConnectionManager;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
@@ -20,6 +21,7 @@ class LuceneSearch extends Search
      * @param FilterBuilder $filterBuilder
      * @param FilterModifier $filterModifier
      * @param ConnectionManager $connectionManager
+     * @param Config $config
      * @param array $components
      * @param array $data
      */
@@ -29,6 +31,7 @@ class LuceneSearch extends Search
         FilterBuilder $filterBuilder,
         FilterModifier $filterModifier,
         private readonly ConnectionManager $connectionManager,
+        private readonly Config $config,
         array $components = [],
         array $data = []
     ) {
@@ -48,11 +51,12 @@ class LuceneSearch extends Search
     {
         $client = $this->connectionManager->getConnection();
         $value = $this->getContext()->getRequestParam('search');
+        $indexPrefix = $this->config->getIndexPrefix();
 
         try {
             $rawResponse = $client->query(
                 [
-                    'index' => 'magento2_async_event_*',
+                    'index' => $indexPrefix . '_async_event_*',
                     'q' => $value
                 ]
             );
