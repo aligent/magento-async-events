@@ -11,6 +11,7 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Filters\FilterModifier;
 use Magento\Ui\Component\Filters\Type\Search;
+use Magento\Elasticsearch\Model\Config;
 
 class LuceneSearch extends Search
 {
@@ -19,6 +20,11 @@ class LuceneSearch extends Search
      * @var ConnectionManager
      */
     private $connectionManager;
+
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * @param ContextInterface $context
@@ -35,11 +41,13 @@ class LuceneSearch extends Search
         FilterBuilder $filterBuilder,
         FilterModifier $filterModifier,
         ConnectionManager $connectionManager,
+        Config $config,
         array $components = [],
         array $data = []
     ) {
         parent::__construct($context, $uiComponentFactory, $filterBuilder, $filterModifier, $components, $data);
         $this->connectionManager = $connectionManager;
+        $this->config = $config;
     }
 
     /**
@@ -49,11 +57,12 @@ class LuceneSearch extends Search
     {
         $client = $this->connectionManager->getConnection();
         $value = $this->getContext()->getRequestParam('search');
+        $indexPrefix = $this->config->getIndexPrefix();
 
         try {
             $rawResponse = $client->query(
                 [
-                    'index' => 'magento2_async_event_*',
+                    'index' => $indexPrefix . '_async_event_*',
                     'q' => $value
                 ]
             );
