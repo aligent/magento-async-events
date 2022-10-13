@@ -22,7 +22,7 @@ class MapStringScopeToInt
      * this and remap and provide a fake store view id of 0.
      *
      * @param BuilderInterface $subject
-     * @param int $storeId
+     * @param int|string $storeId
      * @return array
      */
     public function beforeSetStoreId(BuilderInterface $subject, $storeId): array
