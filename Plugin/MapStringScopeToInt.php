@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Plugin;
 
-use Magento\Search\Model\ResourceModel\SynonymReader;
+use Magento\Elasticsearch\Model\Adapter\Index\BuilderInterface;
 
-class MapStringScopeIdToInt
+class MapStringScopeToInt
 {
     /**
      * Remap string to int
@@ -21,17 +21,16 @@ class MapStringScopeIdToInt
      * about stemming and synonyms as we are literally just using it for the Lucene Query Syntax we can safely ignore
      * this and remap and provide a fake store view id of 0.
      *
-     * @see vendor/magento/module-elasticsearch/Model/Adapter/Index/Builder.php:63
-     * @param SynonymReader $subject
-     * @param int|string $storeViewId
+     * @param BuilderInterface $subject
+     * @param int $storeId
      * @return array
      */
-    public function beforeGetAllSynonymsForStoreViewId(SynonymReader $subject, $storeViewId): array
+    public function beforeSetStoreId(BuilderInterface $subject, $storeId): array
     {
-        if (!is_numeric($storeViewId) && is_string($storeViewId)) {
-            $storeViewId = 0;
+        if (!is_numeric($storeId) && is_string($storeId)) {
+            $storeId = 0;
         }
 
-        return [$storeViewId];
+        return [$storeId];
     }
 }

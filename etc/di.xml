@@ -123,8 +123,9 @@
         <plugin name="add_entity_type_context"
                 type="Aligent\AsyncEvents\Plugin\AddEntityTypeContext"/>
     </type>
-    <type name="Magento\Search\Model\ResourceModel\SynonymReader">
-        <plugin name="map_string_scope_id_to_int"
-                type="Aligent\AsyncEvents\Plugin\MapStringScopeIdToInt"/>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\Index\BuilderInterface">
+        <plugin name="map_string_scope_to_int"
+                type="Aligent\AsyncEvents\Plugin\MapStringScopeToInt"/>
     </type>
 </config>
