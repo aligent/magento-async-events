@@ -93,7 +93,7 @@ shipment.created
 
 You can further narrow down using the other available attributes such as status or uuid.
 
-The following query returns  all customer events which have failed. `customer.* AND success: false`
+The following query returns all customer events which have failed. `customer.* AND success: false`
 
 You can combine complex lucene queries to fetch event history and then export them via the admin grid as a csv if you wish.
 
