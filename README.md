@@ -6,6 +6,136 @@ A framework for handling reliable and asynchronous events with Magento.
 * **Flexible**: Decoupling events and dispatches provide greater flexibility in message modelling.
 * **Scalable**: Handles back pressure and provides an asynchronous failover model automatically.
 
+## Trace
+
+All events are logged at the individual subscription level with a UUID.
+All information from the first delivery attempt to the latest attempt is presented as a trace table. The event payload
+is also available to view for investigation purposes.
+
+![Event Trace Page](docs/trace.png)
+
+
+## Retries
+
+Events are automatically retried with exponential back off. The default retry limit is 5. The maximum backoff is
+60 seconds.
+
+The exponential backoff is calculated as `min(60, pow($deathCount, 2));`
+
+| Attempt | Backoff     |
+|---------|-------------|
+| 1       | 1 second    |
+| 2       | 4 seconds   |
+| 3       | 9 seconds   |
+| 4       | 16 seconds  |
+| 5       | 25 seconds  |
+
+To change the default retry limit visit Admin > Stores > Settings > Configuration > Advanced > System > Async Events and update `Maximum Deaths`.
+
+![Retry Limit Config Page](docs/retry_limit_config.png)
+
+
+## Replays
+
+An event can be replayed independent of its status. This is useful to debug or replay an event when all retries are
+exhausted.
+
+Replays start a new chain of delivery attempts and will respect the same retry mechanism if they fail again.
+
+
+## Lucene Query Syntax
+
+All events are indexed in Elasticsearch by default. This allows you to search through events including the event payload!
+
+The module supports [Lucene Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html) to query event data like attributes.
+
+The following attributes are available across all asynchronous events.
+
+```
+log_id
+uuid
+event_name
+success
+created
+```
+The following attributes differ between asynchronous event types.
+```
+data
+```
+
+### Examples
+
+Assuming you have the following events configured
+```
+customer.created
+customer.updated
+customer.deleted
+sales.order.created
+sales.invoice.created
+shipment.created
+shipment.updated
+shipment.deleted
+```
+You can query all customer events by using a wildcard like `event_name: customer.*` which matches the following events
+```
+customer.created
+customer.updated
+customer.deleted
+```
+
+You can query all created events like `*.created` which matches the following events
+```
+customer.created
+sales.order.created
+sales.invoice.created
+shipment.created
+```
+
+You can further narrow down using the other available attributes such as status or uuid.
+
+The following query returns all customer events which have failed. `customer.* AND success: false`
+
+You can combine complex lucene queries to fetch event history and then export them via the admin grid as a csv if you wish.
+
+#### Searching inside event payloads
+Searching an event payload depends on what event you are searching on.
+
+For the following example event payload, four properties are indexed as attributes. Therefore, you can query on
+`data.customer_email`, `data.customer_firstname`, `data.customer_lastname` and `data.increment_id`.
+Properties inside array at any level are not searchable.
+
+```json
+{
+    "data": {
+        "customer_email": "roni_cost@example.com",
+        "customer_firstname": "Veronica",
+        "customer_lastname": "Costello",
+        "increment_id": "CK00000001",
+        "payment_additional_info": [
+            {
+                "key": "method_title",
+                "value": "Check / Money order"
+            }
+        ]
+    }
+}
+```
+
+Search all events where the customer email is `roni_cost@example.com`
+
+`data.data.customer_email: roni_cost@example.com`
+
+![Lucene Example 1](docs/lucene_example_1.png)
+
+Search all events with the order increment id starting with `CK` and status success
+
+`data.data.increment_id: CK* AND success: true`
+
+![Lucene Example 2](docs/lucene_example_2.png)
+
+To turn off asynchronous event indexing visit Admin > Stores > Settings > Configuration > Advanced > System >
+Async Events and disable `Enable Asynchronous Events Indexing`.
+
 ## Getting Started
 
 ### Define an asynchronous event
