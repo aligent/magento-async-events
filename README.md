@@ -49,7 +49,7 @@ All events are indexed in Elasticsearch by default. This allows you to search th
 
 The module supports [Lucene Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html) to query event data like attributes.
 
-The following attributes are available accross all asynchronous events.
+The following attributes are available across all asynchronous events.
 
 ```
 log_id
@@ -91,10 +91,9 @@ sales.invoice.created
 shipment.created
 ```
 
-You can further narrow down using other attributes such as status or uuid. The following query returns all customer
-events which have failed.
+You can further narrow down using the other available attributes such as status or uuid.
 
-`customer.* AND success: false`
+The following query returns  all customer events which have failed. `customer.* AND success: false`
 
 You can combine complex lucene queries to fetch event history and then export them via the admin grid as a csv if you wish.
 
