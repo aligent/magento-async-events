@@ -35,7 +35,11 @@
         <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
         <filters name="listing_filters"/>
-        <filterSearch name="log_id" class="\Aligent\AsyncEvents\Model\Indexer\LuceneSearch"/>
+        <filterSearch name="log_id" class="\Aligent\AsyncEvents\Model\Indexer\LuceneSearch">
+            <settings>
+                <placeholder>Search using Lucene Query Syntax</placeholder>
+            </settings>
+        </filterSearch>
         <exportButton name="export_button"/>
         <paging name="listing_paging"/>
     </listingToolbar>
