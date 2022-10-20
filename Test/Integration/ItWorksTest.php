@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 class ItWorksTest extends TestCase
 {
     /**
-     * @var AsyncEventRepositoryInterface
+     * @var AsyncEventRepositoryInterface|null
      */
     private ?AsyncEventRepositoryInterface $asyncEventRepository;
 
@@ -32,10 +32,11 @@ class ItWorksTest extends TestCase
     }
 
     /**
-     * @magentoDataFixture Aligent_AsyncEvents::Test/Integration/_files/test_fixture.php
+     * @magentoDataFixture Aligent_AsyncEvents::Test/_files/test_fixture.php
      */
     public function testGetById(): void
     {
-        $this->assertEquals(true, true);
+        $expectedAsyncEvent = $this->asyncEventRepository->get(1);
+        $this->assertEquals('example.event', $expectedAsyncEvent->getEventName());
     }
 }

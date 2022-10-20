@@ -6,13 +6,14 @@ use Magento\TestFramework\Helper\Bootstrap;
 
 $objectManager = Bootstrap::getObjectManager();
 
-$categoryFactory = $objectManager->get(AsyncEventInterfaceFactory::class);
+$asyncEventFactory = $objectManager->get(AsyncEventInterfaceFactory::class);
 
-/** @var AsyncEventInterface $category */
-$category = $categoryFactory->create(
+$asyncEventRepository = $objectManager->get(\Aligent\AsyncEvents\Api\AsyncEventRepositoryInterface::class);
+
+/** @var AsyncEventInterface $asyncEvent */
+$asyncEvent = $asyncEventFactory->create(
     [
         'data' => [
-            'subscription_id' => 1,
             'event' => 'example.event',
             'recipient_url' => 'http://host.docker.internal:3001/failable',
             'verification_token' => 'supersecret',
@@ -21,4 +22,6 @@ $category = $categoryFactory->create(
     ]
 );
 
-$category->save();
+$asyncEvent->setEventName('example.event');
+
+$asyncEventRepository->save($asyncEvent);
