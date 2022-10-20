@@ -9,19 +9,19 @@ on:
     - 3.x
 
 jobs:
-  compute_matrix:
-      runs-on: ubuntu-latest
-      outputs:
-        matrix: ${{ steps.supported-version.outputs.matrix }}
-      steps:
-        - uses: actions/checkout@v3
-        - uses: graycoreio/github-actions-magento2/supported-version@main
-          id: supported-version
-        - run: echo ${{ steps.supported-version.outputs.matrix }}
+  # compute_matrix:
+  #     runs-on: ubuntu-latest
+  #     outputs:
+  #       matrix: ${{ steps.supported-version.outputs.matrix }}
+  #     steps:
+  #       - uses: actions/checkout@v3
+  #       - uses: graycoreio/github-actions-magento2/supported-version@main
+  #         id: supported-version
+  #       - run: echo ${{ steps.supported-version.outputs.matrix }}
   integration-workflow:
     needs: compute_matrix
     uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
     with:
       package_name: ethanyehuda/magento2-cronjobmanager
-      matrix: ${{ needs.compute_matrix.outputs.matrix }}
+      matrix: '{"magento":["magento/project-community-edition:>=2.4.5 <2.4.6"],"include":[{"magento":"magento/project-community-edition:>=2.4.5 <2.4.6","php":8.1,"composer":2,"mysql":"mysql:8.0","elasticsearch":"elasticsearch:7.17.5","rabbitmq":"rabbitmq:3.9","redis":"redis:6.2","varnish":"varnish:7.0","nginx":"nginx:1.18","os":"ubuntu-latest"}]}'
       test_command: ../../../vendor/bin/phpunit ../../../vendor/ethanyehuda/magento2-cronjobmanager/Test/Integration
