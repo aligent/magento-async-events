@@ -22,6 +22,6 @@ jobs:
     needs: compute_matrix
     uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
     with:
-      package_name: magento/module-inventory-shipping
+      package_name: ethanyehuda/magento2-cronjobmanager
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
-      test_command: ../../../vendor/bin/phpunit ../../../vendor/magento/module-inventory-shipping/Test/Integration
+      test_command: ../../../vendor/bin/phpunit ../../../vendor/ethanyehuda/magento2-cronjobmanager/Test/Integration
