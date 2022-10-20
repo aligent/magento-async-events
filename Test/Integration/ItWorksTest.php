@@ -32,7 +32,7 @@ class ItWorksTest extends TestCase
     }
 
     /**
-     * @magentoDataFixture Magento/Catalog/_files/product_simple.php
+     * @magentoDataFixture Aligent_AsyncEvents::Test/Integration/_files/test_fixture.php
      */
     public function testGetById(): void
     {
