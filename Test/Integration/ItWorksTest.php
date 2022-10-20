@@ -16,5 +16,6 @@ class ItWorksTest extends TestCase
     public function testItWorks()
     {
         $this->assertEquals(true, true);
+        $this->assertEquals('Double checking this works', 'Double checking this works');
     }
 }
