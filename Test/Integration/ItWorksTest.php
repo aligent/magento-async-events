@@ -18,7 +18,7 @@ class ItWorksTest extends TestCase
     /**
      * @var AsyncEventRepositoryInterface
      */
-    private AsyncEventRepositoryInterface $asyncEventRepository;
+    private ?AsyncEventRepositoryInterface $asyncEventRepository;
 
     protected function setUp(): void
     {
