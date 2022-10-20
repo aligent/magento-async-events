@@ -19,7 +19,7 @@ jobs:
   #         id: supported-version
   #       - run: echo ${{ steps.supported-version.outputs.matrix }}
   integration-workflow:
-    needs: compute_matrix
+    # needs: compute_matrix
     uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
     with:
       package_name: ethanyehuda/magento2-cronjobmanager
