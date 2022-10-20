@@ -18,12 +18,10 @@ jobs:
         - uses: graycoreio/github-actions-magento2/supported-version@main
           id: supported-version
         - run: echo ${{ steps.supported-version.outputs.matrix }}
-  # integration-workflow:
-  #   needs: compute_matrix
-  #   uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
-  #   with:
-  #     package_name: my-vendor/package
-  #     matrix: ${{ needs.compute_matrix.outputs.matrix }}
-  #     test_command: ../../../vendor/bin/phpunit ../../../vendor/my-vendor/package/Test/Integration
-  #   secrets:
-  #     composer_auth: ${{ secrets.COMPOSER_AUTH }}
+  integration-workflow:
+    needs: compute_matrix
+    uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
+    with:
+      package_name: magento/module-inventory-shipping
+      matrix: ${{ needs.compute_matrix.outputs.matrix }}
+      test_command: ../../../vendor/bin/phpunit ../../../vendor/magento/module-inventory-shipping/Test/Integration
