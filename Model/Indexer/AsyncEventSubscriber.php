@@ -83,14 +83,14 @@ class AsyncEventSubscriber implements
     public function executeFull()
     {
         foreach ($this->dimensionProvider->getIterator() as $dimension) {
-            $this->executeByDimensions($dimension);
+            $this->executeByDimensions($dimension, null);
         }
     }
 
     /**
      * @inheritDoc
      */
-    public function executeByDimensions(array $dimensions, Traversable $entityIds = null)
+    public function executeByDimensions(array $dimensions, ?Traversable $entityIds)
     {
         if (!$this->config->isIndexingEnabled()) {
             return;
@@ -105,11 +105,11 @@ class AsyncEventSubscriber implements
         );
 
         if ($entityIds === null) {
-            $asyncEventDimension = $dimensions[0]->getValue();
+            $asyncEventDimension = $dimensions[AsyncEventDimensionProvider::DIMENSION_NAME]->getValue();
             $saveHandler->cleanIndex($dimensions);
             $saveHandler->saveIndex(
                 $dimensions,
-                $this->asyncEventSubscriberLogsDataProvider->getAsyncEventLogs($asyncEventDimension)
+                $this->asyncEventSubscriberLogsDataProvider->getAsyncEventLogs($asyncEventDimension, null)
             );
         } else {
             $asyncEventIds = iterator_to_array($entityIds);
@@ -143,7 +143,7 @@ class AsyncEventSubscriber implements
         array $dimensions,
         array $asyncEventLogIds
     ): void {
-        $asyncEvent = $dimensions[0]->getValue();
+        $asyncEvent = $dimensions[AsyncEventDimensionProvider::DIMENSION_NAME]->getValue();
 
         if ($saveHandler->isAvailable($dimensions)) {
             $saveHandler->deleteIndex($dimensions, new ArrayIterator($asyncEventLogIds));

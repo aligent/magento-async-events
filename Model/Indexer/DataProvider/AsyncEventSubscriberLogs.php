@@ -24,7 +24,7 @@ class AsyncEventSubscriberLogs
      * @param array|null $logIds
      * @return Collection
      */
-    public function getAsyncEventLogs(string $asyncEvent, array $logIds = null): Collection
+    public function getAsyncEventLogs(string $asyncEvent, ?array $logIds): Collection
     {
         $logCollection = $this->collectionFactory->create();
 
