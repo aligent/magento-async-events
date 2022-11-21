@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Aligent Consulting
- * Copyright (c) Aligent Consulting (https://www.aligent.com.au)
- */
-
 declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Model\Indexer\DataProvider;
@@ -25,14 +20,13 @@ class AsyncEventSubscriberLogs
     /**
      * Get async event logs by log ids
      *
-     * @param array $logIds
      * @param string $asyncEvent
+     * @param array|null $logIds
      * @return Collection
      */
-    public function getAsyncEventLogs(array $logIds, string $asyncEvent): Collection
+    public function getAsyncEventLogs(string $asyncEvent, ?array $logIds): Collection
     {
         $logCollection = $this->collectionFactory->create();
-        $logCollection->addFieldToFilter('log_id', ['in' => $logIds]);
 
         $logCollection->getSelect()
             ->join(
@@ -41,6 +35,10 @@ class AsyncEventSubscriberLogs
                 ['event_name']
             )
             ->where('ae.event_name = ?', $asyncEvent);
+
+        if ($logIds !== null) {
+            $logCollection->addFieldToFilter('log_id', ['in' => $logIds]);
+        }
 
         return $logCollection;
     }
