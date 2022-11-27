@@ -21,7 +21,7 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
      * Name for asynchronous event dimension for multidimensional indexer
      * 'ae' - stands for 'asynchronous_event'
      */
-    const DIMENSION_NAME = 'ae';
+    public const DIMENSION_NAME = 'ae';
 
     /**
      * @var SplFixedArray
@@ -56,7 +56,7 @@ class AsyncEventDimensionProvider implements DimensionProviderInterface
     public function getIterator(): Traversable
     {
         foreach ($this->getAsyncEvents() as $asyncEvent) {
-            yield [$this->dimensionFactory->create(self::DIMENSION_NAME, $asyncEvent)];
+            yield [self::DIMENSION_NAME => $this->dimensionFactory->create(self::DIMENSION_NAME, $asyncEvent)];
         }
     }
 

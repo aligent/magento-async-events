@@ -14,6 +14,7 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Indexer\ActionInterface as IndexerActionInterface;
 use Magento\Framework\Indexer\DimensionalIndexerInterface;
 use Magento\Framework\Indexer\DimensionProviderInterface;
+use Magento\Framework\Indexer\IndexStructureInterface;
 use Magento\Framework\Indexer\SaveHandler\IndexerInterface;
 use Magento\Framework\Mview\ActionInterface as MviewActionInterface;
 use Traversable;
@@ -61,6 +62,11 @@ class AsyncEventSubscriber implements
     private $asyncEventScopeResolver;
 
     /**
+     * @var IndexStructureInterface
+     */
+    private $indexStructure;
+
+    /**
      * @var Config
      */
     private $config;
@@ -85,6 +91,7 @@ class AsyncEventSubscriber implements
      * @param IndexerHandlerFactory $indexerHandlerFactory
      * @param AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider
      * @param AsyncEvent $asyncEventScopeResolver
+     * @param IndexStructureInterface $indexStructure
      * @param Config $config
      * @param array $data
      * @param int|null $batchSize
@@ -95,6 +102,7 @@ class AsyncEventSubscriber implements
         IndexerHandlerFactory $indexerHandlerFactory,
         AsyncEventSubscriberLogs $asyncEventSubscriberLogsDataProvider,
         AsyncEvent $asyncEventScopeResolver,
+        IndexStructureInterface $indexStructure,
         Config $config,
         array $data,
         int $batchSize = null,
@@ -108,6 +116,7 @@ class AsyncEventSubscriber implements
         $this->batchSize = $batchSize ?? self::BATCH_SIZE;
         $this->deploymentConfig = $deploymentConfig ?: ObjectManager::getInstance()->get(DeploymentConfig::class);
         $this->asyncEventScopeResolver = $asyncEventScopeResolver;
+        $this->indexStructure = $indexStructure;
     }
 
     /**
@@ -117,7 +126,9 @@ class AsyncEventSubscriber implements
      */
     public function executeFull()
     {
-        $this->execute([]);
+        foreach ($this->dimensionProvider->getIterator() as $dimension) {
+            $this->executeByDimensions($dimension, null);
+        }
     }
 
     /**
@@ -149,7 +160,7 @@ class AsyncEventSubscriber implements
     /**
      * @inheritDoc
      */
-    public function executeByDimensions(array $dimensions, Traversable $entityIds)
+    public function executeByDimensions(array $dimensions, Traversable $entityIds = null)
     {
         if (!$this->config->isIndexingEnabled()) {
             return;
@@ -158,24 +169,34 @@ class AsyncEventSubscriber implements
         $saveHandler = $this->indexerHandlerFactory->create(
             [
                 'data' => $this->data,
-                'scopeResolver' => $this->asyncEventScopeResolver
+                'scopeResolver' => $this->asyncEventScopeResolver,
+                'indexStructure' => $this->indexStructure
             ]
         );
 
-        $asyncEventIds = iterator_to_array($entityIds);
-
-        $this->batchSize = $this->deploymentConfig->get(
-            self::DEPLOYMENT_CONFIG_INDEXER_BATCHES . self::INDEXER_ID . '/partial_reindex'
-        ) ?? $this->batchSize;
-
-        $asyncEventBatches = array_chunk($asyncEventIds, $this->batchSize);
-
-        foreach ($asyncEventBatches as $asyncEventBatch) {
-            $this->processBatch(
-                $saveHandler,
+        if ($entityIds === null) {
+            $asyncEventDimension = $dimensions[AsyncEventDimensionProvider::DIMENSION_NAME]->getValue();
+            $saveHandler->cleanIndex($dimensions);
+            $saveHandler->saveIndex(
                 $dimensions,
-                $asyncEventBatch
+                $this->asyncEventSubscriberLogsDataProvider->getAsyncEventLogs($asyncEventDimension, null)
             );
+        } else {
+            $asyncEventIds = iterator_to_array($entityIds);
+
+            $this->batchSize = $this->deploymentConfig->get(
+                self::DEPLOYMENT_CONFIG_INDEXER_BATCHES . self::INDEXER_ID . '/partial_reindex'
+            ) ?? $this->batchSize;
+
+            $asyncEventBatches = array_chunk($asyncEventIds, $this->batchSize);
+
+            foreach ($asyncEventBatches as $asyncEventBatch) {
+                $this->processBatch(
+                    $saveHandler,
+                    $dimensions,
+                    $asyncEventBatch
+                );
+            }
         }
     }
 
@@ -190,15 +211,15 @@ class AsyncEventSubscriber implements
         array $dimensions,
         array $asyncEventLogIds
     ) {
-        $asyncEvent = $dimensions[0]->getValue();
+        $asyncEvent = $dimensions[AsyncEventDimensionProvider::DIMENSION_NAME]->getValue();
 
         if ($saveHandler->isAvailable($dimensions)) {
             $saveHandler->deleteIndex($dimensions, new ArrayIterator($asyncEventLogIds));
             $saveHandler->saveIndex(
                 $dimensions,
                 $this->asyncEventSubscriberLogsDataProvider->getAsyncEventLogs(
-                    $asyncEventLogIds,
-                    $asyncEvent
+                    $asyncEvent,
+                    $asyncEventLogIds
                 )
             );
         }

@@ -29,11 +29,11 @@ class AsyncEventSubscriberLogs
     }
 
     /**
-     * @param array $logIds
      * @param string $asyncEvent
+     * @param array|null $logIds
      * @return Collection
      */
-    public function getAsyncEventLogs(array $logIds, string $asyncEvent)
+    public function getAsyncEventLogs(string $asyncEvent, array $logIds = null)
     {
         $logCollection = $this->collectionFactory->create();
         $logCollection->addFieldToFilter('log_id', ['in' => $logIds]);
@@ -45,6 +45,10 @@ class AsyncEventSubscriberLogs
                 ['event_name']
             )
             ->where('ae.event_name = ?', $asyncEvent);
+
+        if ($logIds !== null) {
+            $logCollection->addFieldToFilter('log_id', ['in' => $logIds]);
+        }
 
         return $logCollection;
     }
