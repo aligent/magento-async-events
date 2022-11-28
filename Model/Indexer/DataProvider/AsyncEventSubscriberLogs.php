@@ -36,7 +36,6 @@ class AsyncEventSubscriberLogs
     public function getAsyncEventLogs(string $asyncEvent, array $logIds = null)
     {
         $logCollection = $this->collectionFactory->create();
-        $logCollection->addFieldToFilter('log_id', ['in' => $logIds]);
 
         $logCollection->getSelect()
             ->join(
