@@ -94,7 +94,6 @@
     <type name="Aligent\AsyncEvents\Model\Indexer\AsyncEventSubscriber">
         <arguments>
             <argument name="dimensionProvider" xsi:type="object" shared="false">\Aligent\AsyncEvents\Model\Indexer\AsyncEventDimensionProvider</argument>
-            <argument name="indexStructure" xsi:type="object" shared="false">\Aligent\AsyncEvents\Model\Indexer\IndexStructure</argument>
         </arguments>
     </type>
 
