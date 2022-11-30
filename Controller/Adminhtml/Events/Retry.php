@@ -57,6 +57,6 @@ class Retry extends Action implements HttpPostActionInterface
             $data['uuid']
         );
 
-        $this->_redirect($this->_redirect->getRefererUrl());
+        $this->_redirect('*/logs/trace/uuid/' . $data['uuid'], ['_current' => true]);
     }
 }
