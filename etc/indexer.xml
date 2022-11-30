@@ -4,5 +4,6 @@
     <indexer id="async_event" view_id="async_event" class="Aligent\AsyncEvents\Model\Indexer\AsyncEventSubscriber">
         <title>Asynchronous Events</title>
         <description>Index asynchronous event dispatches</description>
+        <structure class="\Aligent\AsyncEvents\Model\Indexer\IndexStructure"/>
     </indexer>
 </config>
