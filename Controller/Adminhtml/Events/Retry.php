@@ -18,13 +18,11 @@ class Retry extends Action implements HttpPostActionInterface
      * Retry Constructor
      *
      * @param Context $context
-     * @param PageFactory $resultPageFactory
      * @param RetryManager $retryManager
      * @param SerializerInterface $serializer
      */
     public function __construct(
         Context $context,
-        private readonly PageFactory $resultPageFactory,
         private readonly RetryManager $retryManager,
         private readonly SerializerInterface $serializer
     ) {
@@ -46,6 +44,6 @@ class Retry extends Action implements HttpPostActionInterface
             $data['uuid']
         );
 
-        $this->_redirect($this->_redirect->getRefererUrl());
+        $this->_redirect('*/logs/trace/uuid/' . $data['uuid'], ['_current' => true]);
     }
 }
