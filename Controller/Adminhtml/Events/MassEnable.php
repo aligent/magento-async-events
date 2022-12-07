@@ -18,6 +18,8 @@ use Magento\Ui\Component\MassAction\Filter;
 
 class MassEnable extends Action implements HttpPostActionInterface
 {
+    public const ADMIN_RESOURCE = 'Aligent_AsyncEvents::async_events_save';
+
     /**
      * @param Context $context
      * @param Filter $filter

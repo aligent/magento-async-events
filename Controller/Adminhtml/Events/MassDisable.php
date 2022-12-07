@@ -18,6 +18,8 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 
 class MassDisable extends Action implements HttpPostActionInterface
 {
+    public const ADMIN_RESOURCE = 'Aligent_AsyncEvents::async_events_save';
+
     /**
      * @param Context $context
      * @param Filter $filter
