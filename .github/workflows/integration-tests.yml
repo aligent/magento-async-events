@@ -103,6 +103,6 @@ jobs:
           sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
 
 #      - run: ../../../vendor/bin/phpunit ../../../vendor/aligent/async-events/Test/Integration
-      - run: ls -lh ./dev/tests
-        working-directory:  ../magento2/dev
+      - run: ls -lh ./dev;
+        working-directory:  ../magento2
         name: Run Integration Tests
