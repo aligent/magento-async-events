@@ -87,11 +87,10 @@ jobs:
         run: |
           echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-
       - name: "Cache Composer Packages"
         uses: actions/cache@v3
         with:
-          key: "composer | v5 | '' | ${{ hashFiles('composer.lock') }} | "ubuntu-latest" | "2" | "8.1" | "2.4.5"
+          key: "composer | v5 | '' | ${{ hashFiles('composer.lock') }}"
           path: ${{ steps.composer-cache.outputs.dir }}
 
       - run: composer config repositories.local path $GITHUB_WORKSPACE
