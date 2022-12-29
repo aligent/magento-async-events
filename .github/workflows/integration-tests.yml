@@ -102,6 +102,7 @@ jobs:
           sed -i "s/'elasticsearch-host' => 'localhost'/'elasticsearch-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
           sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
 
-      - run: ../../../vendor/bin/phpunit ../../../vendor/aligent/async-events/Test/Integration
-        working-directory:  ../../magento2/dev/tests/integration
+#      - run: ../../../vendor/bin/phpunit ../../../vendor/aligent/async-events/Test/Integration
+      - run: ls -lh
+        working-directory:  ../magento2
         name: Run Integration Tests
