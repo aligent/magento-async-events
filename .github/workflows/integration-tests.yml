@@ -33,20 +33,29 @@ jobs:
         magento: ["magento/project-community-edition:>=2.4.4 <2.4.5", "magento/project-community-edition:>=2.4.5 <2.4.6"]
         include:
           - php: 8.1
-          - composer: 2
-          - mysql: "mysql:8.0"
-          - elasticsearch: "elasticsearch:7.16.3"
-          - rabbitmq: "rabbitmq:3.9"
-          - redis: "redis:6.2"
-          - varnish: "varnish:7.0"
-          - nginx: "nginx:1.18"
-          - os: "ubuntu-latest"
+            composer: 2
+            mysql: "mysql:8.0"
+            elasticsearch: "elasticsearch:7.16.3"
+            rabbitmq: "rabbitmq:3.9"
+            redis: "redis:6.2"
+            varnish: "varnish:7.0"
+            nginx: "nginx:1.18"
+            os: "ubuntu-latest"
+          - php: 7.4
+            composer: 2
+            mysql: "mysql:8.0"
+            elasticsearch: "elasticsearch:7.16.3"
+            rabbitmq: "rabbitmq:3.9"
+            redis: "redis:6.2"
+            varnish: "varnish:7.0"
+            nginx: "nginx:1.18"
+            os: "ubuntu-latest"
 
     runs-on: ubuntu-latest
     steps:
 #      - uses: graycoreio/github-actions-magento2/supported-version@main
 #        id: supported-version
-      - run: echo ${{ matrix.magento }} ${{ matrix.php }} ${{ matrix.composer }} ${{ matrix.mysql }} ${{ matrix.elasticsearch }}
+      - run: echo "${{ matrix.magento }} ${{ matrix.php }} ${{ matrix.composer }} ${{ matrix.mysql }} ${{ matrix.elasticsearch }}"
 
 
   integration-test:
