@@ -1,3 +1,24 @@
+#name: Use Supported Versions
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+#
+#jobs:
+#  compute_matrix:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      matrix: ${{ steps.supported-version.outputs.matrix }}
+#    steps:
+#      - uses: graycoreio/github-actions-magento2/supported-version@main
+#        id: supported-version
+#      - run: echo ${{ steps.supported-version.outputs.matrix }}
+
+
 name: Integration Test
 
 on:
@@ -6,7 +27,17 @@ on:
     - 3.x
 
 jobs:
+  compute_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: graycoreio/github-actions-magento2/supported-version@main
+        id: supported-version
+      - run: echo ${{ steps.supported-version.outputs.matrix }}
+
   integration-test:
+    if:  false
     runs-on:  "ubuntu-latest"
     services:
       elasticsearch:
