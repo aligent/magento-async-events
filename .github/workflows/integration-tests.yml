@@ -1,24 +1,3 @@
-#name: Use Supported Versions
-#
-#on:
-#  push:
-#    branches:
-#      - main
-#  pull_request:
-#    branches:
-#      - main
-#
-#jobs:
-#  compute_matrix:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      matrix: ${{ steps.supported-version.outputs.matrix }}
-#    steps:
-#      - uses: graycoreio/github-actions-magento2/supported-version@main
-#        id: supported-version
-#      - run: echo ${{ steps.supported-version.outputs.matrix }}
-
-
 name: Integration Test
 
 on:
@@ -92,7 +71,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:${{ matrix.composer }}
+          tools: composer:2
           coverage: none
 
       - run: composer create-project --repository-url="https://mirror.mage-os.org/" "${{ matrix.magento }}" ../magento2 --no-install
