@@ -8,6 +8,13 @@ A framework for reliably handling asynchronous events with Magento.
 * **Flexible**: Decoupling events and dispatches provide greater flexibility in message modelling.
 * **Scalable**: Handles back pressure and provides an asynchronous failover model automatically.
 
+## Support
+
+| Async Events | Magento 2.3        | Magento 2.4        |
+|--------------|--------------------|--------------------|
+| 2.x          | :white_check_mark: | :x:                |
+| 3.x          | :x:                | :white_check_mark: |
+
 ## Installation
 
 ```
@@ -95,6 +102,9 @@ bin/magento queue:consumer:start event.retry.consumer
 
 ## Advanced Usage
 Refer to the [Wiki](https://github.com/aligent/magento-async-events/wiki)
+
+
+# Features
 
 ## Trace
 
