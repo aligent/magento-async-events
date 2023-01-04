@@ -14,7 +14,7 @@ A framework for reliably handling asynchronous events with Magento.
 composer require aligent/async-events
 ```
 
-## Getting Started
+## Usage
 
 ### Define an asynchronous event
 
@@ -99,11 +99,11 @@ Refer to the [Wiki](https://github.com/aligent/magento-async-events/wiki)
 ## Trace
 
 All events are logged at the individual subscription level with a UUID.
+
 All information from the first delivery attempt to the latest attempt is presented as a trace table. The event payload
 is also available to view for investigation purposes.
 
 ![Event Trace Page](docs/trace.png)
-
 
 ## Retries
 
@@ -124,14 +124,12 @@ To change the default retry limit visit Admin > Stores > Settings > Configuratio
 
 ![Retry Limit Config Page](docs/retry_limit_config.png)
 
-
 ## Replays
 
 An event can be replayed independent of its status. This is useful to debug or replay an event when all retries are
 exhausted.
 
 Replays start a new chain of delivery attempts and will respect the same retry mechanism if they fail again.
-
 
 ## Lucene Query Syntax
 
