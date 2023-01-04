@@ -14,6 +14,8 @@ class Index extends Action implements HttpGetActionInterface
 {
     private const MENU_ID = 'Aligent_AsyncEvents::index';
 
+    public const ADMIN_RESOURCE = 'Aligent_AsyncEvents::async_events_view';
+
     /**
      * @param Context $context
      * @param PageFactory $resultPageFactory

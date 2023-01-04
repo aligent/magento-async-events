@@ -16,6 +16,8 @@ class Trace extends Action implements HttpGetActionInterface
 {
     public const MENU_ID = 'Aligent_AsyncEvents::logs';
 
+    public const ADMIN_RESOURCE = 'Aligent_AsyncEvents::async_events_logs_trace';
+
     /**
      * @param Context $context
      * @param PageFactory $resultPageFactory

@@ -12,8 +12,10 @@ use Magento\Backend\App\Action;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Result\PageFactory;
 
-class Retry extends Action implements HttpPostActionInterface
+class Replay extends Action implements HttpPostActionInterface
 {
+    public const ADMIN_RESOURCE = 'Aligent_AsyncEvents::async_events_logs_replay';
+
     /**
      * Retry Constructor
      *

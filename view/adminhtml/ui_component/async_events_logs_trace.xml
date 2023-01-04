@@ -35,7 +35,7 @@
             </item>
         </argument>
         <settings>
-            <submitUrl path="async_events/events/retry"/>
+            <submitUrl path="async_events/events/replay"/>
         </settings>
         <dataProvider class="Aligent\AsyncEvents\Ui\DataProvider\AsyncEventsTrace"
                       name="async_events_logs_trace_data_source">
