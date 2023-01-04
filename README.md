@@ -10,10 +10,10 @@ A framework for reliably handling asynchronous events with Magento.
 
 ## Support
 
-| Async Events | Magento 2.3        | Magento 2.4        |
-|--------------|--------------------|--------------------|
-| 2.x          | :white_check_mark: | :x:                |
-| 3.x          | :x:                | :white_check_mark: |
+| Async Events | Magento 2.3.x      | >= Magento 2.4.0 <= Magento 2.4.3 | >= Magento 2.4.4   |
+|--------------|--------------------|-----------------------------------|--------------------|
+| 2.x          | :white_check_mark: | :white_check_mark:                | :x:                |
+| 3.x          | :x:                | :x:                               | :white_check_mark: |
 
 ## Installation
 
