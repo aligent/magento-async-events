@@ -1,0 +1,132 @@
+name: Integration Test
+
+on:
+  pull_request:
+    branches:
+    - 3.x
+
+jobs:
+
+  integration-test:
+    runs-on:  "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        magento: ["magento/project-community-edition:>=2.4.4 <2.4.5", "magento/project-community-edition:>=2.4.5 <2.4.6"]
+        include:
+          - magento: magento/project-community-edition:>=2.4.4 <2.4.5
+            php: 8.1
+            composer: 2
+            mysql: "mysql:8.0"
+            elasticsearch: "elasticsearch:7.16.3"
+            rabbitmq: "rabbitmq:3.9-management"
+            redis: "redis:6.2"
+            varnish: "varnish:7.0"
+            nginx: "nginx:1.18"
+          - magento: magento/project-community-edition:>=2.4.5 <2.4.6
+            php: 8.1
+            composer: 2
+            mysql: "mysql:8.0"
+            elasticsearch: "elasticsearch:7.16.3"
+            rabbitmq: "rabbitmq:3.9-management"
+            redis: "redis:6.2"
+            varnish: "varnish:7.0"
+            nginx: "nginx:1.18"
+
+    services:
+      elasticsearch:
+        image: ${{ matrix.elasticsearch }}
+        env:
+          discovery.type: single-node
+        options: >-
+          --health-cmd "curl http://localhost:9200/_cluster/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 9200:9200
+
+      mysql:
+        image:  ${{ matrix.mysql }}
+        env:
+          MYSQL_DATABASE: magento_integration_tests
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      rabbitmq:
+        image: ${{ matrix.rabbitmq }}
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+        ports:
+          - 5672:5672
+          - 15672:15672
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set PHP Version
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:2
+          coverage: none
+
+      - run: composer create-project --repository-url="https://mirror.mage-os.org/" "${{ matrix.magento }}" ../magento2 --no-install
+        shell: bash
+        env:
+          COMPOSER_AUTH: ""
+        name: Create Magento ${{ matrix.magento }} Project
+
+      - uses: graycoreio/github-actions-magento2/get-magento-version@main
+        id: magento-version
+        with:
+          working-directory:  "../magento2"
+
+      - name: Get Composer Cache Directory
+        shell: bash
+        working-directory:  "../magento2"
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: "Cache Composer Packages"
+        uses: actions/cache@v3
+        with:
+          key: "composer | v5 | '' | ${{ hashFiles('composer.lock') }}"
+          path: ${{ steps.composer-cache.outputs.dir }}
+
+      - run: composer config repositories.local path $GITHUB_WORKSPACE
+        name: Add Github Repo for Testing
+        working-directory:  "../magento2"
+        shell: bash
+
+      - run: |
+          composer config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer config --no-interaction allow-plugins.laminas/laminas-dependency-plugin true
+          composer config --no-interaction allow-plugins.magento/* true
+        name: Fixup Composer Plugins
+        working-directory:  "../magento2"
+
+      - run: composer require aligent/async-events "@dev" --no-update && composer install
+        name: Require and attempt install
+        working-directory:  "../magento2"
+        shell: bash
+        env:
+          COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - name: Replace Configuration Settings for env
+        working-directory:  ../magento2/dev/tests/integration
+        run: |
+          sed -i "s/'db-host' => 'localhost'/'db-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
+          sed -i "s/'db-user' => 'root'/'db-user' => 'user'/" etc/install-config-mysql.php.dist
+          sed -i "s/'db-password' => '123123q'/'db-password' => 'password'/" etc/install-config-mysql.php.dist
+          sed -i "s/'elasticsearch-host' => 'localhost'/'elasticsearch-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
+          sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
+
+      - run: ../../../vendor/bin/phpunit ../../../vendor/aligent/async-events/Test/Integration
+        working-directory:  ../magento2/dev/tests/integration
+        name: Run Integration Tests
