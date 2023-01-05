@@ -1,6 +1,7 @@
 # Magento Asynchronous Events
 
 [![Integration Test](https://github.com/aligent/magento-async-events/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/aligent/magento-async-events/actions/workflows/integration-tests.yml)
+[![REST](https://github.com/aligent/magento-async-events/actions/workflows/api-functional-tests.yml/badge.svg)](https://github.com/aligent/magento-async-events/actions/workflows/api-functional-tests.yml)
 
 A framework for reliably handling asynchronous events with Magento.
 
