@@ -1,4 +1,4 @@
-name: Integration Test
+name: REST
 
 on:
   pull_request:
@@ -6,10 +6,10 @@ on:
       - 3.x
 
 jobs:
-  integration-test:
+  api-functional-test:
     runs-on:  "ubuntu-latest"
 
-    # Only run integration tests on feature branches. Simple documentation updates, formatting can be ignored
+    # Only run api tests on feature branches. Simple documentation updates, formatting can be ignored
 #    if: contains(github.ref, 'feature')
     strategy:
       fail-fast: true
@@ -51,7 +51,7 @@ jobs:
       mysql:
         image:  ${{ matrix.mysql }}
         env:
-          MYSQL_DATABASE: magento_integration_tests
+          MYSQL_DATABASE: magento_functional_tests
           MYSQL_USER: user
           MYSQL_PASSWORD: password
           MYSQL_ROOT_PASSWORD: rootpassword
@@ -121,14 +121,23 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
       - name: Replace Configuration Settings for env
-        working-directory:  ../magento2/dev/tests/integration
+        working-directory:  ../magento2/dev/tests/api-functional
         run: |
-          sed -i "s/'db-host' => 'localhost'/'db-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
-          sed -i "s/'db-user' => 'root'/'db-user' => 'user'/" etc/install-config-mysql.php.dist
-          sed -i "s/'db-password' => '123123q'/'db-password' => 'password'/" etc/install-config-mysql.php.dist
-          sed -i "s/'elasticsearch-host' => 'localhost'/'elasticsearch-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
-          sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
+          cp phpunit_rest.xml.dist phpunit_rest.xml
+          cp config/install-config-mysql.php.dist config/install-config-mysql.php
+          sed -i 's/name="TESTS_MAGENTO_INSTALLATION" value="disabled"/name="TESTS_MAGENTO_INSTALLATION" value="enabled"/' phpunit_rest.xml
+          sed -i 's#http://magento.url#http://127.0.0.1:8082/index.php/#' phpunit_rest.xml
+          sed -i 's/value="admin"/value="Test Webservice User"/' phpunit_rest.xml
+          sed -i 's/value="123123q"/value="Test Webservice API key"/' phpunit_rest.xml
+          sed -i "s,http://localhost/,http://127.0.0.1:8082/index.php/," config/install-config-mysql.php
+          sed -i "s/'db-host'                      => 'localhost'/'db-host' => '127.0.0.1'/" config/install-config-mysql.php
+          sed -i "s/'db-user'                      => 'root'/'db-user' => 'user'/" config/install-config-mysql.php
+          sed -i "s/'db-password'                  => ''/'db-password' => 'password'/" config/install-config-mysql.php
+          sed -i "s/'elasticsearch-host'           => 'localhost'/'elasticsearch-host' => '127.0.0.1'/" config/install-config-mysql.php
 
-      - run: ../../../vendor/bin/phpunit ../../../vendor/aligent/async-events/Test/Integration
-        working-directory:  ../magento2/dev/tests/integration
-        name: Run Integration Tests
+      - run: |
+          php -S 127.0.0.1:8082 -t ./pub/ ./phpserver/router.php &
+          sleep 5
+          vendor/bin/phpunit -c $(pwd)/dev/tests/api-functional/phpunit_rest.xml vendor/aligent/async-events/Test/Api
+        working-directory:  ../magento2
+        name: Run API Functional Tests
