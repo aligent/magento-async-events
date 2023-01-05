@@ -18,14 +18,12 @@ class ItWorksTest extends WebapiAbstract
     {
         $serviceInfo = [
             'rest' => [
-                'resourcePath' => '/V1/async_event/3',
+                'resourcePath' => '/V1/directory/currency',
                 'httpMethod' => Request::HTTP_METHOD_GET,
             ]
         ];
 
-        $item = $this->_webApiCall($serviceInfo, [
-            'searchCriteria' => ''
-        ]);
+        $item = $this->_webApiCall($serviceInfo);
 
         var_dump($item);
 
