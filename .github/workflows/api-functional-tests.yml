@@ -10,7 +10,7 @@ jobs:
     runs-on:  "ubuntu-latest"
 
     # Only run api tests on feature branches. Simple documentation updates, formatting can be ignored
-#    if: contains(github.ref, 'feature')
+    if: contains(github.head_ref, 'feature')
     strategy:
       fail-fast: true
       matrix:
