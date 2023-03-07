@@ -66,7 +66,7 @@ class LuceneSearch extends Search
                     'q' => $value,
                     // the default page size is 10. The highest limit is 10000. If we want to traverse further, we will
                     // have to use the search after parameter. There are no plans to implement this right now.
-                    'size' => 10000
+                    'size' => 100
                 ]
             );
 
