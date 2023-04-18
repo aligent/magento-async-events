@@ -9,6 +9,7 @@ use Aligent\AsyncEvents\Model\Indexer\DataProvider\AsyncEventSubscriberLogs;
 use Aligent\AsyncEvents\Model\Resolver\AsyncEvent;
 use ArrayIterator;
 use Magento\CatalogSearch\Model\Indexer\IndexerHandlerFactory;
+use Magento\Elasticsearch\Model\Adapter\Elasticsearch;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Indexer\ActionInterface as IndexerActionInterface;
@@ -58,6 +59,7 @@ class AsyncEventSubscriber implements
      * @param AsyncEvent $asyncEventScopeResolver
      * @param IndexStructure $indexStructure
      * @param Config $config
+     * @param Elasticsearch $dataMapperAdapter
      * @param array $data
      * @param int|null $batchSize
      * @param DeploymentConfig|null $deploymentConfig
@@ -69,6 +71,7 @@ class AsyncEventSubscriber implements
         private readonly AsyncEvent $asyncEventScopeResolver,
         private readonly IndexStructureInterface $indexStructure,
         private readonly Config $config,
+        private readonly Elasticsearch $dataMapperAdapter,
         private readonly array $data,
         int $batchSize = null,
         DeploymentConfig $deploymentConfig = null
@@ -99,6 +102,7 @@ class AsyncEventSubscriber implements
         $saveHandler = $this->indexerHandlerFactory->create(
             [
                 'data' => $this->data,
+                'adapter' => $this->dataMapperAdapter,
                 'scopeResolver' => $this->asyncEventScopeResolver,
                 'indexStructure' => $this->indexStructure
             ]
