@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Aligent\AsyncEvents\Test\Integration;
 
-use Aligent\AsyncEvents\Helper\QueueMetadataInterface;
 use Aligent\AsyncEvents\Service\AsyncEvent\RetryManager;
 use Magento\TestFramework\Helper\Amqp;
 use Magento\TestFramework\Helper\Bootstrap;
