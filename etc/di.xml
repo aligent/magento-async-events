@@ -95,6 +95,7 @@
         <arguments>
             <argument name="dimensionProvider" xsi:type="object" shared="false">\Aligent\AsyncEvents\Model\Indexer\AsyncEventDimensionProvider</argument>
             <argument name="dataMapperAdapter" xsi:type="object">dataMapperAdapter</argument>
+            <argument name="indexStructure" xsi:type="object">dataMapperIndexStructure</argument>
         </arguments>
     </type>
 
@@ -128,6 +129,14 @@
         <plugin name="map_string_scope_to_int"
                 type="Aligent\AsyncEvents\Plugin\MapStringScopeToInt"/>
     </type>
+
+    <virtualType name="dataMapperIndexStructure" type="Magento\Elasticsearch\Model\Indexer\IndexStructure">
+        <arguments>
+            <argument name="adapter" xsi:type="object">
+                dataMapperAdapter
+            </argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="dataMapperAdapter" type="Magento\Elasticsearch\Model\Adapter\Elasticsearch">
         <arguments>
