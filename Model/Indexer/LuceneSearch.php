@@ -54,15 +54,15 @@ class LuceneSearch extends Search
     {
         $value = $this->getContext()->getRequestParam('search');
 
+        if (empty($value)) {
+            return;
+        }
+
         if ($this->asyncEventsConfig->isIndexingEnabled()) {
             $client = $this->connectionManager->getConnection();
             $indexPrefix = $this->config->getIndexPrefix();
             $filter = $this->filterBuilder->setConditionType('in')
                 ->setField($this->getName());
-
-            if ($value === "") {
-                return;
-            }
 
             try {
                 $rawResponse = $client->query(
@@ -88,15 +88,12 @@ class LuceneSearch extends Search
                 $filter->setValue("0");
             }
 
-            $this->getContext()->getDataProvider()->addFilter($filter->create());
         } else {
-            if ((string)$value !== '') {
-                $filter = $this->filterBuilder->setConditionType('like')
-                    ->setField('serialized_data')
-                    ->setValue($value);
-
-                $this->getContext()->getDataProvider()->addFilter($filter->create());
-            }
+            $filter = $this->filterBuilder->setConditionType('like')
+                ->setField('serialized_data')
+                ->setValue($value);
         }
+
+        $this->getContext()->getDataProvider()->addFilter($filter->create());
     }
 }
